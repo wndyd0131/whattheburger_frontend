@@ -1,0 +1,15 @@
+const Navigation = () => {
+  return (
+    <nav className="nav">
+      <a href="#">MENU</a>
+      <a href="#">REWARDS</a>
+      <a href="#">CAREERS</a>
+      <a href="#">WHATASTORE</a>
+      <a href="#">STORIES</a>
+      <a href="#">COMMUNITY</a>
+      <a href="#">GROCERY</a>
+    </nav>
+  );
+}
+
+export default Navigation;
