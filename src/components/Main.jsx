@@ -1,6 +1,10 @@
+import ImageSlider from "./ImageSlider";
+
 const Main = () => {
   return (
-    <h1>Main</h1>
+    <div className="content-container">
+      <ImageSlider/>
+    </div>
   );
 }
 

@@ -1,7 +1,6 @@
 import Navigation from "./Navigation";
 import SearchBar from "./SearchBar";
 import AuthSection from "./AuthSection";
-import "../styles/Header.css";
 
 const Header = () => {
   return (

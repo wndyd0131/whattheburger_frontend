@@ -11,6 +11,28 @@
   flex-direction: column; 
 }
 
+.content-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.slide-container {
+  background-color: pink;
+  height: 400px;
+  width: 100%;
+}
+
+.image-slider {
+  height: 300px;
+  width: 100%;
+}
+
+.slideshow-image {
+  height: 100%;
+  width: 100%;
+}
+
 .inner-container1 {
   display: flex;
   flex-direction: row;
@@ -35,4 +57,9 @@
   background-color: orange;
   display: flex;
   justify-content: center;
+}
+
+.footer {
+  color: white;
+  background-color: black;
 }

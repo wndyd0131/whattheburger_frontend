@@ -1,6 +1,6 @@
 const AuthSection = () => {
   return (
-    <p>AuthSection</p>
+    <p>Sign in or Sign up to order faster</p>
   );
 }
 
