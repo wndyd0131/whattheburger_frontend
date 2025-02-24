@@ -6,17 +6,16 @@ const Header = () => {
   return (
       <header className="header">
         <div className="logo-container">
-          <img src="/Whataburger-logo.png"></img>
+          <img src="/icons/whata-logo.svg"></img>
+          <h1>Whataburger</h1>
         </div>
-        <div className="container">
+        <div className="misc-container">
           <div className="inner-container1">
             <SearchBar></SearchBar>
             <AuthSection></AuthSection>
           </div>
-          <div className="inner-container2">
-            <Navigation></Navigation>
-          </div>
         </div>
+        <Navigation></Navigation>
       </header>
   );
 }
