@@ -5,17 +5,15 @@ import AuthSection from "./AuthSection";
 const Header = () => {
   return (
       <header className="header">
-        <div className="logo-container">
-          <img src="/icons/whata-logo.svg"></img>
-          <h1>Whataburger</h1>
-        </div>
-        <div className="misc-container">
-          <div className="inner-container1">
-            <SearchBar></SearchBar>
-            <AuthSection></AuthSection>
+          <div className="logo-container">
+            <img src="/icons/whata-logo.svg"></img>
+            <h1>Whataburger</h1>
           </div>
-        </div>
-        <Navigation></Navigation>
+          <Navigation></Navigation>
+          <div className="misc-container">
+              <SearchBar></SearchBar>
+              <AuthSection></AuthSection>
+          </div>
       </header>
   );
 }

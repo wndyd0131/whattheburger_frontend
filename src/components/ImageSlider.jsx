@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Banner1 from "../assets/slideshow/web_banner_1.webp";
-import Banner2 from "../assets/slideshow/web_banner_2.webp";
-import Banner3 from "../assets/slideshow/web_banner_3.webp";
-import Banner4 from "../assets/slideshow/web_banner_4.webp";
+import Banner1 from "../assets/slideshow/whataburger_banner_1.jpg";
+import Banner2 from "../assets/slideshow/whataburger_banner_2.jpg";
+import Banner3 from "../assets/slideshow/whataburger_banner_3.jpg";
+import Banner4 from "../assets/slideshow/whataburger_banner_4.jpg";
 
 const images = [Banner1, Banner2, Banner3, Banner4];
 
