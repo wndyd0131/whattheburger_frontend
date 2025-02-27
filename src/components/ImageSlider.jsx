@@ -33,13 +33,22 @@ const ImageSlider = () => {
   }
 
   return (
-    <div className="image-slider">
+    <>
       <img className="slideshow-image" src={images[index]}/>
       <div className="slide-button">
-        <button className="slide-left-button" onClick={() => changeImage(0)}></button>
-        <button className="slide-right-button" onClick={() => changeImage(1)}></button>
+        <button className="slide-left-button" onClick={() => changeImage(0)}>
+          <img src="icons/image-slider-left-button.svg"/>
+        </button>
+        <button className="slide-right-button" onClick={() => changeImage(1)}>
+          <img src="icons/image-slider-right-button.svg"/>
+        </button>
       </div>
-    </div>
+      <div className="index-selector">
+        {images.map((_, index_) => 
+          <div key={index_} className={`index-button ${index_ === index ? "active" : ""}`}></div>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -33,6 +33,7 @@
 .footer {
   color: white;
   background-color: black;
+  margin-top: 50px;
 }
 
 .upper-container {
@@ -62,12 +63,7 @@
   flex-direction: column;
   min-height: 100vh;
   padding: 20px 200px 0px 200px;
-}
-
-.slide-container {
-  background-color: pink;
-  height: 400px;
-  width: 100%;
+  gap: 30px;
 }
 
 .logo-container img {
@@ -81,14 +77,126 @@
   color: #FE7800
 }
 
-.image-slider {
-  height: 100%;
-  width: 100%;
+.image-slider-container {
+  width: fit-content;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .slideshow-image {
   height: 100%;
   width: 100%;
+}
+
+.order-button-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.start-order-button {
+  border: 1px solid #FE7800;
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  font-family: "Whatafont";
+  color: #FE7800;
+  min-width: 90px;
+  padding: 20px 20px 20px 20px;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.menu-list-container {
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.menu-list-box {
+  min-width: 60%;
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.popular-menu-box {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.slide-left-button {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 50px;
+  height: 50px;
+  transform: translateY(-50%);
+  top: 50%;
+  left: 0;
+  margin-left: 20px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.slide-right-button {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 30px;
+  width: 50px;
+  height: 50px;
+  transform: translateY(-50%);
+  top: 50%;
+  right: 0;
+  margin-right: 10px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.index-selector {
+  display: flex;
+  position: absolute;
+  padding: 5px 10px;
+  max-width: 100px;
+  transform: translateX(-50%);
+  height: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 30px;
+  left: 50%;
+  bottom: 30px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.index-button {
+  width: 5px;
+  height: 5px;
+  border: 1px solid white;
+  background-color: gray;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.index-button.active {
+  background-color: white;
+}
+
+.popular-menu-box img {
+  width: 200px;
 }
 
 @font-face {

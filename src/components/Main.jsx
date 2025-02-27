@@ -1,9 +1,19 @@
+import MenuList from "./HomePage/MenuList";
 import ImageSlider from "./ImageSlider";
 
 const Main = () => {
   return (
     <div className="content-container">
-      <ImageSlider/>
+      <div className="image-slider-container">
+        <ImageSlider/>
+      </div>
+      <div className="order-button-container">
+          <a className="start-order-button" src="#">Order<br/>for<br/>Delivery</a>
+          <a className="start-order-button" src="#">Order<br/>for<br/>Pickup</a>
+        </div>
+      <div className="menu-list-container">
+        <MenuList/>
+      </div>
     </div>
   );
 }
