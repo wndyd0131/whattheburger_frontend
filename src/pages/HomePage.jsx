@@ -1,14 +1,20 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import Main from "../components/Main";
+import MenuList from "../components/HomePage/MenuList";
+import ImageSlider from "../components/ImageSlider";
 import "../styles/HomePage.styles.css";
 
 const HomePage = () => {
   return (
-    <div className="homepage">
-      <Header></Header>
-      <Main></Main>
-      <Footer></Footer>
+    <div className="content-container">
+      <div className="image-slider-container">
+        <ImageSlider/>
+      </div>
+      <div className="order-button-container">
+          <a className="start-order-button" src="#">Order<br/>for<br/>Delivery</a>
+          <a className="start-order-button" src="#">Order<br/>for<br/>Pickup</a>
+        </div>
+      <div className="menu-list-container">
+        <MenuList/>
+      </div>
     </div>
   );
 }

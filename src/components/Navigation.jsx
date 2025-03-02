@@ -1,7 +1,7 @@
 const Navigation = () => {
   return (
     <nav className="nav">
-      <a href="#">MENU</a>
+      <a className="nav-menu" href="/menu">MENU</a>
       <a href="#">REWARDS</a>
       <a href="#">CAREERS</a>
       <a href="#">WHATASTORE</a>
