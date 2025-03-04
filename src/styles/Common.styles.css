@@ -30,6 +30,7 @@
   height: 60px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 3px -5px rgba(0, 0, 0, 0.5); /* X-offset Y-offset Blur-radius Spread-radius Color */
+  z-index: 100;
 }
 
 .footer {
@@ -47,11 +48,7 @@
 
 .logo-container {
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
+  margin: 50px;
 }
 
 .misc-container {
@@ -60,8 +57,15 @@
   align-items: center;
 }
 
+.logo-container a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .logo-container img {
-  width: 20%;
+  width: 40px;
 }
 
 .logo-container h1 {
