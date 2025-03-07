@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/Menu.styles.css";
 import MenuBox from "../components/Menu/MenuBox";
+import axios from "axios";
 
 const Menu = (props) => {
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => { /* Get Product By Category */
+    axios.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
+    .then(response => setProducts(response.data))
+    .catch(error => console.error("Error: ", error));
+  }, [selectedCategory])
+  
   const categoryList = [
     { id: 1, name: "Burgers", imgSrc: "/icons/category/burger_icon.svg"},
     { id: 2, name: "Chicken", imgSrc: "/icons/category/chicken_icon.svg"},
@@ -87,10 +97,10 @@ const Menu = (props) => {
 
           <div className="menu-box">
             <h1>MENU</h1>
-            <h2>Burger</h2>
+            <h2>{categoryList[selectedCategory-1].name}</h2>
             <div className="menu-grid">
-              {menuList.map( menu => 
-                  <MenuBox key={menu.id} name={menu.name} description={menu.description} calories={menu.calories} imgSrc={menu.imgSrc}></MenuBox>
+              {products.map( product => 
+                  <MenuBox key={product.productId} name={product.productName} description={product.briefInfo} calories={700} imgSrc="/src/assets/menu/Whataburger31.png"></MenuBox>
               )}
             </div>
           </div>
