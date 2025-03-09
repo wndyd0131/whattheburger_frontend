@@ -114,8 +114,6 @@
 
 .menu-image-container {
   display: flex;
-  width: 100%;
-  height: 220px;
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -185,4 +183,113 @@
   background-color: #FE7800;
   color: white;
   transition: 0.5s;
+}
+
+.overlay {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
+}
+
+.order-layout {
+  display: flex;
+  position: relative;
+  width: 1400px;
+  height: 800px;
+  background-color: white;
+}
+
+.order-summary-section {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid rgb(197, 197, 197);
+  width: 400px;
+  height: 800px;
+  background-color: white;
+}
+
+.product-detail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 350px;
+}
+
+.product-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.product-type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.product-type button {
+  background-color: gray;
+  width: 80px;
+  height: 40px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.product-type button.active {
+  background-color: #FE7800;
+}
+
+.product-detail h2 {
+  display: flex;
+  align-self: center;
+}
+
+.show-nutrition-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FE7800;
+}
+
+.show-nutrition-button strong {
+  cursor: pointer;
+}
+
+.product-ingredient-container {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  background-color: #FE7800;
+}
+
+.order-customize-section {
+  left: 500px;
+  width: 1000px;
+  height: 800px;
+  background-color: white;
+}
+
+.close-order-modal-button {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background-color: rgb(237, 237, 237);
+  font-size: 30px;
+  cursor: pointer;
 }

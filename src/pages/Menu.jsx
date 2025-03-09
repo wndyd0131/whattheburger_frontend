@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "../styles/Menu.styles.css";
 import MenuBox from "../components/Menu/MenuBox";
+import OrderSummary from "../components/OrderSummary";
+import OrderCustomize from "../components/OrderCustomize";
 import axios from "axios";
 
 const Menu = (props) => {
@@ -8,6 +10,13 @@ const Menu = (props) => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [modalOpened, setModalOpened] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const OrderButtonClickHandler = (product) => {
+    setSelectedProduct(product);
+    setModalOpened(true);
+  }
 
   useEffect(() => { /* Get Product By Category */
     axios.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
@@ -67,7 +76,6 @@ const Menu = (props) => {
 
   const handleSelectedCategory = (categoryId) => {
     setSelectedCategory(categoryId);
-    console.log(categoryId);
   }
 
   return (
@@ -100,11 +108,22 @@ const Menu = (props) => {
             <h2>{categoryList[selectedCategory-1].name}</h2>
             <div className="menu-grid">
               {products.map( product => 
-                  <MenuBox key={product.productId} name={product.productName} description={product.briefInfo} calories={700} imgSrc="/src/assets/menu/Whataburger31.png"></MenuBox>
+                  <MenuBox key={product.productId} name={product.productName} description={product.briefInfo} calories={700} imgSrc="/src/assets/menu/Whataburger31.png" setModalOpened={() => OrderButtonClickHandler(product)}></MenuBox>
               )}
             </div>
           </div>
         </div>
+        {modalOpened && (
+          <div className="overlay">
+            <div className="order-layout">
+              <div className="close-order-modal-button" onClick={() => setModalOpened(false)}>
+                X
+              </div>
+              <OrderSummary product={selectedProduct}/>
+              <OrderCustomize/>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
