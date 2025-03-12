@@ -10,8 +10,10 @@ const Menu = (props) => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [productResponse, setProductResponse] = useState();
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const OrderButtonClickHandler = (product) => {
     setSelectedProduct(product);
@@ -22,7 +24,17 @@ const Menu = (props) => {
     axios.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
     .then(response => setProducts(response.data))
     .catch(error => console.error("Error: ", error));
-  }, [selectedCategory])
+  }, [selectedCategory]);
+
+  useEffect(() => { /* Get Product By Product Id */
+    if (!selectedProduct) return;
+
+    setIsLoading(true);
+    axios.get(`http://localhost:8080/api/v1/products/${selectedProduct.productId}`)
+    .then(response => console.log(response.data))
+    .catch(error => console.error("Error: ", error))
+    .finally(() => setIsLoading(false));
+  }, [selectedProduct]);
   
   const categoryList = [
     { id: 1, name: "Burgers", imgSrc: "/icons/category/burger_icon.svg"},
