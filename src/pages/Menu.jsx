@@ -11,6 +11,7 @@ const Menu = (props) => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [productResponse, setProductResponse] = useState();
+  const [customRules, setCustomRules] = useState([]);
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,8 +31,24 @@ const Menu = (props) => {
     if (!selectedProduct) return;
 
     setIsLoading(true);
+    setCustomRules([]);
+
     axios.get(`http://localhost:8080/api/v1/products/${selectedProduct.productId}`)
-    .then(response => console.log(response.data))
+    .then(response => {
+      // console.log(response.data["optionRequests"][0]["customRuleRequest"]["rowIndex"]);
+      let len = response.data["optionRequests"].length;
+      let optionResponse = response.data["optionRequests"];
+      let newCustomRules = [];
+      for (let i = 0; i < len; i++) {
+        let rowIndex = response.data["optionRequests"][i]["customRuleRequest"]["rowIndex"];
+        if (!newCustomRules[rowIndex]) {
+          let customRuleName = response.data["optionRequests"][i]["customRuleRequest"]["name"];
+          newCustomRules[rowIndex] = {customRuleName: customRuleName, productOptions: []};
+        }
+        newCustomRules[rowIndex].productOptions.push(optionResponse[i]);
+      }
+      setCustomRules(newCustomRules);
+    })
     .catch(error => console.error("Error: ", error))
     .finally(() => setIsLoading(false));
   }, [selectedProduct]);
@@ -132,7 +149,7 @@ const Menu = (props) => {
                 X
               </div>
               <OrderSummary product={selectedProduct}/>
-              <OrderCustomize/>
+              <OrderCustomize customRules={customRules}/>
             </div>
           </div>
         )}
