@@ -1,11 +1,13 @@
 import MenuImageContainer from "./MenuImageContainer";
 import { useState } from "react";
 
-const OrderSummary = ({product}) => {
+const OrderSummary = ({product, currentIngredients, defaultIngredients}) => {
+  // console.log("Product: ", product);
+  console.log("Current Ingredients: ", currentIngredients);
   const [selectedButton, setSelectedButton] = useState("");
   return (
     <div className="order-summary-section">
-      <div className="product-detail-container">
+      <div className="product-detail-section">
         <MenuImageContainer width="100%" height="180px" imgSrc="/src/assets/menu/Whataburger31.png"/>
         <div className="product-detail">
           <h1>{product.productName}</h1>
@@ -19,8 +21,27 @@ const OrderSummary = ({product}) => {
           </div>
         </div>
       </div>
-      <div className="product-ingredient-container">
+      <div className="product-ingredient-section">
+        <div className="current-ingredient-container">
+          <ul>
+            {currentIngredients.map((customRule, idx) => {
+              if (customRule.productOptions.length > 0) {
+                return (
+                  <div key={idx}>
+                    <h3>{customRule.customRuleName}</h3>
+                    {customRule.productOptions.map((option, idx) => 
+                      <li key={idx}>
+                        <p>{option.name}</p>
+                      </li>
+                    )}
+                  </div>
+                );
+              }
 
+            }
+            )}
+          </ul>
+        </div>
       </div>
     </div>
   );

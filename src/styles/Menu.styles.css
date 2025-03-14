@@ -217,7 +217,7 @@
   background-color: white;
 }
 
-.product-detail-container {
+.product-detail-section {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -266,11 +266,20 @@
   cursor: pointer;
 }
 
-.product-ingredient-container {
+.product-ingredient-section {
   display: flex;
   flex-grow: 1;
-  width: 100%;
+  padding: 30px;
   background-color: #FE7800;
+}
+
+.current-ingredient-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  border: 1px solid black;
+  overflow-y: scroll;
+  padding: 10px 0 0 30px;
 }
 
 .order-customize-section {
@@ -321,6 +330,7 @@
 
 .option-detail-container {
   display: flex;
+  position: relative;
   flex-grow: 1;
   flex-direction: column;
 }
@@ -336,6 +346,12 @@
   flex-grow: 1;
   justify-content: center;
   flex-direction: column;
+}
+
+.option-select-button {
+  position: absolute;
+  right: 15px;
+  bottom: 20px;
 }
 
 .finish-customize-container {

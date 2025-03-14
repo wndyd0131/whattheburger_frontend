@@ -9,6 +9,8 @@ const Menu = (props) => {
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [currentIngredients, setCurrentIngredients] = useState([]);
+  const [defaultIngredients, setDefaultIngredients] = useState([]);
   const [products, setProducts] = useState([]);
   const [productResponse, setProductResponse] = useState();
   const [customRules, setCustomRules] = useState([]);
@@ -35,19 +37,26 @@ const Menu = (props) => {
 
     axios.get(`http://localhost:8080/api/v1/products/${selectedProduct.productId}`)
     .then(response => {
-      // console.log(response.data["optionRequests"][0]["customRuleRequest"]["rowIndex"]);
       let len = response.data["optionRequests"].length;
       let optionResponse = response.data["optionRequests"];
+      console.log("RESPONSE: ", response.data);
       let newCustomRules = [];
+      let ingredients = [];
       for (let i = 0; i < len; i++) {
         let rowIndex = response.data["optionRequests"][i]["customRuleRequest"]["rowIndex"];
         if (!newCustomRules[rowIndex]) {
           let customRuleName = response.data["optionRequests"][i]["customRuleRequest"]["name"];
           newCustomRules[rowIndex] = {customRuleName: customRuleName, productOptions: []};
+          ingredients[rowIndex] = {customRuleName: customRuleName, productOptions: []};
         }
         newCustomRules[rowIndex].productOptions.push(optionResponse[i]);
+        if (response.data["optionRequests"][i].isDefault === true) {
+          ingredients[rowIndex].productOptions.push(optionResponse[i]);
+        }
       }
       setCustomRules(newCustomRules);
+      setDefaultIngredients(ingredients);
+      setCurrentIngredients(ingredients);
     })
     .catch(error => console.error("Error: ", error))
     .finally(() => setIsLoading(false));
@@ -64,43 +73,6 @@ const Menu = (props) => {
     { id: 8, name: "Dessert", imgSrc: "/icons/category/dessert_icon.svg"},
     { id: 9, name: "Drink", imgSrc: "/icons/category/drink_icon.svg"},
     { id: 10, name: "Large Order", imgSrc: "/icons/category/group_icon.svg"},
-  ]
-  const menuList = [
-    {
-      id: 1,
-      name: "Whataburger",
-      description: 'Large Bun (5"), Large Beef Patty (5") (1), Tomato (Regular), Lettuce (Regular), Pickles (Regular), Diced Onions (Regular), Mustard (Regular)',
-      calories: 700,
-      imgSrc: "src/assets/menu/Whataburger31.png"
-    },
-    {
-      id: 2,
-      name: "Double Meat Whataburger",
-      description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque quidem minus natus temporibus, esse aliquam eius aspernatur libero ratione odit, culpa repudiandae quod optio animi commodi illo earum quaerat molestiae.",
-      calories: 770,
-      imgSrc: "src/assets/menu/DoubleMeatWhataburger37.png"
-    },
-    {
-      id: 3,
-      name: "Triple Meat Whataburger",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae reiciendis perferendis architecto facilis voluptatem mollitia quae fugiat voluptatibus pariatur qui, facere perspiciatis eius sequi quidem quos, assumenda maiores alias libero.",
-      calories: 770,
-      imgSrc: "src/assets/menu/TripleMeatWhataburger26.png"
-    },
-    {
-      id: 4,
-      name: "Jalapeno & Cheese Whataburger",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae reiciendis perferendis architecto facilis voluptatem mollitia quae fugiat voluptatibus pariatur qui, facere perspiciatis eius sequi quidem quos, assumenda maiores alias libero.",
-      calories: 770,
-      imgSrc: "src/assets/menu/JalapenoCheeseWhataburger19.png"
-    },
-    {
-      id: 5,
-      name: "Bacon & Cheese Whataburger",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae reiciendis perferendis architecto facilis voluptatem mollitia quae fugiat voluptatibus pariatur qui, facere perspiciatis eius sequi quidem quos, assumenda maiores alias libero.",
-      calories: 770,
-      imgSrc: "src/assets/menu/BaconCheeseWhataburger22.png"
-    }
   ]
 
   const handleSelectedCategory = (categoryId) => {
@@ -148,8 +120,8 @@ const Menu = (props) => {
               <div className="close-order-modal-button" onClick={() => setModalOpened(false)}>
                 X
               </div>
-              <OrderSummary product={selectedProduct}/>
-              <OrderCustomize customRules={customRules}/>
+              <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients}/>
+              <OrderCustomize customRules={customRules} setCurrentIngredients={setCurrentIngredients}/>
             </div>
           </div>
         )}
