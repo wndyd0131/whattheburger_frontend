@@ -121,7 +121,7 @@ const Menu = (props) => {
                 X
               </div>
               <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients}/>
-              <OrderCustomize customRules={customRules} setCurrentIngredients={setCurrentIngredients}/>
+              <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
             </div>
           </div>
         )}

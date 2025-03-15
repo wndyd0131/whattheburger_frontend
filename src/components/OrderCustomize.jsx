@@ -1,24 +1,24 @@
-const OrderCustomize = ({customRules, setCurrentIngredients}) => {
+import { useState } from "react";
 
-  // const handleUniqueType = (productOption, optionIdx) => {
-  //   setCurrentIngredients((prev) => 
-  //     prev.map((element, idx) => {
-  //       idx === optionIdx ? element.map((col, cIdx) => (
-  //         cIdx === 0 ? productOption : col
-  //       )) : element
-  //     })
-  //   );
-  // }
+const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}) => {
 
-  const renderByCustomRuleType = (productOption, optionIdx) => {
+  const handleUniqueType = (productOption, rowIdx) => {
+    const updatedArray = [...currentIngredients];
+    updatedArray[rowIdx]["productOptions"][0] = productOption;
+    setCurrentIngredients(updatedArray);
+  }
+
+  const renderByCustomRuleType = (productOption, rowIdx, optionIdx) => {
     let customRuleType = productOption["customRuleRequest"].customRuleType;
     if (customRuleType === "UNIQUE") {
       return (
         <label>
           <input
             type="radio"
+            name={productOption.name}
             value={productOption.name}
-            onChange={() => handleUniqueType(productOption, optionIdx)}
+            checked={currentIngredients[rowIdx]["productOptions"][0].optionId === productOption["optionId"]}
+            onChange={() => handleUniqueType(productOption, rowIdx, optionIdx)}
           />
         </label>
       );
@@ -34,8 +34,8 @@ const OrderCustomize = ({customRules, setCurrentIngredients}) => {
     <div className="order-customize-section">
       <div className="start-customize-container"></div>
       <div className="order-customize-container">
-        {customRules.map((customRule, ruleIdx) => 
-          <div key={ruleIdx}>
+        {customRules.map((customRule, rowIdx) => 
+          <div key={rowIdx}>
             <h1>{customRule["customRuleName"]}</h1>
             <div className="order-customize-grid-container">
               {customRule["productOptions"].map((productOption, optionIdx) => 
@@ -47,7 +47,7 @@ const OrderCustomize = ({customRules, setCurrentIngredients}) => {
                       <h3>{productOption["name"]}</h3>
                       <p>{productOption["extraPrice"] > 0 ? `$${productOption["extraPrice"]}` : "No Extra Charge"}, {productOption["calories"]}Cal</p>
                     </div>
-                    { renderByCustomRuleType(productOption, optionIdx) }
+                    { renderByCustomRuleType(productOption, rowIdx, optionIdx) }
                   </div>
                 </div>
               )}

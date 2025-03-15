@@ -2,8 +2,6 @@ import MenuImageContainer from "./MenuImageContainer";
 import { useState } from "react";
 
 const OrderSummary = ({product, currentIngredients, defaultIngredients}) => {
-  // console.log("Product: ", product);
-  console.log("Current Ingredients: ", currentIngredients);
   const [selectedButton, setSelectedButton] = useState("");
   return (
     <div className="order-summary-section">
