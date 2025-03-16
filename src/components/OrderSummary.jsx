@@ -25,7 +25,7 @@ const OrderSummary = ({product, currentIngredients, defaultIngredients}) => {
             {currentIngredients.map((customRule, idx) => {
               if (customRule.totalCount > 0) {
                 return (
-                  <div key={idx}>
+                  <div className="ingredient-list" key={idx}>
                     <h3>{customRule.customRuleName}</h3>
                     {customRule.productOptions.map((option, idx) => 
                       option ? 

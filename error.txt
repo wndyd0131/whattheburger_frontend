@@ -1,0 +1,16 @@
+1. radio button keep not being activated for following code:
+
+checked = {currentIngredients[rowIdx].productOptions.optionIdx?.orderIndex === productOption.orderIndex}
+
+- Reason: optionIdx is an array index but accessed with a dot ".", accessing attribute instead of an index
+
+2. When updatedArray[rowIdx].productOptions.pop(0), 1 is popped instead
+
+    if (updatedArray[rowIdx].productOptions[optionIdx]) {
+      updatedArray[rowIdx].productOptions.pop(optionIdx);
+    }
+    else {
+      updatedArray[rowIdx].productOptions[optionIdx] = productOption;
+    }
+
+- Problem: 
