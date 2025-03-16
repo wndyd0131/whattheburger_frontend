@@ -10,7 +10,14 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
 
   const handleMultipleType = (productOption, rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
-    updatedArray[rowIdx]["productOptions"][optionIdx] = productOption;
+    if (updatedArray[rowIdx].productOptions[optionIdx]) {
+      updatedArray[rowIdx].productOptions[optionIdx] = null;
+      updatedArray[rowIdx].totalCount--;
+    }
+    else {
+      updatedArray[rowIdx].productOptions[optionIdx] = productOption;
+      updatedArray[rowIdx].totalCount++;
+    }
     setCurrentIngredients(updatedArray);
   }
 

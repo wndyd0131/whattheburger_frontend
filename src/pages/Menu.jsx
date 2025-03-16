@@ -52,11 +52,11 @@ const Menu = (props) => {
         newCustomRules[rowIndex].productOptions.push(optionResponse[i]);
         if (response.data["optionRequests"][i].isDefault === true) {
           ingredients[rowIndex].productOptions.push(optionResponse[i]);
-          // ingredients[rowIndex].totalCount++;
+          ingredients[rowIndex].totalCount++;
         }
-        // else {
-        //   ingredients[rowIndex].productOptions.push(null);
-        // }
+        else {
+          ingredients[rowIndex].productOptions.push(null);
+        }
       }
       setCustomRules(newCustomRules);
       setDefaultIngredients(ingredients);

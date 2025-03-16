@@ -23,14 +23,15 @@ const OrderSummary = ({product, currentIngredients, defaultIngredients}) => {
         <div className="current-ingredient-container">
           <ul>
             {currentIngredients.map((customRule, idx) => {
-              if (customRule.productOptions.length > 0) {
+              if (customRule.totalCount > 0) {
                 return (
                   <div key={idx}>
                     <h3>{customRule.customRuleName}</h3>
                     {customRule.productOptions.map((option, idx) => 
+                      option ? 
                       <li key={idx}>
                         <p>{option.name}</p>
-                      </li>
+                      </li> : ""
                     )}
                   </div>
                 );
