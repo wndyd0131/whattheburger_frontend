@@ -1,31 +1,48 @@
 import { useState } from "react";
 
 const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}) => {
-
+  console.log("CR", currentIngredients);
   const handleUniqueType = (productOption, rowIdx) => {
     const updatedArray = [...currentIngredients];
     updatedArray[rowIdx]["productOptions"][0] = productOption;
     setCurrentIngredients(updatedArray);
   }
 
-  const renderByCustomRuleType = (productOption, rowIdx, optionIdx) => {
+  const handleMultipleType = (productOption, rowIdx, optionIdx) => {
+    const updatedArray = [...currentIngredients];
+    updatedArray[rowIdx]["productOptions"][optionIdx] = productOption;
+    setCurrentIngredients(updatedArray);
+  }
+
+  const renderByCustomRuleType = (productOption, rowIdx) => {
     let customRuleType = productOption["customRuleRequest"].customRuleType;
     if (customRuleType === "UNIQUE") {
       return (
         <label>
           <input
+            className="option-select-button"
             type="radio"
             name={productOption.name}
             value={productOption.name}
             checked={currentIngredients[rowIdx]["productOptions"][0].optionId === productOption["optionId"]}
-            onChange={() => handleUniqueType(productOption, rowIdx, optionIdx)}
+            onChange={() => handleUniqueType(productOption, rowIdx)}
           />
         </label>
       );
     }
     else {
+      let optionIdx = productOption.orderIndex;
       return (
-        <button className="option-select-button">Select</button>
+        <label>
+          <input
+            className="option-select-button"
+            type="checkbox"
+            name={productOption.name}
+            value={productOption.name}
+            checked = {currentIngredients[rowIdx].productOptions[optionIdx]?.orderIndex === productOption.orderIndex}
+            onChange={() => handleMultipleType(productOption, rowIdx, optionIdx)}
+          />
+        </label>
       );
     }
   }
@@ -47,7 +64,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                       <h3>{productOption["name"]}</h3>
                       <p>{productOption["extraPrice"] > 0 ? `$${productOption["extraPrice"]}` : "No Extra Charge"}, {productOption["calories"]}Cal</p>
                     </div>
-                    { renderByCustomRuleType(productOption, rowIdx, optionIdx) }
+                    { renderByCustomRuleType(productOption, rowIdx) }
                   </div>
                 </div>
               )}

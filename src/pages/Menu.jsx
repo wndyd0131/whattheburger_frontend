@@ -37,22 +37,26 @@ const Menu = (props) => {
 
     axios.get(`http://localhost:8080/api/v1/products/${selectedProduct.productId}`)
     .then(response => {
-      let len = response.data["optionRequests"].length;
+      let optionLength = response.data["optionRequests"].length;
       let optionResponse = response.data["optionRequests"];
       console.log("RESPONSE: ", response.data);
       let newCustomRules = [];
       let ingredients = [];
-      for (let i = 0; i < len; i++) {
+      for (let i = 0; i < optionLength; i++) {
         let rowIndex = response.data["optionRequests"][i]["customRuleRequest"]["rowIndex"];
         if (!newCustomRules[rowIndex]) {
           let customRuleName = response.data["optionRequests"][i]["customRuleRequest"]["name"];
           newCustomRules[rowIndex] = {customRuleName: customRuleName, productOptions: []};
-          ingredients[rowIndex] = {customRuleName: customRuleName, productOptions: []};
+          ingredients[rowIndex] = {customRuleName: customRuleName, productOptions: [], totalCount: 0};
         }
         newCustomRules[rowIndex].productOptions.push(optionResponse[i]);
         if (response.data["optionRequests"][i].isDefault === true) {
           ingredients[rowIndex].productOptions.push(optionResponse[i]);
+          // ingredients[rowIndex].totalCount++;
         }
+        // else {
+        //   ingredients[rowIndex].productOptions.push(null);
+        // }
       }
       setCustomRules(newCustomRules);
       setDefaultIngredients(ingredients);
