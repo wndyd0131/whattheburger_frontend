@@ -271,7 +271,7 @@
   flex-grow: 1;
   padding: 30px;
   overflow-y: scroll;
-  background-color: #FE7800;
+  border-top: 1px solid rgb(197, 197, 197);
 }
 
 .current-ingredient-container {
@@ -285,6 +285,16 @@
   margin-bottom: 15px;
 }
 
+.ingredient-list h3 {
+  font-family: "Whatafont";
+  color: #FE7800;
+  font-size: 25px;
+}
+
+.ingredient-list li {
+  font-family: "Whatafont";
+}
+
 .order-customize-section {
   display: flex;
   flex-direction: column;
@@ -292,6 +302,11 @@
   width: 1000px;
   height: 800px;
   background-color: white;
+}
+
+.order-customize-section h1 {
+  font-family: "Whatafont";
+  color: #FE7800;
 }
 
 .start-customize-container {
@@ -373,5 +388,43 @@
   height: 30px;
   background-color: rgb(237, 237, 237);
   font-size: 30px;
+  cursor: pointer;
+}
+
+.confirm-modal {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  height: 130px;
+  width: 400px;
+  border-radius: 7px;
+  z-index: 1;
+}
+
+.confirm-modal-text-container {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-modal-button-container {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-modal-button-container button {
+  background-color: white;
+  border: 1px solid #FE7800;
+  border-radius: 4px;
+  width: 70px;
+  height: 35px;
+  margin: 0 20px;
   cursor: pointer;
 }

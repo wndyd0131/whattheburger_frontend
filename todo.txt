@@ -1,0 +1,3 @@
+- computing numbers of a product
+- add texts on top of each customization ("Choose N options")
+- add image next to each ingredient in order summary

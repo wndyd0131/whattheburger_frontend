@@ -17,10 +17,23 @@ const Menu = (props) => {
   const [modalOpened, setModalOpened] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [confirmModalOpened, setConfirmModalOpened] = useState(false);
 
-  const OrderButtonClickHandler = (product) => {
+  const orderButtonClickHandler = (product) => {
     setSelectedProduct(product);
     setModalOpened(true);
+  }
+
+  const handleClickCloseButton = () => {
+    setConfirmModalOpened(true);
+  }
+
+  const handleConfirmCloseButton = () => {
+    setSelectedProduct(null);
+    setCustomRules([]);
+    setCurrentIngredients([]);
+    setConfirmModalOpened(false);
+    setModalOpened(false);
   }
 
   useEffect(() => { /* Get Product By Category */
@@ -113,21 +126,37 @@ const Menu = (props) => {
             <h2>{categoryList[selectedCategory-1].name}</h2>
             <div className="menu-grid">
               {products.map( product => 
-                  <MenuBox key={product.productId} name={product.productName} description={product.briefInfo} calories={700} imgSrc="/src/assets/menu/Whataburger31.png" setModalOpened={() => OrderButtonClickHandler(product)}></MenuBox>
+                  <MenuBox key={product.productId} name={product.productName} description={product.briefInfo} calories={700} imgSrc="/src/assets/menu/Whataburger31.png" setModalOpened={() => orderButtonClickHandler(product)}></MenuBox>
               )}
             </div>
           </div>
         </div>
         {modalOpened && (
-          <div className="overlay">
-            <div className="order-layout">
-              <div className="close-order-modal-button" onClick={() => setModalOpened(false)}>
-                X
+          <>
+            <div className="overlay">
+              <div className="order-layout">
+                {confirmModalOpened && (
+                <div className="overlay">
+                  <div className="confirm-modal">
+                    <div className="confirm-modal-text-container">
+                      <h3>Are you sure you want to cancel order?</h3>
+                    </div>
+                    <div className="confirm-modal-button-container">
+                      <button onClick={() => handleConfirmCloseButton()}><strong>Yes</strong></button>
+                      <button onClick={() => setConfirmModalOpened(false)}><strong>No</strong></button>
+                    </div>
+
+                  </div>
+                </div>
+                )}
+                <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
+                  X
+                </div>
+                <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients}/>
+                <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
               </div>
-              <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients}/>
-              <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
             </div>
-          </div>
+          </>
         )}
       </div>
     </>

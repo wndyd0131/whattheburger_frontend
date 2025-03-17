@@ -1,22 +1,38 @@
-import { useState } from "react";
-
 const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}) => {
-  console.log("CR", currentIngredients);
+  console.log("CR", customRules);
+  console.log("CI", currentIngredients);
   const handleUniqueType = (productOption, rowIdx) => {
     const updatedArray = [...currentIngredients];
     updatedArray[rowIdx]["productOptions"][0] = productOption;
     setCurrentIngredients(updatedArray);
   }
 
-  const handleMultipleType = (productOption, rowIdx, optionIdx) => {
+  const handleLimitType = (productOption, rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
     if (updatedArray[rowIdx].productOptions[optionIdx]) {
-      updatedArray[rowIdx].productOptions[optionIdx] = null;
-      updatedArray[rowIdx].totalCount--;
+      if (updatedArray[rowIdx].totalCount > productOption.customRuleRequest.minSelection) { // only remove if selected ingredient number is more than minSelection
+        updatedArray[rowIdx].productOptions[optionIdx] = null;
+        updatedArray[rowIdx].totalCount--;
+      }
     }
     else {
-      updatedArray[rowIdx].productOptions[optionIdx] = productOption;
-      updatedArray[rowIdx].totalCount++;
+      if (updatedArray[rowIdx].totalCount < productOption.customRuleRequest.maxSelection) { // only add if selected ingredient number is less than maxSelection
+        updatedArray[rowIdx].productOptions[optionIdx] = productOption;
+        updatedArray[rowIdx].totalCount++;
+      }
+    }
+    setCurrentIngredients(updatedArray);
+  }
+
+  const handleFreeType = (productOption, rowIdx, optionIdx) => {
+    const updatedArray = [...currentIngredients];
+    if (updatedArray[rowIdx].productOptions[optionIdx]) {
+        updatedArray[rowIdx].productOptions[optionIdx] = null;
+        updatedArray[rowIdx].totalCount--;
+    }
+    else {
+        updatedArray[rowIdx].productOptions[optionIdx] = productOption;
+        updatedArray[rowIdx].totalCount++;
     }
     setCurrentIngredients(updatedArray);
   }
@@ -47,7 +63,9 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
             name={productOption.name}
             value={productOption.name}
             checked = {currentIngredients[rowIdx].productOptions[optionIdx]?.orderIndex === productOption.orderIndex}
-            onChange={() => handleMultipleType(productOption, rowIdx, optionIdx)}
+            onChange={customRuleType == "LIMIT" ?
+              () => handleLimitType(productOption, rowIdx, optionIdx) :
+              () => handleFreeType(productOption, rowIdx, optionIdx)}
           />
         </label>
       );
