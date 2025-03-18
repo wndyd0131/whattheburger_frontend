@@ -35,6 +35,7 @@ const Menu = (props) => {
     setCurrentIngredients([]);
     setConfirmModalOpened(false);
     setModalOpened(false);
+    setTotalExtraPrice(0);
   }
 
   useEffect(() => { /* Get Product By Category */
@@ -51,20 +52,20 @@ const Menu = (props) => {
 
     axios.get(`http://localhost:8080/api/v1/products/${selectedProduct.productId}`)
     .then(response => {
-      let optionLength = response.data["optionRequests"].length;
-      let optionResponse = response.data["optionRequests"];
       console.log("RESPONSE: ", response.data);
+      let optionLength = response.data.optionResponses.length;
+      let optionResponse = response.data.optionResponses;
       let newCustomRules = [];
       let ingredients = [];
       for (let i = 0; i < optionLength; i++) {
-        let rowIndex = response.data["optionRequests"][i]["customRuleRequest"]["rowIndex"];
+        let rowIndex = response.data.optionResponses[i].customRuleResponse["rowIndex"];
         if (!newCustomRules[rowIndex]) {
-          let customRuleName = response.data["optionRequests"][i]["customRuleRequest"]["name"];
+          let customRuleName = response.data.optionResponses[i].customRuleResponse["name"];
           newCustomRules[rowIndex] = {customRuleName: customRuleName, productOptions: []};
           ingredients[rowIndex] = {customRuleName: customRuleName, productOptions: [], totalCount: 0};
         }
         newCustomRules[rowIndex].productOptions.push(optionResponse[i]);
-        if (response.data["optionRequests"][i].isDefault === true) {
+        if (response.data.optionResponses[i].isDefault === true) {
           ingredients[rowIndex].productOptions.push(optionResponse[i]);
           ingredients[rowIndex].totalCount++;
         }
@@ -153,7 +154,6 @@ const Menu = (props) => {
                 <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
                   X
                 </div>
-                {console.log("EP", totalExtraPrice)};
                 <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients} totalExtraPrice={totalExtraPrice}/>
                 <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} setTotalExtraPrice={setTotalExtraPrice}/>
               </div>

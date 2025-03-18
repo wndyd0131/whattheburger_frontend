@@ -354,6 +354,7 @@
 }
 
 .option-trait-container {
+  position: relative;
   display: flex;
   height: 60px;
   border-bottom: 1px solid black;
@@ -426,5 +427,35 @@
   width: 70px;
   height: 35px;
   margin: 0 20px;
+  cursor: pointer;
+}
+
+.scale-container {
+  position: absolute;
+  width: 160px;
+  height: 40px;
+  top: 50%;
+  transform: translate(0%, -50%);
+  border: 1px solid black;
+}
+
+.count-container {
+  position: absolute;
+  width: 160px;
+  height: 40px;
+  top: 50%;
+  transform: translate(0, -50%);
+  border: 1px solid black;
+}
+
+.toggle-button {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translate(0, -50%);
+  width: 40px;
+  height: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
   cursor: pointer;
 }

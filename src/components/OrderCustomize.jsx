@@ -11,7 +11,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
   const handleLimitType = (productOption, rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
     if (updatedArray[rowIdx].productOptions[optionIdx]) {
-      if (updatedArray[rowIdx].totalCount > productOption.customRuleRequest.minSelection) { // only remove if selected ingredient number is more than minSelection
+      if (updatedArray[rowIdx].totalCount > productOption.customRuleResponse.minSelection) { // only remove if selected ingredient number is more than minSelection
         let oldExtraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
         setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice));
         updatedArray[rowIdx].productOptions[optionIdx] = null;
@@ -19,7 +19,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
       }
     }
     else {
-      if (updatedArray[rowIdx].totalCount < productOption.customRuleRequest.maxSelection) { // only add if selected ingredient number is less than maxSelection
+      if (updatedArray[rowIdx].totalCount < productOption.customRuleResponse.maxSelection) { // only add if selected ingredient number is less than maxSelection
         let newExtraPrice = productOption.extraPrice;
         setTotalExtraPrice(extraPrice => (extraPrice + newExtraPrice));
         updatedArray[rowIdx].productOptions[optionIdx] = productOption;
@@ -47,7 +47,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
   }
 
   const renderByCustomRuleType = (productOption, rowIdx) => {
-    let customRuleType = productOption["customRuleRequest"].customRuleType;
+    let customRuleType = productOption.customRuleResponse.customRuleType;
     if (customRuleType === "UNIQUE") {
       return (
         <label>
@@ -93,7 +93,30 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
                 <div key={optionIdx} className="order-customize-grid">
                   <div className="option-image-container"></div>
                   <div className="option-detail-container">
-                    <div className="option-trait-container"></div>
+                    <div className="option-trait-container">
+                      {productOption.optionTraitResponses.map((optionTrait, traitIdx) => {
+                        switch(optionTrait.name) {
+                          case "TBS":
+                            return (
+                              <div key={traitIdx} className="toggle-button">
+
+                              </div>
+                            );
+                          case "CNT":
+                            return (
+                              <div key={traitIdx} className="count-container">
+
+                              </div>
+                            );
+                          case "UCNT":
+                            return (
+                              <div key={traitIdx} className="scale-container">
+
+                              </div>
+                            )
+                        }
+                      })}
+                    </div>
                     <div className="option-detail">
                       <h3>{productOption.name}</h3>
                       <p>{productOption.extraPrice > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p>
