@@ -1,7 +1,7 @@
 import MenuImageContainer from "./MenuImageContainer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const OrderSummary = ({product, currentIngredients, defaultIngredients}) => {
+const OrderSummary = ({product, currentIngredients, defaultIngredients, totalExtraPrice}) => {
   const [selectedButton, setSelectedButton] = useState("");
   return (
     <div className="order-summary-section">
@@ -13,7 +13,7 @@ const OrderSummary = ({product, currentIngredients, defaultIngredients}) => {
             <button className={selectedButton === "ONLY" ? "active" : ""} onClick={() => setSelectedButton("ONLY")} disabled={selectedButton === "ONLY"}>ONLY</button>
             <button className={selectedButton === "MEAL" ? "active" : ""} onClick={() => setSelectedButton("MEAL")} disabled={selectedButton === "MEAL"}>MEAL</button>
           </div>
-          <h2>${product.productPrice} | 700Cal</h2>
+          <h2>${product.productPrice + totalExtraPrice} | 700Cal</h2>
           <div className="show-nutrition-button">
             <strong>Show Nutrition</strong>
           </div>

@@ -18,6 +18,7 @@ const Menu = (props) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
+  const [totalExtraPrice, setTotalExtraPrice] = useState(0);
 
   const orderButtonClickHandler = (product) => {
     setSelectedProduct(product);
@@ -152,8 +153,9 @@ const Menu = (props) => {
                 <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
                   X
                 </div>
-                <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients}/>
-                <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
+                {console.log("EP", totalExtraPrice)};
+                <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients} totalExtraPrice={totalExtraPrice}/>
+                <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} setTotalExtraPrice={setTotalExtraPrice}/>
               </div>
             </div>
           </>

@@ -1,9 +1,10 @@
-const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}) => {
-  console.log("CR", customRules);
-  console.log("CI", currentIngredients);
+const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients, setTotalExtraPrice}) => {
   const handleUniqueType = (productOption, rowIdx) => {
     const updatedArray = [...currentIngredients];
-    updatedArray[rowIdx]["productOptions"][0] = productOption;
+    let oldExtraPrice = updatedArray[rowIdx].productOptions[0].extraPrice;
+    let newExtraPrice = productOption.extraPrice;
+    setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice + newExtraPrice));
+    updatedArray[rowIdx].productOptions[0] = productOption;
     setCurrentIngredients(updatedArray);
   }
 
@@ -11,12 +12,16 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
     const updatedArray = [...currentIngredients];
     if (updatedArray[rowIdx].productOptions[optionIdx]) {
       if (updatedArray[rowIdx].totalCount > productOption.customRuleRequest.minSelection) { // only remove if selected ingredient number is more than minSelection
+        let oldExtraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
+        setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice));
         updatedArray[rowIdx].productOptions[optionIdx] = null;
         updatedArray[rowIdx].totalCount--;
       }
     }
     else {
       if (updatedArray[rowIdx].totalCount < productOption.customRuleRequest.maxSelection) { // only add if selected ingredient number is less than maxSelection
+        let newExtraPrice = productOption.extraPrice;
+        setTotalExtraPrice(extraPrice => (extraPrice + newExtraPrice));
         updatedArray[rowIdx].productOptions[optionIdx] = productOption;
         updatedArray[rowIdx].totalCount++;
       }
@@ -27,10 +32,14 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
   const handleFreeType = (productOption, rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
     if (updatedArray[rowIdx].productOptions[optionIdx]) {
+        let oldExtraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
+        setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice));
         updatedArray[rowIdx].productOptions[optionIdx] = null;
         updatedArray[rowIdx].totalCount--;
     }
     else {
+        let newExtraPrice = productOption.extraPrice;
+        setTotalExtraPrice(extraPrice => (extraPrice + newExtraPrice));
         updatedArray[rowIdx].productOptions[optionIdx] = productOption;
         updatedArray[rowIdx].totalCount++;
     }
@@ -78,16 +87,16 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
       <div className="order-customize-container">
         {customRules.map((customRule, rowIdx) => 
           <div key={rowIdx}>
-            <h1>{customRule["customRuleName"]}</h1>
+            <h1>{customRule.customRuleName}</h1>
             <div className="order-customize-grid-container">
-              {customRule["productOptions"].map((productOption, optionIdx) => 
+              {customRule.productOptions.map((productOption, optionIdx) => 
                 <div key={optionIdx} className="order-customize-grid">
                   <div className="option-image-container"></div>
                   <div className="option-detail-container">
                     <div className="option-trait-container"></div>
                     <div className="option-detail">
-                      <h3>{productOption["name"]}</h3>
-                      <p>{productOption["extraPrice"] > 0 ? `$${productOption["extraPrice"]}` : "No Extra Charge"}, {productOption["calories"]}Cal</p>
+                      <h3>{productOption.name}</h3>
+                      <p>{productOption.extraPrice > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p>
                     </div>
                     { renderByCustomRuleType(productOption, rowIdx) }
                   </div>
