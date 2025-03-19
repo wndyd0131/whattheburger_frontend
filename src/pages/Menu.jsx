@@ -91,8 +91,8 @@ const Menu = (props) => {
         }
       }
       setCustomRules(newCustomRules);
-      setDefaultIngredients(ingredients);
-      setCurrentIngredients(ingredients);
+      setDefaultIngredients([...ingredients]);
+      setCurrentIngredients([...ingredients]);
     })
     .catch(error => console.error("Error: ", error))
     .finally(() => setIsLoading(false));
@@ -160,7 +160,7 @@ const Menu = (props) => {
                 <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
                   X
                 </div>
-                <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} defaultIngredients={defaultIngredients} totalExtraPrice={totalExtraPrice}/>
+                <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} defaultIngredients={defaultIngredients} totalExtraPrice={totalExtraPrice}/>
                 <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} setTotalExtraPrice={setTotalExtraPrice}/>
               </div>
             </div>

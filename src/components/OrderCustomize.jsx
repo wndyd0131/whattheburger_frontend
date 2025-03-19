@@ -9,8 +9,11 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
     setCurrentIngredients(updatedArray);
   }
 
-  const handleLimitType = (productOption, rowIdx, optionIdx) => {
+  const handleLimitType = (e, productOption, rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
+    if (!e.target.checked) {
+      // change back to default
+    }
     if (updatedArray[rowIdx].productOptions[optionIdx]) {
       if (updatedArray[rowIdx].totalCount > productOption.customRuleResponse.minSelection) { // only remove if selected ingredient number is more than minSelection
         let oldExtraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
@@ -30,8 +33,11 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
     setCurrentIngredients(updatedArray);
   }
 
-  const handleFreeType = (productOption, rowIdx, optionIdx) => {
+  const handleFreeType = (e, productOption, rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
+    if (!e.target.checked) {
+      // change back to default
+    }
     if (updatedArray[rowIdx].productOptions[optionIdx]) {
         let oldExtraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
         setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice));
@@ -74,8 +80,8 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
             value={productOption.name}
             checked = {currentIngredients[rowIdx].productOptions[optionIdx]?.orderIndex === productOption.orderIndex}
             onChange={customRuleType == "LIMIT" ?
-              () => handleLimitType(productOption, rowIdx, optionIdx) :
-              () => handleFreeType(productOption, rowIdx, optionIdx)}
+              (e) => handleLimitType(e, productOption, rowIdx, optionIdx) :
+              (e) => handleFreeType(e, productOption, rowIdx, optionIdx)}
           />
         </label>
       );
@@ -84,19 +90,30 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
 
   const handleClickPlusButton = (rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
-    let maxQuantity = updatedArray[rowIdx].productOptions[optionIdx].maxQuantity;
-    if (updatedArray[rowIdx].productOptions[optionIdx] && updatedArray[rowIdx].productOptions[optionIdx].optionQuantity < maxQuantity) {
+    if (updatedArray[rowIdx].productOptions[optionIdx] && 
+      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity < updatedArray[rowIdx].productOptions[optionIdx].maxQuantity) {
+      let extraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
+      let currentQuantity = updatedArray[rowIdx].productOptions[optionIdx].optionQuantity;
+      let defaultQuantity = updatedArray[rowIdx].productOptions[optionIdx].defaultQuantity;
       updatedArray[rowIdx].productOptions[optionIdx].optionQuantity++;
       setCurrentIngredients(updatedArray);
+      if (currentQuantity >= defaultQuantity)
+        setTotalExtraPrice(totalExtraPrice => (totalExtraPrice + extraPrice));
     }
   }
 
   const handleClickMinusButton = (rowIdx, optionIdx) => {
     const updatedArray = [...currentIngredients];
-    let minQuantity = 0;
-    if (updatedArray[rowIdx].productOptions[optionIdx] && updatedArray[rowIdx].productOptions[optionIdx].optionQuantity > minQuantity) {
+    let minQuantity = 1;
+    if (updatedArray[rowIdx].productOptions[optionIdx] &&
+      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity > minQuantity) {
+      let extraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
+      let currentQuantity = updatedArray[rowIdx].productOptions[optionIdx].optionQuantity;
+      let defaultQuantity = updatedArray[rowIdx].productOptions[optionIdx].defaultQuantity;
       updatedArray[rowIdx].productOptions[optionIdx].optionQuantity--;
       setCurrentIngredients(updatedArray);
+      if (currentQuantity > defaultQuantity)
+        setTotalExtraPrice(totalExtraPrice => (totalExtraPrice - extraPrice));
     }
   }
 
