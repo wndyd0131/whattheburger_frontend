@@ -1,4 +1,5 @@
 const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients, setTotalExtraPrice}) => {
+  console.log("CR", currentIngredients);
   const handleUniqueType = (productOption, rowIdx) => {
     const updatedArray = [...currentIngredients];
     let oldExtraPrice = updatedArray[rowIdx].productOptions[0].extraPrice;
@@ -81,6 +82,25 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
     }
   }
 
+  const handleClickPlusButton = (rowIdx, optionIdx) => {
+    const updatedArray = [...currentIngredients];
+    let maxQuantity = updatedArray[rowIdx].productOptions[optionIdx].maxQuantity;
+    if (updatedArray[rowIdx].productOptions[optionIdx] && updatedArray[rowIdx].productOptions[optionIdx].optionQuantity < maxQuantity) {
+      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity++;
+      setCurrentIngredients(updatedArray);
+    }
+  }
+
+  const handleClickMinusButton = (rowIdx, optionIdx) => {
+    const updatedArray = [...currentIngredients];
+    let minQuantity = 0;
+    if (updatedArray[rowIdx].productOptions[optionIdx] && updatedArray[rowIdx].productOptions[optionIdx].optionQuantity > minQuantity) {
+      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity--;
+      setCurrentIngredients(updatedArray);
+    }
+  }
+
+
   return (
     <div className="order-customize-section">
       <div className="start-customize-container"></div>
@@ -105,7 +125,17 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
                           case "CNT":
                             return (
                               <div key={traitIdx} className="count-container">
-
+                                <div className="count-button" onClick={() => handleClickMinusButton(rowIdx, optionIdx)}>
+                                  -
+                                </div>
+                                  <h3>{currentIngredients[rowIdx].productOptions[optionIdx] ? 
+                                    currentIngredients[rowIdx].productOptions[optionIdx].optionQuantity
+                                    :
+                                    0
+                                  }</h3>
+                                <div className="count-button" onClick={() => handleClickPlusButton(rowIdx, optionIdx)}>
+                                  +
+                                </div>
                               </div>
                             );
                           case "UCNT":

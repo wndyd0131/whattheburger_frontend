@@ -5,6 +5,19 @@ import OrderSummary from "../components/OrderSummary";
 import OrderCustomize from "../components/OrderCustomize";
 import axios from "axios";
 
+const categoryList = [
+  { id: 1, name: "Burgers", imgSrc: "/icons/category/burger_icon.svg"},
+  { id: 2, name: "Chicken", imgSrc: "/icons/category/chicken_icon.svg"},
+  { id: 3, name: "Fish", imgSrc: "/icons/category/fish_icon.svg"},
+  { id: 4, name: "ATF_LTO", imgSrc: "/icons/category/star_icon.svg"},
+  { id: 5, name: "Kids", imgSrc: "/icons/category/kids_icon.svg"},
+  { id: 6, name: "Sides", imgSrc: "/icons/category/fries_icon.svg"},
+  { id: 7, name: "Salad", imgSrc: "/icons/category/salad_icon.svg"},
+  { id: 8, name: "Dessert", imgSrc: "/icons/category/dessert_icon.svg"},
+  { id: 9, name: "Drink", imgSrc: "/icons/category/drink_icon.svg"},
+  { id: 10, name: "Large Order", imgSrc: "/icons/category/group_icon.svg"},
+]
+
 const Menu = (props) => {
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [hoveredCategory, setHoveredCategory] = useState(null);
@@ -54,19 +67,23 @@ const Menu = (props) => {
     .then(response => {
       console.log("RESPONSE: ", response.data);
       let optionLength = response.data.optionResponses.length;
-      let optionResponse = response.data.optionResponses;
+      let optionResponses = response.data.optionResponses;
       let newCustomRules = [];
       let ingredients = [];
       for (let i = 0; i < optionLength; i++) {
-        let rowIndex = response.data.optionResponses[i].customRuleResponse["rowIndex"];
+        let rowIndex = optionResponses[i].customRuleResponse.rowIndex;
         if (!newCustomRules[rowIndex]) {
-          let customRuleName = response.data.optionResponses[i].customRuleResponse["name"];
+          let customRuleName = optionResponses[i].customRuleResponse.name;
           newCustomRules[rowIndex] = {customRuleName: customRuleName, productOptions: []};
           ingredients[rowIndex] = {customRuleName: customRuleName, productOptions: [], totalCount: 0};
         }
-        newCustomRules[rowIndex].productOptions.push(optionResponse[i]);
-        if (response.data.optionResponses[i].isDefault === true) {
-          ingredients[rowIndex].productOptions.push(optionResponse[i]);
+        let orderObject = {
+          ...optionResponses[i],
+          optionQuantity: optionResponses[i].defaultQuantity
+        };
+        newCustomRules[rowIndex].productOptions.push(orderObject);
+        if (orderObject.isDefault === true) {
+          ingredients[rowIndex].productOptions.push(orderObject);
           ingredients[rowIndex].totalCount++;
         }
         else {
@@ -81,18 +98,7 @@ const Menu = (props) => {
     .finally(() => setIsLoading(false));
   }, [selectedProduct]);
   
-  const categoryList = [
-    { id: 1, name: "Burgers", imgSrc: "/icons/category/burger_icon.svg"},
-    { id: 2, name: "Chicken", imgSrc: "/icons/category/chicken_icon.svg"},
-    { id: 3, name: "Fish", imgSrc: "/icons/category/fish_icon.svg"},
-    { id: 4, name: "ATF_LTO", imgSrc: "/icons/category/star_icon.svg"},
-    { id: 5, name: "Kids", imgSrc: "/icons/category/kids_icon.svg"},
-    { id: 6, name: "Sides", imgSrc: "/icons/category/fries_icon.svg"},
-    { id: 7, name: "Salad", imgSrc: "/icons/category/salad_icon.svg"},
-    { id: 8, name: "Dessert", imgSrc: "/icons/category/dessert_icon.svg"},
-    { id: 9, name: "Drink", imgSrc: "/icons/category/drink_icon.svg"},
-    { id: 10, name: "Large Order", imgSrc: "/icons/category/group_icon.svg"},
-  ]
+
 
   const handleSelectedCategory = (categoryId) => {
     setSelectedCategory(categoryId);

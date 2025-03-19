@@ -441,11 +441,12 @@
 
 .count-container {
   position: absolute;
+  display: flex;
+  justify-content: space-between;
   width: 160px;
   height: 40px;
   top: 50%;
   transform: translate(0, -50%);
-  border: 1px solid black;
 }
 
 .toggle-button {
@@ -457,5 +458,17 @@
   height: 20px;
   border: 1px solid black;
   border-radius: 10px;
+  cursor: pointer;
+}
+
+.count-button {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #FE7800;
+  border-radius: 20px;
+  color: #FE7800;
+  font-size: 20px;
+  height: 30px;
+  width: 50px;
   cursor: pointer;
 }
