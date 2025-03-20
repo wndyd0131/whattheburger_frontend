@@ -3,7 +3,6 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
     const updatedObject = structuredClone(currentIngredients);
     let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[0].extraPrice;
     let newExtraPrice = productOption.extraPrice;
-    setTotalExtraPrice(totalExtraPrice => (totalExtraPrice - oldExtraPrice + newExtraPrice));
     updatedObject.totalExtraPrice = updatedObject.totalExtraPrice - oldExtraPrice + newExtraPrice;
     updatedObject.ingredients[rowIdx].productOptions[0] = productOption;
     setCurrentIngredients(updatedObject);

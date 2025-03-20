@@ -72,7 +72,7 @@ const OrderSummary = (
                     {customRule.productOptions.map((option, idx) => 
                       option ? 
                       <li key={idx}>
-                        <p>{option.name}</p>
+                        <p>{option.name} {option.optionQuantity > 1 ? `(x${option.optionQuantity})` : ""}</p>
                       </li> : ""
                     )}
                   </div>
