@@ -1,56 +1,50 @@
-const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients, setTotalExtraPrice}) => {
-  console.log("CR", currentIngredients);
+const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}) => {
   const handleUniqueType = (productOption, rowIdx) => {
-    const updatedArray = [...currentIngredients];
-    let oldExtraPrice = updatedArray[rowIdx].productOptions[0].extraPrice;
+    const updatedObject = structuredClone(currentIngredients);
+    let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[0].extraPrice;
     let newExtraPrice = productOption.extraPrice;
-    setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice + newExtraPrice));
-    updatedArray[rowIdx].productOptions[0] = productOption;
-    setCurrentIngredients(updatedArray);
+    setTotalExtraPrice(totalExtraPrice => (totalExtraPrice - oldExtraPrice + newExtraPrice));
+    updatedObject.totalExtraPrice = updatedObject.totalExtraPrice - oldExtraPrice + newExtraPrice;
+    updatedObject.ingredients[rowIdx].productOptions[0] = productOption;
+    setCurrentIngredients(updatedObject);
   }
 
-  const handleLimitType = (e, productOption, rowIdx, optionIdx) => {
-    const updatedArray = [...currentIngredients];
-    if (!e.target.checked) {
-      // change back to default
-    }
-    if (updatedArray[rowIdx].productOptions[optionIdx]) {
-      if (updatedArray[rowIdx].totalCount > productOption.customRuleResponse.minSelection) { // only remove if selected ingredient number is more than minSelection
-        let oldExtraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
-        setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice));
-        updatedArray[rowIdx].productOptions[optionIdx] = null;
-        updatedArray[rowIdx].totalCount--;
+  const handleLimitType = (productOption, rowIdx, optionIdx) => {
+    const updatedObject = structuredClone(currentIngredients);
+    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx]) {
+      if (updatedObject.ingredients[rowIdx].totalCount > productOption.customRuleResponse.minSelection) { // only remove if selected ingredient number is more than minSelection
+        let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice * updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
+        updatedObject.totalExtraPrice -= oldExtraPrice;
+        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = null;
+        updatedObject.ingredients[rowIdx].totalCount--;
       }
     }
     else {
-      if (updatedArray[rowIdx].totalCount < productOption.customRuleResponse.maxSelection) { // only add if selected ingredient number is less than maxSelection
+      if (updatedObject.ingredients[rowIdx].totalCount < productOption.customRuleResponse.maxSelection) { // only add if selected ingredient number is less than maxSelection
         let newExtraPrice = productOption.extraPrice;
-        setTotalExtraPrice(extraPrice => (extraPrice + newExtraPrice));
-        updatedArray[rowIdx].productOptions[optionIdx] = productOption;
-        updatedArray[rowIdx].totalCount++;
+        updatedObject.totalExtraPrice += newExtraPrice;
+        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = productOption;
+        updatedObject.ingredients[rowIdx].totalCount++;
       }
     }
-    setCurrentIngredients(updatedArray);
+    setCurrentIngredients(updatedObject);
   }
 
-  const handleFreeType = (e, productOption, rowIdx, optionIdx) => {
-    const updatedArray = [...currentIngredients];
-    if (!e.target.checked) {
-      // change back to default
-    }
-    if (updatedArray[rowIdx].productOptions[optionIdx]) {
-        let oldExtraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
-        setTotalExtraPrice(extraPrice => (extraPrice - oldExtraPrice));
-        updatedArray[rowIdx].productOptions[optionIdx] = null;
-        updatedArray[rowIdx].totalCount--;
+  const handleFreeType = (productOption, rowIdx, optionIdx) => {
+    const updatedObject = structuredClone(currentIngredients);
+    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx]) {
+        let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice * updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
+        updatedObject.totalExtraPrice -= oldExtraPrice;
+        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = null;
+        updatedObject.ingredients[rowIdx].totalCount--;
     }
     else {
         let newExtraPrice = productOption.extraPrice;
-        setTotalExtraPrice(extraPrice => (extraPrice + newExtraPrice));
-        updatedArray[rowIdx].productOptions[optionIdx] = productOption;
-        updatedArray[rowIdx].totalCount++;
+        updatedObject.totalExtraPrice += newExtraPrice;
+        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = productOption;
+        updatedObject.ingredients[rowIdx].totalCount++;
     }
-    setCurrentIngredients(updatedArray);
+    setCurrentIngredients(updatedObject);
   }
 
   const renderByCustomRuleType = (productOption, rowIdx) => {
@@ -63,7 +57,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
             type="radio"
             name={productOption.name}
             value={productOption.name}
-            checked={currentIngredients[rowIdx]["productOptions"][0].optionId === productOption["optionId"]}
+            checked={currentIngredients.ingredients[rowIdx].productOptions[0].optionId === productOption["optionId"]}
             onChange={() => handleUniqueType(productOption, rowIdx)}
           />
         </label>
@@ -78,10 +72,10 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
             type="checkbox"
             name={productOption.name}
             value={productOption.name}
-            checked = {currentIngredients[rowIdx].productOptions[optionIdx]?.orderIndex === productOption.orderIndex}
+            checked = {currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.orderIndex === productOption.orderIndex}
             onChange={customRuleType == "LIMIT" ?
-              (e) => handleLimitType(e, productOption, rowIdx, optionIdx) :
-              (e) => handleFreeType(e, productOption, rowIdx, optionIdx)}
+              () => handleLimitType(productOption, rowIdx, optionIdx) :
+              () => handleFreeType(productOption, rowIdx, optionIdx)}
           />
         </label>
       );
@@ -89,31 +83,33 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
   }
 
   const handleClickPlusButton = (rowIdx, optionIdx) => {
-    const updatedArray = [...currentIngredients];
-    if (updatedArray[rowIdx].productOptions[optionIdx] && 
-      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity < updatedArray[rowIdx].productOptions[optionIdx].maxQuantity) {
-      let extraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
-      let currentQuantity = updatedArray[rowIdx].productOptions[optionIdx].optionQuantity;
-      let defaultQuantity = updatedArray[rowIdx].productOptions[optionIdx].defaultQuantity;
-      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity++;
-      setCurrentIngredients(updatedArray);
-      if (currentQuantity >= defaultQuantity)
-        setTotalExtraPrice(totalExtraPrice => (totalExtraPrice + extraPrice));
+    const updatedObject = structuredClone(currentIngredients);
+    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx] && 
+      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity < updatedObject.ingredients[rowIdx].productOptions[optionIdx].maxQuantity) {
+      let extraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice;
+      let currentQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
+      let defaultQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].defaultQuantity;
+      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity++;
+      if (currentQuantity >= defaultQuantity) {
+        updatedObject.totalExtraPrice += extraPrice;
+      }
+      setCurrentIngredients(updatedObject);
     }
   }
 
   const handleClickMinusButton = (rowIdx, optionIdx) => {
-    const updatedArray = [...currentIngredients];
+    const updatedObject = structuredClone(currentIngredients);
     let minQuantity = 1;
-    if (updatedArray[rowIdx].productOptions[optionIdx] &&
-      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity > minQuantity) {
-      let extraPrice = updatedArray[rowIdx].productOptions[optionIdx].extraPrice;
-      let currentQuantity = updatedArray[rowIdx].productOptions[optionIdx].optionQuantity;
-      let defaultQuantity = updatedArray[rowIdx].productOptions[optionIdx].defaultQuantity;
-      updatedArray[rowIdx].productOptions[optionIdx].optionQuantity--;
-      setCurrentIngredients(updatedArray);
-      if (currentQuantity > defaultQuantity)
-        setTotalExtraPrice(totalExtraPrice => (totalExtraPrice - extraPrice));
+    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx] &&
+      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity > minQuantity) {
+      let extraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice;
+      let currentQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
+      let defaultQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].defaultQuantity;
+      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity--;
+      if (currentQuantity > defaultQuantity) {
+        updatedObject.totalExtraPrice -= extraPrice;
+      }
+      setCurrentIngredients(updatedObject);
     }
   }
 
@@ -145,8 +141,8 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients,
                                 <div className="count-button" onClick={() => handleClickMinusButton(rowIdx, optionIdx)}>
                                   -
                                 </div>
-                                  <h3>{currentIngredients[rowIdx].productOptions[optionIdx] ? 
-                                    currentIngredients[rowIdx].productOptions[optionIdx].optionQuantity
+                                  <h3>{currentIngredients.ingredients[rowIdx].productOptions[optionIdx] ? 
+                                    currentIngredients.ingredients[rowIdx].productOptions[optionIdx].optionQuantity
                                     :
                                     0
                                   }</h3>

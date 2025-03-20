@@ -22,8 +22,8 @@ const Menu = (props) => {
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [currentIngredients, setCurrentIngredients] = useState([]);
-  const [defaultIngredients, setDefaultIngredients] = useState([]);
+  const [currentIngredients, setCurrentIngredients] = useState({});
+  const [defaultIngredients, setDefaultIngredients] = useState({});
   const [products, setProducts] = useState([]);
   const [productResponse, setProductResponse] = useState();
   const [customRules, setCustomRules] = useState([]);
@@ -31,7 +31,6 @@ const Menu = (props) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
-  const [totalExtraPrice, setTotalExtraPrice] = useState(0);
 
   const orderButtonClickHandler = (product) => {
     setSelectedProduct(product);
@@ -45,10 +44,9 @@ const Menu = (props) => {
   const handleConfirmCloseButton = () => {
     setSelectedProduct(null);
     setCustomRules([]);
-    setCurrentIngredients([]);
+    setCurrentIngredients({totalExtraPrice: 0, ingredients: []});
     setConfirmModalOpened(false);
     setModalOpened(false);
-    setTotalExtraPrice(0);
   }
 
   useEffect(() => { /* Get Product By Category */
@@ -70,6 +68,7 @@ const Menu = (props) => {
       let optionResponses = response.data.optionResponses;
       let newCustomRules = [];
       let ingredients = [];
+      
       for (let i = 0; i < optionLength; i++) {
         let rowIndex = optionResponses[i].customRuleResponse.rowIndex;
         if (!newCustomRules[rowIndex]) {
@@ -79,7 +78,7 @@ const Menu = (props) => {
         }
         let orderObject = {
           ...optionResponses[i],
-          optionQuantity: optionResponses[i].defaultQuantity
+          optionQuantity: optionResponses[i].defaultQuantity,
         };
         newCustomRules[rowIndex].productOptions.push(orderObject);
         if (orderObject.isDefault === true) {
@@ -91,8 +90,8 @@ const Menu = (props) => {
         }
       }
       setCustomRules(newCustomRules);
-      setDefaultIngredients([...ingredients]);
-      setCurrentIngredients([...ingredients]);
+      setDefaultIngredients({totalExtraPrice: 0, ingredients: structuredClone(ingredients)});
+      setCurrentIngredients({totalExtraPrice: 0, ingredients: structuredClone(ingredients)});
     })
     .catch(error => console.error("Error: ", error))
     .finally(() => setIsLoading(false));
@@ -160,8 +159,8 @@ const Menu = (props) => {
                 <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
                   X
                 </div>
-                <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} defaultIngredients={defaultIngredients} totalExtraPrice={totalExtraPrice}/>
-                <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} setTotalExtraPrice={setTotalExtraPrice}/>
+                <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} defaultIngredients={defaultIngredients} isLoading={isLoading}/>
+                <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
               </div>
             </div>
           </>

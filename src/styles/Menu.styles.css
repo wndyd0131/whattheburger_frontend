@@ -299,6 +299,7 @@
   color: white;
   background-color: #FE7800;
   margin: 0 10px;
+  cursor: pointer;
 }
 
 .current-ingredient-container {

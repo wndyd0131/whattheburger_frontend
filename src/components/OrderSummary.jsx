@@ -7,7 +7,7 @@ const OrderSummary = (
     currentIngredients,
     setCurrentIngredients,
     defaultIngredients,
-    totalExtraPrice
+    isLoading
   }) => {
   console.log("DEFAULT", defaultIngredients);
   const [selectedButton, setSelectedButton] = useState("");
@@ -18,7 +18,7 @@ const OrderSummary = (
   }
 
   const handleConfirmDefaultButton = () => {
-    setCurrentIngredients([...defaultIngredients]);
+    setCurrentIngredients(structuredClone(defaultIngredients));
     setConfirmModalOpened(false);
   }
   
@@ -30,7 +30,7 @@ const OrderSummary = (
       <div className="overlay">
         <div className="confirm-modal">
           <div className="confirm-modal-text-container">
-            <h3>Return to default setting</h3>
+            <h3>Return to default setting?</h3>
           </div>
           <div className="confirm-modal-button-container">
             <button onClick={() => handleConfirmDefaultButton()}><strong>Yes</strong></button>
@@ -49,7 +49,7 @@ const OrderSummary = (
             <button className={selectedButton === "ONLY" ? "active" : ""} onClick={() => setSelectedButton("ONLY")} disabled={selectedButton === "ONLY"}>ONLY</button>
             <button className={selectedButton === "MEAL" ? "active" : ""} onClick={() => setSelectedButton("MEAL")} disabled={selectedButton === "MEAL"}>MEAL</button>
           </div>
-          <h2>${(product.productPrice + totalExtraPrice).toFixed(2)} | 700Cal</h2>
+          <h2>${(product.productPrice + currentIngredients.totalExtraPrice).toFixed(2)} | 700Cal</h2>
           <div className="show-nutrition-button">
             <strong>Show Nutrition</strong>
           </div>
@@ -64,7 +64,7 @@ const OrderSummary = (
         <h2>Order Summary</h2>
         <div className="current-ingredient-container">
           <ul>
-            {currentIngredients.map((customRule, idx) => {
+            {currentIngredients.ingredients?.map((customRule, idx) => {
               if (customRule.totalCount > 0) {
                 return (
                   <div className="ingredient-list" key={idx}>
