@@ -80,6 +80,9 @@ const Menu = (props) => {
           ...optionResponses[i],
           optionQuantity: optionResponses[i].defaultQuantity,
         };
+        for (let j = 0; j < orderObject.optionTraitResponses.length; j++) {
+          orderObject.optionTraitResponses[j].currentSelection = orderObject.optionTraitResponses[j].defaultSelection;
+        }
         newCustomRules[rowIndex].productOptions.push(orderObject);
         if (orderObject.isDefault === true) {
           ingredients[rowIndex].productOptions.push(orderObject);

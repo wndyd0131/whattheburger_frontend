@@ -112,6 +112,12 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
     }
   }
 
+  const handleClickSlider = (e, rowIdx, optionIdx, optionTraitIdx) => {
+    const updatedObject = structuredClone(currentIngredients);
+    updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionTraitResponses[optionTraitIdx].currentSelection = e.target.value;
+    setCurrentIngredients(updatedObject);
+  }
+
 
   return (
     <div className="order-customize-section">
@@ -126,17 +132,17 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                   <div className="option-image-container"></div>
                   <div className="option-detail-container">
                     <div className="option-trait-container">
-                      {productOption.optionTraitResponses.map((optionTrait, traitIdx) => {
+                      {productOption.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
                         switch(optionTrait.name) {
                           case "TBS":
                             return (
-                              <div key={traitIdx} className="toggle-button">
+                              <div key={optionTraitIdx} className="toggle-button">
 
                               </div>
                             );
                           case "CNT":
                             return (
-                              <div key={traitIdx} className="count-container">
+                              <div key={optionTraitIdx} className="count-container">
                                 <div className="count-button" onClick={() => handleClickMinusButton(rowIdx, optionIdx)}>
                                   -
                                 </div>
@@ -152,8 +158,16 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                             );
                           case "UCNT":
                             return (
-                              <div key={traitIdx} className="scale-container">
-
+                              <div key={optionTraitIdx} className="slider-container">
+                                <input
+                                  className="slider"
+                                  type="range"
+                                  min="1"
+                                  max="3"
+                                  step="1"
+                                  value={currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx].currentSelection}
+                                  onChange={(e) => handleClickSlider(e, rowIdx, optionIdx, optionTraitIdx)}
+                                />
                               </div>
                             )
                         }
