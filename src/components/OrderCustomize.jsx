@@ -136,8 +136,10 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                         switch(optionTrait.name) {
                           case "TBS":
                             return (
-                              <div key={optionTraitIdx} className="toggle-button">
-
+                              <div className="toggle-container">
+                                <div key={optionTraitIdx} className="toggle-button">
+                                  <div className="toggle-knob"></div>
+                                </div>
                               </div>
                             );
                           case "CNT":
@@ -165,7 +167,8 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                                   min="1"
                                   max="3"
                                   step="1"
-                                  value={currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx].currentSelection}
+                                  disabled={currentIngredients.ingredients[rowIdx].productOptions[optionIdx] ? false : true}
+                                  value={currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx].currentSelection }
                                   onChange={(e) => handleClickSlider(e, rowIdx, optionIdx, optionTraitIdx)}
                                 />
                               </div>

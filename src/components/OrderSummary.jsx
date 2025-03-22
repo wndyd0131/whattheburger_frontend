@@ -22,6 +22,10 @@ const OrderSummary = (
     setConfirmModalOpened(false);
   }
   
+  const handleClickOnlyButton = () => {
+    const updatedArray = structuredClone(currentIngredients);
+    updatedArray.ingredients
+  }
 
   return (
     <>
@@ -61,7 +65,7 @@ const OrderSummary = (
             default
           </div>
         </div>
-        <h2>Order Summary</h2>
+        <h2>[Order Summary]</h2>
         <div className="current-ingredient-container">
           <ul>
             {currentIngredients.ingredients?.map((customRule, idx) => {
@@ -72,7 +76,26 @@ const OrderSummary = (
                     {customRule.productOptions.map((option, idx) => 
                       option ? 
                       <li key={idx}>
-                        <p>{option.name} {option.optionQuantity > 1 ? `(x${option.optionQuantity})` : ""}</p>
+                        {option.name} {option.optionQuantity > 1 ? `(x${option.optionQuantity})` : ""}
+                          {option.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
+                            if (optionTrait.name === "UCNT") {
+                              if (optionTrait.currentSelection == 1) {
+                                return (
+                                  <div key={optionTraitIdx} className="trait-label" style={{"backgroundColor": "rgb(86, 193, 220)"}}>Easy</div>
+                                );
+                              } else if (optionTrait.currentSelection == 2) {
+                                return (
+                                  <div key={optionTraitIdx} className="trait-label">Regular</div>
+                                );
+                              } else {
+                                console.log(optionTrait.currentSelection)
+                                return (
+                                  <div key={optionTraitIdx} className="trait-label" style={{"backgroundColor": "rgb(255, 32, 103)"}}>Extra</div>
+                                );
+                              }
+                            }
+                          })}
+                        
                       </li> : ""
                     )}
                   </div>
