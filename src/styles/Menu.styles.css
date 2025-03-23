@@ -212,7 +212,7 @@
   flex-direction: column;
   justify-content: space-between;
   border-right: 1px solid rgb(197, 197, 197);
-  width: 400px;
+  width: 450px;
   height: 800px;
   background-color: white;
 }
@@ -243,6 +243,7 @@
   width: 80px;
   height: 40px;
   border: 1px solid black;
+  border-radius: 3px;
   cursor: pointer;
 }
 
@@ -286,9 +287,10 @@
 
 .ingredient-modifier-container {
   display: flex;
-  position: absolute;
-  right: 0;
-  top: 10px;
+  flex-direction: column;
+  position: fixed;
+  top: 460px;
+  left: 430px;
 }
 
 .ingredient-modifier-button {
@@ -489,18 +491,27 @@
 
 .toggle-container {
   display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 60px;
+}
+
+.toggle-container p {
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 .toggle-button {
-  position: absolute;
-  top: 50%;
-  right: 5%;
-  transform: translate(0, -50%);
-  width: 35px;
+  min-width: 35px;
   height: 20px;
   border: 1px solid black;
   border-radius: 30px;
   cursor: pointer;
+  margin-left: 10px;
 }
 
 .toggle-knob {
@@ -539,4 +550,26 @@
   color: white;
   background-color: #FE7800;
   margin: 0 5px;
+}
+
+.order-decision-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid gray;
+  height: 80px;
+}
+
+.order-decision-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FE7800;
+  border-radius: 5px;
+  width: 170px;
+  height: 50px;
+  font-size: 21px;
+  white-space: nowrap;
+  cursor: pointer;
 }

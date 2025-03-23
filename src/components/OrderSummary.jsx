@@ -107,6 +107,10 @@ const OrderSummary = (
           </ul>
         </div>
       </div>
+      <div className="order-decision-container">
+        <div className="order-decision-button">Order</div>
+        <div className="order-decision-button">Add To Cart</div>
+      </div>
     </div>
     </>
   );

@@ -137,6 +137,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                           case "TBS":
                             return (
                               <div className="toggle-container">
+                                <p>Toast Both Sides</p>
                                 <div key={optionTraitIdx} className="toggle-button">
                                   <div className="toggle-knob"></div>
                                 </div>
@@ -178,7 +179,8 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                     </div>
                     <div className="option-detail">
                       <h3>{productOption.name}</h3>
-                      <p>{productOption.extraPrice > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p>
+                      {console.log(productOption.optionQuantity)}
+                      <p>{(productOption.extraPrice * productOption.optionQuantity) > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p>
                     </div>
                     { renderByCustomRuleType(productOption, rowIdx) }
                   </div>
