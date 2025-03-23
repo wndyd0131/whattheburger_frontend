@@ -109,7 +109,7 @@ const OrderSummary = (
       </div>
       <div className="order-decision-container">
         <div className="order-decision-button">Order</div>
-        <div className="order-decision-button">Add To Cart</div>
+        <div className="order-decision-button">Add To Bag</div>
       </div>
     </div>
     </>

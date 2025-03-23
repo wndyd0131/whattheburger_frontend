@@ -66,8 +66,8 @@ const Menu = (props) => {
       console.log("RESPONSE: ", response.data);
       let optionLength = response.data.optionResponses.length;
       let optionResponses = response.data.optionResponses;
-      let newCustomRules = [];
-      let ingredients = [];
+      let newCustomRules = []; // customization rules (including entire options)
+      let ingredients = []; // current or related ingredients (including partial options)
       
       for (let i = 0; i < optionLength; i++) {
         let rowIndex = optionResponses[i].customRuleResponse.rowIndex;

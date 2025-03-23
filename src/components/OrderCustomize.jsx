@@ -127,64 +127,69 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
           <div key={rowIdx}>
             <h1>{customRule.customRuleName}</h1>
             <div className="order-customize-grid-container">
-              {customRule.productOptions.map((productOption, optionIdx) => 
-                <div key={optionIdx} className="order-customize-grid">
-                  <div className="option-image-container"></div>
-                  <div className="option-detail-container">
-                    <div className="option-trait-container">
-                      {productOption.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
-                        switch(optionTrait.name) {
-                          case "TBS":
-                            return (
-                              <div className="toggle-container">
-                                <p>Toast Both Sides</p>
-                                <div key={optionTraitIdx} className="toggle-button">
-                                  <div className="toggle-knob"></div>
+              {customRule.productOptions.map((productOption, optionIdx) => {
+                const currentIngredientOption = currentIngredients.ingredients[rowIdx]?.productOptions[optionIdx];
+                const extraPrice = currentIngredientOption ? currentIngredientOption.extraPrice * currentIngredientOption.optionQuantity : productOption.extraPrice;
+                const extraPriceText = extraPrice > 0 ? `$${extraPrice.toFixed(2)}` : "No Extra Charge";
+                return (
+                  <div key={optionIdx} className="order-customize-grid">
+                    <div className="option-image-container"></div>
+                    <div className="option-detail-container">
+                      <div className="option-trait-container">
+                        {productOption.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
+                          switch(optionTrait.name) {
+                            case "TBS":
+                              return (
+                                <div key={optionTraitIdx} className="toggle-container">
+                                  <p>Toast Both Sides</p>
+                                  <div className="toggle-button">
+                                    <div className="toggle-knob"></div>
+                                  </div>
                                 </div>
-                              </div>
-                            );
-                          case "CNT":
-                            return (
-                              <div key={optionTraitIdx} className="count-container">
-                                <div className="count-button" onClick={() => handleClickMinusButton(rowIdx, optionIdx)}>
-                                  -
+                              );
+                            case "CNT":
+                              return (
+                                <div key={optionTraitIdx} className="count-container">
+                                  <div className="count-button" onClick={() => handleClickMinusButton(rowIdx, optionIdx)}>
+                                    -
+                                  </div>
+                                    <h3>{currentIngredients.ingredients[rowIdx].productOptions[optionIdx] ? 
+                                      currentIngredients.ingredients[rowIdx].productOptions[optionIdx].optionQuantity
+                                      :
+                                      0
+                                    }</h3>
+                                  <div className="count-button" onClick={() => handleClickPlusButton(rowIdx, optionIdx)}>
+                                    +
+                                  </div>
                                 </div>
-                                  <h3>{currentIngredients.ingredients[rowIdx].productOptions[optionIdx] ? 
-                                    currentIngredients.ingredients[rowIdx].productOptions[optionIdx].optionQuantity
-                                    :
-                                    0
-                                  }</h3>
-                                <div className="count-button" onClick={() => handleClickPlusButton(rowIdx, optionIdx)}>
-                                  +
+                              );
+                            case "UCNT":
+                              return (
+                                <div key={optionTraitIdx} className="slider-container">
+                                  <input
+                                    className="slider"
+                                    type="range"
+                                    min="1"
+                                    max="3"
+                                    step="1"
+                                    disabled={currentIngredients.ingredients[rowIdx].productOptions[optionIdx] ? false : true}
+                                    value={currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx].currentSelection }
+                                    onChange={(e) => handleClickSlider(e, rowIdx, optionIdx, optionTraitIdx)}
+                                  />
                                 </div>
-                              </div>
-                            );
-                          case "UCNT":
-                            return (
-                              <div key={optionTraitIdx} className="slider-container">
-                                <input
-                                  className="slider"
-                                  type="range"
-                                  min="1"
-                                  max="3"
-                                  step="1"
-                                  disabled={currentIngredients.ingredients[rowIdx].productOptions[optionIdx] ? false : true}
-                                  value={currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx].currentSelection }
-                                  onChange={(e) => handleClickSlider(e, rowIdx, optionIdx, optionTraitIdx)}
-                                />
-                              </div>
-                            )
-                        }
-                      })}
+                              )
+                          }
+                        })}
+                      </div>
+                      <div className="option-detail">
+                        <h3>{productOption.name}</h3>
+                        <p>{extraPriceText}, {productOption.calories}Cal</p>
+                        {/* <p>{(productOption.extraPrice) > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p> */}
+                      </div>
+                      { renderByCustomRuleType(productOption, rowIdx) }
                     </div>
-                    <div className="option-detail">
-                      <h3>{productOption.name}</h3>
-                      {console.log(productOption.optionQuantity)}
-                      <p>{(productOption.extraPrice * productOption.optionQuantity) > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p>
-                    </div>
-                    { renderByCustomRuleType(productOption, rowIdx) }
                   </div>
-                </div>
+              );}
               )}
             </div>
           </div>

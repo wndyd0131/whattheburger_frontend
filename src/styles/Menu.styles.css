@@ -242,7 +242,7 @@
   background-color: gray;
   width: 80px;
   height: 40px;
-  border: 1px solid black;
+  border: 1px solid rgb(225, 225, 225);
   border-radius: 3px;
   cursor: pointer;
 }
@@ -348,7 +348,7 @@
 
 .start-customize-container {
   flex-grow: 1;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(225, 225, 225);
 }
 
 .order-customize-container {
@@ -366,13 +366,13 @@
 
 .order-customize-grid-container {
   display: grid;
-  border: 1px solid black;
+  border: 1px solid rgb(225, 225, 225);
   grid-template-columns: 1fr 1fr;
 }
 
 .order-customize-grid {
   display: flex;
-  border: 1px solid black;
+  border: 1px solid rgb(225, 225, 225);
   width: 350px;
   height: 120px;
   justify-self: center;
@@ -394,7 +394,7 @@
   position: relative;
   display: flex;
   height: 60px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(225, 225, 225);
 }
 
 .option-detail {
@@ -412,7 +412,7 @@
 
 .finish-customize-container {
   flex-grow: 1;
-  border-top: 1px solid black;
+  border-top: 1px solid rgb(225, 225, 225);
 }
 
 .close-order-modal-button {
@@ -476,7 +476,7 @@
   height: 40px;
   top: 50%;
   transform: translate(0%, -50%);
-  border: 1px solid black;
+  border: 1px solid rgb(225, 225, 225);
 }
 
 .count-container {
@@ -508,7 +508,7 @@
 .toggle-button {
   min-width: 35px;
   height: 20px;
-  border: 1px solid black;
+  border: 1px solid rgb(225, 225, 225);
   border-radius: 30px;
   cursor: pointer;
   margin-left: 10px;
