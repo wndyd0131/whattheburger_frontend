@@ -373,7 +373,7 @@
 .order-customize-grid {
   display: flex;
   border: 1px solid rgb(225, 225, 225);
-  width: 350px;
+  width: 100%;
   height: 120px;
   justify-self: center;
 }

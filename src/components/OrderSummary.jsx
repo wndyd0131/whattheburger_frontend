@@ -88,11 +88,15 @@ const OrderSummary = (
                                   <div key={optionTraitIdx} className="trait-label">Regular</div>
                                 );
                               } else {
-                                console.log(optionTrait.currentSelection)
                                 return (
                                   <div key={optionTraitIdx} className="trait-label" style={{"backgroundColor": "rgb(255, 32, 103)"}}>Extra</div>
                                 );
                               }
+                            } else if (optionTrait.name === "TBS") {
+                              return (
+                                optionTrait.currentSelection == 1 ? 
+                                <div key={optionTraitIdx} className="trait-label" style={{"backgroundColor": "rgb(113, 47, 0)"}}>TBS</div> : ""
+                              );
                             }
                           })}
                         

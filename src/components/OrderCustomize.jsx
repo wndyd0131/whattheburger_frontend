@@ -11,12 +11,17 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
     }
   }
   
-  const handleUniqueType = (productOption, rowIdx) => {
+  const handleUniqueType = (productOption, rowIdx, optionIdx) => {
     const updatedObject = structuredClone(currentIngredients);
-    let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[0].extraPrice;
+    const currentOption = updatedObject.ingredients[rowIdx].productOptions[optionIdx];
+    let oldExtraPrice = currentOption ? currentOption.extraPrice : 0;
     let newExtraPrice = productOption.extraPrice;
+    for (let i = 0; i < updatedObject.ingredients[rowIdx].productOptions.length; i++) {
+      updatedObject.ingredients[rowIdx].productOptions[i] = null;
+    }
+    console.log("UO", updatedObject);
     updatedObject.totalExtraPrice = updatedObject.totalExtraPrice - oldExtraPrice + newExtraPrice;
-    updatedObject.ingredients[rowIdx].productOptions[0] = productOption;
+    updatedObject.ingredients[rowIdx].productOptions[optionIdx] = productOption;
     setCurrentIngredients(updatedObject);
   }
 
@@ -58,7 +63,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
     setCurrentIngredients(updatedObject);
   }
 
-  const renderByCustomRuleType = (productOption, rowIdx) => {
+  const renderByCustomRuleType = (productOption, rowIdx, optionIdx) => {
     let customRuleType = productOption.customRuleResponse.customRuleType;
     if (customRuleType === "UNIQUE") {
       return (
@@ -68,8 +73,8 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
             type="radio"
             name={productOption.name}
             value={productOption.name}
-            checked={currentIngredients.ingredients[rowIdx].productOptions[0].optionId === productOption["optionId"]}
-            onChange={() => handleUniqueType(productOption, rowIdx)}
+            checked={currentIngredients.ingredients[rowIdx].productOptions[optionIdx] ? true : false}
+            onChange={() => handleUniqueType(productOption, rowIdx, optionIdx)}
           />
         </label>
       );
@@ -201,7 +206,7 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                         <p>{extraPriceText}, {productOption.calories}Cal</p>
                         {/* <p>{(productOption.extraPrice) > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p> */}
                       </div>
-                      { renderByCustomRuleType(productOption, rowIdx) }
+                      { renderByCustomRuleType(productOption, rowIdx, optionIdx) }
                     </div>
                   </div>
               );}
