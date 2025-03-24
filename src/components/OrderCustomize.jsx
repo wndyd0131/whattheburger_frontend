@@ -1,4 +1,16 @@
 const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}) => {
+  const handleClickToggleButton = (rowIdx, optionIdx, optionTraitIdx) => {
+    console.log("HI");
+    const updatedObject = structuredClone(currentIngredients);
+    const optionTrait = updatedObject.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx];
+    if (optionTrait) {
+      console.log(optionTrait.currentSelection);
+      optionTrait.currentSelection = optionTrait.currentSelection == 0 ? 1 : 0;
+      console.log(optionTrait.currentSelection);
+      setCurrentIngredients(updatedObject);
+    }
+  }
+  
   const handleUniqueType = (productOption, rowIdx) => {
     const updatedObject = structuredClone(currentIngredients);
     let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[0].extraPrice;
@@ -139,11 +151,14 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                         {productOption.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
                           switch(optionTrait.name) {
                             case "TBS":
+                              const currentIngredientOptionTrait = currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx];
+                              const currentSelection = currentIngredientOptionTrait ? currentIngredientOptionTrait.currentSelection : optionTrait.defaultSelection;
+                              console.log("CS", currentSelection);
                               return (
                                 <div key={optionTraitIdx} className="toggle-container">
                                   <p>Toast Both Sides</p>
-                                  <div className="toggle-button">
-                                    <div className="toggle-knob"></div>
+                                  <div className={`toggle-button ${currentSelection == 1 ? "on" : ""}`} onClick={() => handleClickToggleButton(rowIdx, optionIdx, optionTraitIdx)}>
+                                    <div className={`toggle-knob ${currentSelection == 1 ? "on" : ""}`}></div>
                                   </div>
                                 </div>
                               );
