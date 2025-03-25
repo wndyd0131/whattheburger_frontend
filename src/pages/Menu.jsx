@@ -64,10 +64,11 @@ const Menu = (props) => {
     axios.get(`http://localhost:8080/api/v1/products/${selectedProduct.productId}`)
     .then(response => {
       console.log("RESPONSE: ", response.data);
-      let optionLength = response.data.optionResponses.length;
-      let optionResponses = response.data.optionResponses;
-      let newCustomRules = []; // customization rules (including entire options)
-      let ingredients = []; // current or related ingredients (including partial options)
+      const optionLength = response.data.optionResponses.length;
+      const optionResponses = response.data.optionResponses;
+      const newCustomRules = []; // customization rules (including entire options)
+      const ingredients = []; // current or related ingredients (including partial options)
+      let totalCalories = 0;
       
       for (let i = 0; i < optionLength; i++) {
         let rowIndex = optionResponses[i].customRuleResponse.rowIndex;
@@ -80,6 +81,7 @@ const Menu = (props) => {
           ...optionResponses[i],
           optionQuantity: optionResponses[i].defaultQuantity,
         };
+        console.log("OO", orderObject);
         for (let j = 0; j < orderObject.optionTraitResponses.length; j++) {
           orderObject.optionTraitResponses[j].currentSelection = orderObject.optionTraitResponses[j].defaultSelection;
         }
@@ -87,14 +89,15 @@ const Menu = (props) => {
         if (orderObject.isDefault === true) {
           ingredients[rowIndex].productOptions.push(orderObject);
           ingredients[rowIndex].totalCount++;
+          totalCalories += orderObject.calories;
         }
         else {
           ingredients[rowIndex].productOptions.push(null);
         }
       }
       setCustomRules(newCustomRules);
-      setDefaultIngredients({totalExtraPrice: 0, ingredients: structuredClone(ingredients)});
-      setCurrentIngredients({totalExtraPrice: 0, ingredients: structuredClone(ingredients)});
+      setDefaultIngredients({totalExtraPrice: 0, totalCalories: totalCalories, ingredients: structuredClone(ingredients)});
+      setCurrentIngredients({totalExtraPrice: 0, totalCalories: totalCalories, ingredients: structuredClone(ingredients)});
     })
     .catch(error => console.error("Error: ", error))
     .finally(() => setIsLoading(false));

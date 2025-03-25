@@ -53,7 +53,7 @@ const OrderSummary = (
             <button className={selectedButton === "ONLY" ? "active" : ""} onClick={() => setSelectedButton("ONLY")} disabled={selectedButton === "ONLY"}>ONLY</button>
             <button className={selectedButton === "MEAL" ? "active" : ""} onClick={() => setSelectedButton("MEAL")} disabled={selectedButton === "MEAL"}>MEAL</button>
           </div>
-          <h2>${(product.productPrice + currentIngredients.totalExtraPrice).toFixed(2)} | 700Cal</h2>
+          <h2>${(product.productPrice + currentIngredients.totalExtraPrice).toFixed(2)} | {currentIngredients.totalCalories}Cal</h2>
           <div className="show-nutrition-button">
             <strong>Show Nutrition</strong>
           </div>
