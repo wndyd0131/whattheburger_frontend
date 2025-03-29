@@ -1,0 +1,47 @@
+.contentLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 150px 200px 0px 200px;
+}
+
+.contentSection {
+  display: flex;
+  border-radius: 40px;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+}
+.customizationContainer{
+  display: grid;
+  grid-auto-rows: 0fr;
+  overflow-y: scroll;
+  height: 350px;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.customizationGrid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90px;
+  border: 1px solid black;
+  background-color: #FE7800;
+}
+
+.emptyOptionPrompt {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+}
+
+.customizationGridButton {
+  display: flex;
+  gap: 10px;
+}
