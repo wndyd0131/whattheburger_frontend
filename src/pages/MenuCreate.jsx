@@ -40,6 +40,14 @@ const MenuCreate = () => {
     }
   }
 
+  const handleClickCancelButton = () => {
+    setAddButtonClicked(false);
+  }
+
+  const handleClickDeleteGridButton = (gridIdx) => {
+    setCustomizations((prev) => prev.filter((_, i) => i !== gridIdx));
+  }
+
   useEffect(() => {
     axios.get("http://localhost:8080/api/v1/category")
     .then(response => {
@@ -98,52 +106,83 @@ const MenuCreate = () => {
           <button className={styles.addButton} onClick={() => handleClickAddButton()}>Add</button>
         
           <div className={styles.customizationContainer}>
+            {customizations.length == 0 && !addButtonClicked ? "" : 
+              <div className={styles.customizationHead}>
+                <div className={styles.customizationHeadGrid}>
+                  Customization Name
+                </div>
+                <div className={styles.customizationHeadGrid}>
+                  Customization Rule Type
+                </div>
+                <div className={styles.customizationHeadGrid}>
+                  Minimum Selection
+                </div>
+                <div className={styles.customizationHeadGrid}>
+                  Maximum Selection
+                </div>
+              </div>
+            }
             {customizations.length == 0 ? 
               addButtonClicked ? "" : <h3 className={styles.emptyOptionPrompt}>Add customization options</h3>
               :
+              
               customizations.map((customization, customizationIdx) => {
                 return (
-                  <div className={styles.customizationGrid}>
-                    <p>{`custom rule name: ${customization.customRuleName}`}</p>
-                    <p>{`custom rule type: ${customization.customRuleType}`}</p>
-                    <p>{`minimum selection count: ${customization.minSelection}`}</p>
-                    <p>{`maximum selection count: ${customization.maxSelection}`}</p>
+                  <div key={customizationIdx} className={styles.customizationGrid}>
+                    <div className={styles.customizationInfo}>
+                      <div className={styles.customizationInfoGrid}>
+                        {customization.customRuleName}
+                      </div>
+                      <div className={styles.customizationInfoGrid}>
+                        {customization.customRuleType}
+                      </div>
+                      <div className={styles.customizationInfoGrid}>
+                        {customization.minSelection}
+                      </div>
+                      <div className={styles.customizationInfoGrid}>
+                        {customization.maxSelection}
+                      </div>
+                    </div>
+                    <div className={styles.customizationGridButton2}>
+                      <button>Add Options</button>
+                      <button>Modify</button>
+                      <button onClick={() => handleClickDeleteGridButton(customizationIdx)}>Delete</button>
+                    </div>
                   </div>
                 );
               })
             }
             {addButtonClicked && 
               <div className={styles.customizationGrid}>
-                <label>
-                  customization name:
-                  <input name="customRuleName" value={customRuleName} placeholder="" onChange={() => setcustomRuleName()}/>
-                </label>
-                <label>
-                  customization rule type:
-                  <select value={customRuleType} onChange={(e) => setCustomRuleType(e.target.value)}>
-                    <option value="">
-                      {defaultOptionString}
-                    </option>
-                    <option value="UNIQUE">
-                      Unique
-                    </option>
-                    <option value="LIMIT">
-                      Limit
-                    </option>
-                    <option value="FREE">
-                      Free
-                    </option>
-                  </select>
-                </label>
-                <label>
-                  minimum selection count:
-                  <input name="minSelection" type="number" value={minSelection} onChange={() => setMinSelection()}/>
-                </label>
-                <label>
-                  maximum selection count:
-                  <input name="maxSelection" type="number" value={maxSelection} onChange={() => setMaxSelection()}/>
-                </label>
-                <div className={styles.customizationGridButton}>
+                <div className={styles.customizationInput}>
+                  <label className={styles.customizationInputGrid}>
+                    <input name="customRuleName" value={customRuleName} placeholder="" onChange={(e) => setcustomRuleName(e.target.value)}/>
+                  </label>
+                  <label className={styles.customizationInputGrid}>
+                    <select value={customRuleType} onChange={(e) => setCustomRuleType(e.target.value)}>
+                      <option value="">
+                        {defaultOptionString}
+                      </option>
+                      <option value="UNIQUE">
+                        Unique
+                      </option>
+                      <option value="LIMIT">
+                        Limit
+                      </option>
+                      <option value="FREE">
+                        Free
+                      </option>
+                    </select>
+                  </label>
+                  <label className={styles.customizationInputGrid}>
+                    <input name="minSelection" type="number" value={minSelection} onChange={() => setMinSelection()}/>
+                  </label>
+                  <label className={styles.customizationInputGrid}>
+                    <input name="maxSelection" type="number" value={maxSelection} onChange={() => setMaxSelection()}/>
+                  </label>
+                </div>
+                
+                <div className={styles.customizationGridButton1}>
                   <button onClick={() => handleClickSaveButton()}>Save</button>
                   <button onClick={() => handleClickCancelButton()}>Cancel</button>
                 </div>
