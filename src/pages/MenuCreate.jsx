@@ -4,20 +4,23 @@ import axios from "axios";
 
 const MenuCreate = () => {
 
+  const defaultOptionString = "----Select----";
+
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
   const [productCalories, setProductCalories] = useState(0);
   const [productType, setProductType] = useState("");
   const [briefInfo, setBriefInfo] = useState("");
   const [categories, setCategories] = useState([]);
+  const [options, setOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [customRuleName, setcustomRuleName] = useState("");
   const [customRuleType, setCustomRuleType] = useState("");
   const [minSelection, setMinSelection] = useState(0);
   const [maxSelection, setMaxSelection] = useState(0);
-  const defaultOptionString = "----Select----";
   const [customizations, setCustomizations] = useState([]);
   const [addButtonClicked, setAddButtonClicked] = useState(false);
+  const [addOptionButtonClicked, setAddOptionButtonClicked] = useState(false);
 
   const isValidCustomizationName = () => {
     return customRuleName.length > 0;
@@ -48,16 +51,62 @@ const MenuCreate = () => {
     setCustomizations((prev) => prev.filter((_, i) => i !== gridIdx));
   }
 
+  const handleClickAddOptionButton = () => {
+    setAddOptionButtonClicked(true);
+  }
+
   useEffect(() => {
     axios.get("http://localhost:8080/api/v1/category")
     .then(response => {
       setCategories(response.data);
     })
     .catch(error => console.error(error));
+
+    axios.get("http://localhost:8080/api/v1/options")
+    .then(response => {
+      setOptions(response.data);
+    })
+    .catch(error => console.error(error));
   }, [])
 
   return (
     <div className={styles.contentLayout}>
+      {addOptionButtonClicked &&
+        <div className={styles.overlay}>
+          <div className={styles.optionModal}>
+            <div className={styles.optionModalHeader}>
+              <div className={styles.closeOptionModalButton}>
+                X
+              </div>
+            </div>
+            <div className={styles.optionModalLayout}>
+              <div className={styles.optionModalSortSection}>
+              </div>
+              <div className={styles.optionModalSearchSection}>
+                <input className={styles.optionModalSearchBar} placeholder="Type to search for options..."></input>
+              </div>
+              <div className={styles.optionModalItemSection}>
+                <div className={styles.optionModalGridContainer}>
+                  {options.map((option, optionIdx) => {
+                    return (
+                      <div key={optionIdx} className={styles.optionModalGrid}>
+                        <div className={styles.optionImageContainer}>
+                        </div>
+                        <div className={styles.optionDetailContainer}>
+                          <p>{option.optionName}</p>
+                          <p>{option.optionCalories} Cal</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>            
+            <div className={styles.optionModalFooter}>
+            </div>
+          </div>
+        </div>
+      }
         <div className={styles.inputContainer}>
           <h2>Product</h2>
           <p>Please type in information of new product.</p>
@@ -101,12 +150,12 @@ const MenuCreate = () => {
               </select>
           </label>
         </div>
+
         <div className={styles.inputContainer}>
           <h2>Customization</h2>
           <button className={styles.addButton} onClick={() => handleClickAddButton()}>Add</button>
         
           <div className={styles.customizationContainer}>
-            {customizations.length == 0 && !addButtonClicked ? "" : 
               <div className={styles.customizationHead}>
                 <div className={styles.customizationHeadGrid}>
                   Customization Name
@@ -121,34 +170,33 @@ const MenuCreate = () => {
                   Maximum Selection
                 </div>
               </div>
-            }
             {customizations.length == 0 ? 
               addButtonClicked ? "" : <h3 className={styles.emptyOptionPrompt}>Add customization options</h3>
               :
               
               customizations.map((customization, customizationIdx) => {
                 return (
-                  <div key={customizationIdx} className={styles.customizationGrid}>
-                    <div className={styles.customizationInfo}>
-                      <div className={styles.customizationInfoGrid}>
-                        {customization.customRuleName}
-                      </div>
-                      <div className={styles.customizationInfoGrid}>
-                        {customization.customRuleType}
-                      </div>
-                      <div className={styles.customizationInfoGrid}>
-                        {customization.minSelection}
-                      </div>
-                      <div className={styles.customizationInfoGrid}>
-                        {customization.maxSelection}
-                      </div>
+                <div key={customizationIdx} className={styles.customizationGrid}>
+                  <div className={styles.customizationInfo}>
+                    <div className={styles.customizationInfoGrid}>
+                      {customization.customRuleName}
                     </div>
-                    <div className={styles.customizationGridButton2}>
-                      <button>Add Options</button>
-                      <button>Modify</button>
-                      <button onClick={() => handleClickDeleteGridButton(customizationIdx)}>Delete</button>
+                    <div className={styles.customizationInfoGrid}>
+                      {customization.customRuleType}
+                    </div>
+                    <div className={styles.customizationInfoGrid}>
+                      {customization.minSelection}
+                    </div>
+                    <div className={styles.customizationInfoGrid}>
+                      {customization.maxSelection}
                     </div>
                   </div>
+                  <div className={styles.customizationGridButton2}>
+                    <button onClick={() => handleClickAddOptionButton()}>Add Options</button>
+                    <button>Modify</button>
+                    <button onClick={() => handleClickDeleteGridButton(customizationIdx)}>Delete</button>
+                  </div>
+                </div>
                 );
               })
             }
@@ -175,10 +223,10 @@ const MenuCreate = () => {
                     </select>
                   </label>
                   <label className={styles.customizationInputGrid}>
-                    <input name="minSelection" type="number" value={minSelection} onChange={() => setMinSelection()}/>
+                    <input name="minSelection" type="number" value={minSelection} onChange={(e) => setMinSelection(e.target.value)}/>
                   </label>
                   <label className={styles.customizationInputGrid}>
-                    <input name="maxSelection" type="number" value={maxSelection} onChange={() => setMaxSelection()}/>
+                    <input name="maxSelection" type="number" value={maxSelection} onChange={(e) => setMaxSelection(e.target.value)}/>
                   </label>
                 </div>
                 
