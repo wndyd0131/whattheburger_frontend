@@ -121,7 +121,7 @@
   flex-direction: column;
   position: relative;
   width: 1400px;
-  height: 800px;
+  height: 850px;
   background-color: white;
 }
 
@@ -204,7 +204,7 @@
 }
 
 .optionModalGrid.checked {
-  border: 1px solid #FE7800;
+  border: 2px solid #FE7800;
 }
 
 .selectedOptionSection {
@@ -212,18 +212,64 @@
   align-items: center;
   background-color: rgb(244, 244, 244);
   overflow-x: auto;
-  height: 100px;
+  height: 400px;
   padding: 0 30px;
   gap: 20px;
 }
 
 .selectedOptionBlock {
   display: flex;
+  flex-direction: column;
   border: 1px solid rgb(225, 225, 225);
   min-width: 300px;
+  min-height: 150px;
+}
+
+.selectedOptionInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.selectedOptionDetailInput {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: rgb(225, 225, 225);
+}
+
+.selectedOptionFormGrid {
+  display: grid;
+  row-gap: 20px;
+  grid-template-columns: 150px 1fr;
+}
+
+.selectedOptionModalFooter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
   height: 70px;
-  justify-self: center;
-  cursor: pointer;
+}
+
+.selectedOptionButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 80px;
+  padding: 10px;
+}
+
+.selectedOptionBlockFooter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid rgb(225, 225, 225);
+  gap: 30px;
+  height: 60px;
 }
 
 .optionImageContainer {
@@ -233,11 +279,8 @@
 .optionDetailContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  position: relative;
   flex-grow: 1;
-  flex-direction: column;
 }
 
 .optionModalFooter {
