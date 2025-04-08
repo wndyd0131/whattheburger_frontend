@@ -6,6 +6,12 @@ import axios from "axios";
 const MenuCreate = () => {
   
   const defaultOptionString = "----Select----";
+
+  const optionModalStyle = {
+    height: 850,
+    width: 1400,
+    flexDirection: "column"
+  }
   const selectedOptionModalStyle = {
     height: 350,
     width: 500,
@@ -21,13 +27,14 @@ const MenuCreate = () => {
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [customRuleName, setCustomRuleName] = useState("");
-  const [customRuleType, setCustomRuleType] = useState("");
+  const [customizationName, setCustomizationName] = useState("");
+  const [customizationType, setCustomizationType] = useState("");
   const [minSelection, setMinSelection] = useState(0);
   const [maxSelection, setMaxSelection] = useState(0);
   const [customizations, setCustomizations] = useState([]);
   const [addButtonClicked, setAddButtonClicked] = useState(false);
   const [addOptionButtonClicked, setAddOptionButtonClicked] = useState(false);
+  const [selectedCustomizationIdx, setSelectedCustomizationIdx] = useState("");
 
   const [selectedOptionIdx, setSelectedOptionIdx] = useState("");
   const [selectedOptionIsDefault, setSelectedOptionIsDefault] = useState(false);
@@ -35,25 +42,41 @@ const MenuCreate = () => {
   const [selectedOptionMaxQuantity, setSelectedOptionMaxQuantity] = useState("");
   const [selectedOptionExtraPrice, setSelectedOptionExtraPrice] = useState("");
   const [selectedOptionOrderIndex, setSelectedOptionOrderIndex] = useState("");
+
+  const [singleButtonClicked, setSingleButtonClicked] = useState(true);
+  const [countableButtonClicked, setCountableButtonClicked] = useState(false);
+  const [uncountableButtonClicked, setUncountableButtonClicked] = useState(false);
+
+  const [measureType, setMeasureType] = useState("");
+  const [measureValue, setMeasureValue] = useState("");
+
   const isValidCustomizationName = () => {
-    return customRuleName.length > 0;
+    return customizationName.length > 0;
   }
 
   const handleClickAddButton = () => {
     setAddButtonClicked(true);
   }
 
-  const handleClickSaveButton = () => {
+  const handleClickSaveButton = (customizationIdx) => {
     if (isValidCustomizationName) {
       const obj = {
-        customRuleName: customRuleName,
-        customRuleType: customRuleType,
+        id: customizationIdx,
+        customizationName: customizationName,
+        customizationType: customizationType,
         minSelection: minSelection,
-        maxSelection: maxSelection
+        maxSelection: maxSelection,
+        options: []
       };
       setCustomizations((prev) => [...prev, obj]);
       setAddButtonClicked(false);
     }
+  }
+  
+  const handleClickAddOptionButton = (customizationIdx) => {
+    const clonedCustomizations = structuredClone(customizations);
+    setSelectedCustomizationIdx(customizationIdx);
+    setSelectedOptions(clonedCustomizations[customizationIdx].options);
   }
 
   const handleClickCancelButton = () => {
@@ -62,10 +85,6 @@ const MenuCreate = () => {
 
   const handleClickDeleteGridButton = (gridIdx) => {
     setCustomizations((prev) => prev.filter((_, i) => i !== gridIdx));
-  }
-
-  const handleClickAddOptionButton = () => {
-    setAddOptionButtonClicked(true);
   }
 
   const handleClickOptionGrid = (optionIdx) => {
@@ -104,6 +123,11 @@ const MenuCreate = () => {
     setSelectedOptionExtraPrice(extraPrice);
     setSelectedOptionOrderIndex(orderIndex);
   }
+
+  const handleClickSelectedOptionDeleteButton = (optionIdx) => {
+    setSelectedOptions(prev => prev.filter((_, idx) => optionIdx !== idx));
+  }
+
   const handleClickSelectedOptionSaveButton = () => {
     const isDefault = selectedOptionIsDefault;
     const defaultQuantity = selectedOptionDefaultQuantity;
@@ -134,21 +158,50 @@ const MenuCreate = () => {
     setSelectedOptionExtraPrice("");
     setSelectedOptionOrderIndex("");
   }
-  // const handleChangeIsDefault = (e) => {
-  //   setSelectedOptions()
-  // }
-  // const handleChangeDefaultQuantity = (e) => {
-  //   setSelectedOptionDefaultQuantity(e.target.value);
-  // }
-  // const handleChangeMaxQuantity = (e) => {
-  //   setSelectedOptionMaxQuantity(e.target.value);
-  // }
-  // const handleChangeExtraPrice = (e) => {
-  //   setSelectedOptionExtraPrice(e.target.value);
-  // }
-  // const handleChangeOrderIndex = (e) => {
-  //   setSelectedOptionOrderIndex(e.target.value);
-  // }
+
+  const handleClickOptionModalSaveButton = () => {
+    const updatedCustomizations = structuredClone(customizations);
+    updatedCustomizations[selectedCustomizationIdx].options = selectedOptions;
+    setCustomizations(updatedCustomizations);
+    closeOptionModal();
+    // successfully saved notification
+  }
+
+  const handleClickOptionModalCancelButton = () => {
+    closeOptionModal();
+  }
+
+  const closeOptionModal = () => {
+    setSelectedOptions([]);
+    setSelectedCustomizationIdx("");
+  }
+
+  const handleClickSingleButton = () => {
+    setSingleButtonClicked(true);
+    setCountableButtonClicked(false);
+    setUncountableButtonClicked(false);
+    setSelectedOptionDefaultQuantity(1);
+    setSelectedOptionMaxQuantity(1);
+  }
+
+  const handleClickCountableButton = () => {
+    setSingleButtonClicked(false);
+    setCountableButtonClicked(true);
+    setUncountableButtonClicked(false);
+    setSelectedOptionDefaultQuantity(1);
+    setSelectedOptionMaxQuantity(1);
+  }
+
+  const handleClickUncountableButton = () => {
+    setSingleButtonClicked(false);
+    setCountableButtonClicked(false);
+    setUncountableButtonClicked(true);
+  }
+
+  const handleChangeMeasureType = (e) => {
+    setMeasureValue("");
+    setMeasureType(e.target.value)
+  }
 
   useEffect(() => {
     axios.get("http://localhost:8080/api/v1/category")
@@ -166,91 +219,168 @@ const MenuCreate = () => {
 
   return (
     <div className={styles.contentLayout}>
-      {addOptionButtonClicked &&
-        <div className={styles.overlay}>
-          <div className={styles.optionModal}>
-              <div className={styles.closeOptionModalButton}>
-                X
-              </div>
-            {selectedOptionIdx !== "" && 
-              <Modal 
-                height={selectedOptionModalStyle.height}
-                width={selectedOptionModalStyle.width}
-                flexDirection={selectedOptionModalStyle.flexDirection}
+      {selectedCustomizationIdx !== "" &&
+              <Modal
+                height={optionModalStyle.height}
+                width={optionModalStyle.width}
+                flexDirection={optionModalStyle.flexDirection}
               >
-                <div className={styles.selectedOptionDetailInput}>
-                  <div className={styles.selectedOptionFormGrid}>
-                    <label htmlFor="isDefaultInput">is default:</label>
-                    <input id="isDefaultInput" type="checkbox" checked={selectedOptionIsDefault} onChange={(e) => setSelectedOptionIsDefault(e.target.checked)}/>
-                    <label htmlFor="defaultQuantityInput">default quantity:</label>
-                    <input id="defaultQuantityInput" type="number" value={selectedOptionDefaultQuantity} onChange={(e) => setSelectedOptionDefaultQuantity(e.target.value)}/>
-                    <label htmlFor="maxQuantityInput">max quantity:</label>
-                    <input id="maxQuantityInput" type="number" value={selectedOptionMaxQuantity} onChange={(e) => setSelectedOptionMaxQuantity(e.target.value)}/>
-                    <label htmlFor="extraPriceInput">extra price:</label>
-                    <input id="extraPriceInput" type="number" value={selectedOptionExtraPrice} onChange={(e) => setSelectedOptionExtraPrice(e.target.value)}/>
-                    <label htmlFor="orderIndexInput">order index:</label>
-                    <input id="orderIndexInput" type="number" value={selectedOptionOrderIndex} onChange={(e) => setSelectedOptionOrderIndex(e.target.value)}/>
+                {selectedOptionIdx !== "" && 
+                  <Modal 
+                    height={selectedOptionModalStyle.height}
+                    width={selectedOptionModalStyle.width}
+                    flexDirection={selectedOptionModalStyle.flexDirection}
+                  >
+                    <div className={styles.selectedOptionModalHeader}>
+                      <div className={styles.selectedOptionCountModifier}>
+                        <button onClick={() => handleClickSingleButton()} disabled={singleButtonClicked ? true : false}>Single</button>
+                        <button onClick={() => handleClickCountableButton()} disabled={countableButtonClicked ? true : false}>Countable</button>
+                        <button onClick={() => handleClickUncountableButton()} disabled={uncountableButtonClicked ? true : false}>Uncountable</button>
+                      </div>
+                    </div>
+                    <div className={styles.selectedOptionDetailInput}>
+                      {(singleButtonClicked == true || countableButtonClicked == true) && 
+                        <div className={styles.selectedOptionFormGrid}>
+                          <label htmlFor="isDefaultInput">is default:</label>
+                          <input id="isDefaultInput" type="checkbox" checked={selectedOptionIsDefault} onChange={(e) => setSelectedOptionIsDefault(e.target.checked)}/>
+                          {singleButtonClicked == true ?
+                            <>
+                            <label htmlFor="defaultQuantityInput">default quantity:</label>
+                            <input id="defaultQuantityInput" type="number" value={1} disabled/>
+                            <label htmlFor="maxQuantityInput">max quantity:</label>
+                            <input id="maxQuantityInput" type="number" value={1} disabled/>
+                            </>
+                            :
+                            <>
+                            <label htmlFor="defaultQuantityInput">default quantity:</label>
+                            <input id="defaultQuantityInput" type="number" value={selectedOptionDefaultQuantity} onChange={(e) => setSelectedOptionDefaultQuantity(e.target.value)}/>
+                            <label htmlFor="maxQuantityInput">max quantity:</label>
+                            <input id="maxQuantityInput" type="number" value={selectedOptionMaxQuantity} onChange={(e) => setSelectedOptionMaxQuantity(e.target.value)}/>
+                            </>
+                          }
+
+                          <label htmlFor="extraPriceInput">extra price:</label>
+                          <input id="extraPriceInput" type="number" value={selectedOptionExtraPrice} onChange={(e) => setSelectedOptionExtraPrice(e.target.value)}/>
+                          <label htmlFor="orderIndexInput">order index:</label>
+                          <input id="orderIndexInput" type="number" value={selectedOptionOrderIndex} onChange={(e) => setSelectedOptionOrderIndex(e.target.value)}/>
+                        </div>
+                      }
+                      {uncountableButtonClicked === true && 
+                        <div className={styles.selectedOptionFormGrid}>
+                          <label htmlFor="isDefaultInput">is default:</label>
+                          <input id="isDefaultInput" type="checkbox" checked={selectedOptionIsDefault} onChange={(e) => setSelectedOptionIsDefault(e.target.checked)}/>
+                          <label htmlFor="measureTypeInput">measure type:</label>
+                          <select id="measureTypeInput" value={measureType} onChange={(e) => handleChangeMeasureType(e)}>
+                            <option value="">
+                              {defaultOptionString}
+                            </option>
+                            <option value="SIZE">
+                              Size
+                            </option>
+                            <option value="DEGREE">
+                              Degree
+                            </option>
+                          </select>
+                          <label htmlFor="measureTypeInput">default unit:</label>
+                          <select id="defaultMeasureValueInput" value={measureValue} disabled={measureType === "" ? true : false} onChange={(e) => setMeasureValue(e.target.value)}>
+                            <option value="">
+                              {defaultOptionString}
+                            </option>
+                            {
+                              measureType === "SIZE" &&
+                              <>
+                                <option value="KIDS">
+                                  Kids
+                                </option>
+                                <option value="SMALL">
+                                  Small
+                                </option>
+                                <option value="MEDIUM">
+                                  Medium
+                                </option>
+                                <option value="Large">
+                                  Large
+                                </option>
+                              </>
+                            }
+                            {
+                              measureType === "DEGREE" &&
+                              <>
+                                <option value="EASY">
+                                  Easy
+                                </option>
+                                <option value="REGULAR">
+                                  Regular
+                                </option>
+                                <option value="EXTRA">
+                                  Extra
+                                </option>
+                              </>
+                            }
+                          </select>
+                          <label htmlFor="extraPriceInput">extra price:</label>
+                          <input id="extraPriceInput" type="number" value={selectedOptionExtraPrice} onChange={(e) => setSelectedOptionExtraPrice(e.target.value)}/>
+                          <label htmlFor="orderIndexInput">order index:</label>
+                          <input id="orderIndexInput" type="number" value={selectedOptionOrderIndex} onChange={(e) => setSelectedOptionOrderIndex(e.target.value)}/>
+                        </div>
+                      }
+                    </div>
+                    <div className={styles.selectedOptionModalFooter}>
+                      <button className={styles.optionModalButton} onClick={() => handleClickSelectedOptionSaveButton()}>Save</button>
+                      <button className={styles.optionModalButton} onClick={() => handleClickSelectedOptionCancelButton()}>Cancel</button>
+                    </div>
+                  </Modal>
+                }
+                <div className={styles.optionModalLayout}>
+                  <div className={styles.optionModalSearchSection}>
+                    <input className={styles.optionModalSearchBar} placeholder="Type to search for options..."></input>
+                  </div>
+                  <div className={styles.optionModalSortSection}>
+                  </div>
+                  <div className={styles.optionModalItemSection}>
+                    <div className={styles.optionModalGridContainer}>
+                      {options.map((option, optionIdx) => {
+                        const exists = selectedOptions.find(item => item.id === optionIdx);
+                        return (
+                          <div key={optionIdx} className={`${styles.optionModalGrid} ${exists ? styles.checked : ""}`} onClick={() => handleClickOptionGrid(optionIdx)}>
+                            <div className={styles.optionImageContainer}>
+                            </div>
+                            <div className={styles.optionDetailContainer}>
+                              <p>{option.optionName}</p>
+                              <p>{option.optionCalories} Cal</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
-                <div className={styles.selectedOptionModalFooter}>
-                  <button className={styles.selectedOptionButton} onClick={() => handleClickSelectedOptionSaveButton()}>Save</button>
-                  <button className={styles.selectedOptionButton} onClick={() => handleClickSelectedOptionCancelButton()}>Cancel</button>
-                </div>
-              </Modal>
-            }
-            <div className={styles.optionModalLayout}>
-              <div className={styles.optionModalSearchSection}>
-                <input className={styles.optionModalSearchBar} placeholder="Type to search for options..."></input>
-              </div>
-              <div className={styles.optionModalSortSection}>
-              </div>
-              <div className={styles.optionModalItemSection}>
-                <div className={styles.optionModalGridContainer}>
-                  {options.map((option, optionIdx) => {
-                    const exists = selectedOptions.find(item => item.id === optionIdx);
+                <div className={styles.selectedOptionSection}>
+                  {selectedOptions.map((option, optionIdx) => {
                     return (
-                      <div key={optionIdx} className={`${styles.optionModalGrid} ${exists ? styles.checked : ""}`} onClick={() => handleClickOptionGrid(optionIdx)}>
-                        <div className={styles.optionImageContainer}>
+                      <div key={optionIdx} className={styles.selectedOptionBlock}>
+                        <div className={styles.selectedOptionInfo}>
+                          <div className={styles.optionImageContainer}>
+                          </div>
+                          <div className={styles.optionDetailContainer}>
+                            <p>{option.item.optionName}</p>
+                            <p>{option.item.optionCalories} Cal</p>
+                          </div>
                         </div>
-                        <div className={styles.optionDetailContainer}>
-                          <p>{option.optionName}</p>
-                          <p>{option.optionCalories} Cal</p>
+                        <div className={styles.selectedOptionBlockFooter}>
+                          <button className={styles.optionModalButton} onClick={() => handleClickSelectedOptionCustomButton(optionIdx)}>Custom</button>
+                          <button className={styles.optionModalButton} onClick={() => handleClickSelectedOptionDeleteButton(optionIdx)}>Delete</button>
                         </div>
                       </div>
                     );
+
                   })}
                 </div>
-              </div>
-            </div>
-            <div className={styles.selectedOptionSection}>
-              {selectedOptions.map((option, optionIdx) => {
-                return (
-                  <div key={optionIdx} className={styles.selectedOptionBlock}>
-                    <div className={styles.selectedOptionInfo}>
-                      <div className={styles.optionImageContainer}>
-                      </div>
-                      <div className={styles.optionDetailContainer}>
-                        <p>{option.item.optionName}</p>
-                        <p>{option.item.optionCalories} Cal</p>
-                      </div>
-                    </div>
-                    <div className={styles.selectedOptionBlockFooter}>
-                      <button onClick={() => handleClickSelectedOptionCustomButton(optionIdx)}>Custom</button>
-                      <button>Delete</button>
-                    </div>
-                      {/* <div className={styles.selectedOptionButtons}>
-                        <button onClick={() => handleClickSelectedOptionSaveButton(option)}>Save</button>
-                        <button>Cancel</button>
-                      </div> */}
-                  </div>
-                );
-
-              })}
-            </div>
-            <div className={styles.optionModalFooter}>
-            </div>
-          </div>
-        </div>
+                <div className={styles.optionModalFooter}>
+                  <button className={styles.optionModalButton} onClick={() => handleClickOptionModalSaveButton()}>Save</button>
+                  <button className={styles.optionModalButton} onClick={() => handleClickOptionModalCancelButton()}>Cancel</button>
+                </div>
+              </Modal>
       }
         <div className={styles.inputContainer}>
           <h2>Product</h2>
@@ -324,10 +454,10 @@ const MenuCreate = () => {
                 <div key={customizationIdx} className={styles.customizationGrid}>
                   <div className={styles.customizationInfo}>
                     <div className={styles.customizationInfoGrid}>
-                      {customization.customRuleName}
+                      {customization.customizationName}
                     </div>
                     <div className={styles.customizationInfoGrid}>
-                      {customization.customRuleType}
+                      {customization.customizationType}
                     </div>
                     <div className={styles.customizationInfoGrid}>
                       {customization.minSelection}
@@ -337,7 +467,7 @@ const MenuCreate = () => {
                     </div>
                   </div>
                   <div className={styles.customizationGridButton2}>
-                    <button onClick={() => handleClickAddOptionButton()}>Add Options</button>
+                    <button onClick={() => handleClickAddOptionButton(customizationIdx)}>Add Options</button>
                     <button>Modify</button>
                     <button onClick={() => handleClickDeleteGridButton(customizationIdx)}>Delete</button>
                   </div>
@@ -349,10 +479,10 @@ const MenuCreate = () => {
               <div className={styles.customizationGrid}>
                 <div className={styles.customizationInput}>
                   <label className={styles.customizationInputGrid}>
-                    <input name="customRuleName" value={customRuleName} placeholder="" onChange={(e) => setCustomRuleName(e.target.value)}/>
+                    <input name="customizationName" value={customizationName} placeholder="" onChange={(e) => setCustomizationName(e.target.value)}/>
                   </label>
                   <label className={styles.customizationInputGrid}>
-                    <select value={customRuleType} onChange={(e) => setCustomRuleType(e.target.value)}>
+                    <select value={customizationType} onChange={(e) => setCustomizationType(e.target.value)}>
                       <option value="">
                         {defaultOptionString}
                       </option>

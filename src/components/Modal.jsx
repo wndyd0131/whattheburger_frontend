@@ -7,7 +7,6 @@ const Modal = ({height, width, flexDirection, children}) => {
         className={styles.modal}
         style={{height, width, flexDirection}}
       >
-        <div className={styles.xButton}>X</div>
         {children}
       </div>
     </div>

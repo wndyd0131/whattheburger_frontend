@@ -116,15 +116,6 @@
   z-index: 5;
 }
 
-.optionModal {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 1400px;
-  height: 850px;
-  background-color: white;
-}
-
 .optionModalHeader {
   display: flex;
   width: 100%;
@@ -238,7 +229,6 @@
   align-items: center;
   flex-direction: column;
   flex-grow: 1;
-  background-color: rgb(225, 225, 225);
 }
 
 .selectedOptionFormGrid {
@@ -246,16 +236,34 @@
   row-gap: 20px;
   grid-template-columns: 150px 1fr;
 }
+.selectedOptionModalHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.selectedOptionCountModifier {
+  display: flex;
+  height: 50px;
+  width: 300px;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 4px;
+}
+
+.selectedOptionCountModifier button {
+  min-width: 100px;
+}
 
 .selectedOptionModalFooter {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 50px;
-  height: 70px;
+  flex-grow: 1;
 }
 
-.selectedOptionButton {
+.optionModalButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -285,8 +293,11 @@
 
 .optionModalFooter {
   display: flex;
+  justify-content: end;
+  align-items: center;
   background-color: #FE7800;
-  width: 100%;
-  height: 70px;
+  height: 100px;
+  padding: 0 30px;
+  gap: 20px;
   border-top: 1px solid black;
 }
