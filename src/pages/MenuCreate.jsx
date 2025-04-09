@@ -42,13 +42,13 @@ const MenuCreate = () => {
   const [selectedOptionMaxQuantity, setSelectedOptionMaxQuantity] = useState("");
   const [selectedOptionExtraPrice, setSelectedOptionExtraPrice] = useState("");
   const [selectedOptionOrderIndex, setSelectedOptionOrderIndex] = useState("");
+  const [singleButtonClickedOptions, setSingleButtonClickedOptions] = useState({});
+  const [countableButtonClickedOptions, setCountableButtonClickedOptions] = useState({});
+  const [uncountableButtonClickedOptions, setUncountableButtonClickedOptions] = useState({});
 
-  const [singleButtonClicked, setSingleButtonClicked] = useState(true);
-  const [countableButtonClicked, setCountableButtonClicked] = useState(false);
-  const [uncountableButtonClicked, setUncountableButtonClicked] = useState(false);
-
-  const [measureType, setMeasureType] = useState("");
-  const [measureValue, setMeasureValue] = useState("");
+  const [selectedOptionMeasureTypeButton, setSelectedOptionMeasureTypeButton] = useState("SINGLE");
+  const [selectedOptionMeasureType, setSelectedOptionMeasureType] = useState("");
+  const [selectedOptionMeasureValue, setSelectedOptionMeasureValue] = useState("");
 
   const isValidCustomizationName = () => {
     return customizationName.length > 0;
@@ -97,7 +97,7 @@ const MenuCreate = () => {
         defaultQuantity: 0,
         maxQuantity: 0,
         extraPrice: 0,
-        isSaved: false
+        measureTypeButton: "SINGLE"
       }
       if (exists) {
         return prev.filter(option => option.id !== optionIdx);
@@ -115,6 +115,9 @@ const MenuCreate = () => {
     const maxQuantity = selectedOptions[optionIdx].maxQuantity;
     const extraPrice = selectedOptions[optionIdx].extraPrice;
     const orderIndex = selectedOptions[optionIdx].orderIndex;
+    const measureTypeButton = selectedOptions[optionIdx].measureTypeButton;
+    const measureType = selectedOptions[optionIdx].measureType;
+    const measureValue = selectedOptions[optionIdx].measureValue;
 
     setSelectedOptionIdx(optionIdx);
     setSelectedOptionIsDefault(isDefault);
@@ -122,6 +125,9 @@ const MenuCreate = () => {
     setSelectedOptionMaxQuantity(maxQuantity);
     setSelectedOptionExtraPrice(extraPrice);
     setSelectedOptionOrderIndex(orderIndex);
+    setSelectedOptionMeasureTypeButton(measureTypeButton);
+    setSelectedOptionMeasureType(measureType);
+    setSelectedOptionMeasureValue(measureValue);
   }
 
   const handleClickSelectedOptionDeleteButton = (optionIdx) => {
@@ -134,6 +140,9 @@ const MenuCreate = () => {
     const maxQuantity = selectedOptionMaxQuantity;
     const extraPrice = selectedOptionExtraPrice;
     const orderIndex = selectedOptionOrderIndex;
+    const measureTypeButton = selectedOptionMeasureTypeButton;
+    const measureType = selectedOptionMeasureType;
+    const measureValue = selectedOptionMeasureValue;
 
     const updatedOptions = selectedOptions.map((option, optionIdx) => {
       return (
@@ -143,13 +152,17 @@ const MenuCreate = () => {
           defaultQuantity: defaultQuantity,
           maxQuantity: maxQuantity,
           extraPrice: extraPrice,
-          orderIndex: orderIndex
+          orderIndex: orderIndex,
+          measureTypeButton: measureTypeButton,
+          measureType: measureType,
+          measureValue: measureValue
         } : option
       )
     });
     setSelectedOptions(updatedOptions);
     setSelectedOptionIdx("");
   }
+
   const handleClickSelectedOptionCancelButton = () => {
     setSelectedOptionIdx("");
     setSelectedOptionIsDefault(false);
@@ -157,6 +170,7 @@ const MenuCreate = () => {
     setSelectedOptionMaxQuantity("");
     setSelectedOptionExtraPrice("");
     setSelectedOptionOrderIndex("");
+    setSelectedOptionMeasureType("SINGLE");
   }
 
   const handleClickOptionModalSaveButton = () => {
@@ -177,30 +191,94 @@ const MenuCreate = () => {
   }
 
   const handleClickSingleButton = () => {
-    setSingleButtonClicked(true);
-    setCountableButtonClicked(false);
-    setUncountableButtonClicked(false);
-    setSelectedOptionDefaultQuantity(1);
-    setSelectedOptionMaxQuantity(1);
+    const optionIdx = selectedOptionIdx;
+
+    const isDefault = selectedOptions[optionIdx].isDefault;
+    const defaultQuantity = selectedOptions[optionIdx].defaultQuantity;
+    const maxQuantity = selectedOptions[optionIdx].maxQuantity;
+    const extraPrice = selectedOptions[optionIdx].extraPrice;
+    const orderIndex = selectedOptions[optionIdx].orderIndex;
+
+    if (selectedOptions[optionIdx].measureTypeButton !== "SINGLE") {
+      setSelectedOptionIsDefault(false);
+      setSelectedOptionDefaultQuantity(1);
+      setSelectedOptionMaxQuantity(1);
+      setSelectedOptionExtraPrice(0);
+      setSelectedOptionOrderIndex("");
+      setSelectedOptionMeasureType("");
+      setSelectedOptionMeasureValue("");
+      setSelectedOptionMeasureTypeButton("SINGLE");
+    }
+    else {
+      setSelectedOptionIsDefault(isDefault);
+      setSelectedOptionDefaultQuantity(defaultQuantity);
+      setSelectedOptionMaxQuantity(maxQuantity);
+      setSelectedOptionExtraPrice(extraPrice);
+      setSelectedOptionOrderIndex(orderIndex);
+      setSelectedOptionMeasureTypeButton("SINGLE");
+    }
   }
 
   const handleClickCountableButton = () => {
-    setSingleButtonClicked(false);
-    setCountableButtonClicked(true);
-    setUncountableButtonClicked(false);
-    setSelectedOptionDefaultQuantity(1);
-    setSelectedOptionMaxQuantity(1);
+    const optionIdx = selectedOptionIdx;
+    const isDefault = selectedOptions[optionIdx].isDefault;
+    const defaultQuantity = selectedOptions[optionIdx].defaultQuantity;
+    const maxQuantity = selectedOptions[optionIdx].maxQuantity;
+    const extraPrice = selectedOptions[optionIdx].extraPrice;
+    const orderIndex = selectedOptions[optionIdx].orderIndex;
+
+    if (selectedOptions[optionIdx].measureTypeButton !== "COUNTABLE") {
+      setSelectedOptionIsDefault(false);
+      setSelectedOptionDefaultQuantity(1);
+      setSelectedOptionMaxQuantity(1);
+      setSelectedOptionExtraPrice(0);
+      setSelectedOptionOrderIndex("");
+      setSelectedOptionMeasureType("");
+      setSelectedOptionMeasureValue("");
+      setSelectedOptionMeasureTypeButton("COUNTABLE");
+    }
+    else {
+      setSelectedOptionIsDefault(isDefault);
+      setSelectedOptionDefaultQuantity(defaultQuantity);
+      setSelectedOptionMaxQuantity(maxQuantity);
+      setSelectedOptionExtraPrice(extraPrice);
+      setSelectedOptionOrderIndex(orderIndex);
+      setSelectedOptionMeasureTypeButton("COUNTABLE");
+    }
   }
 
   const handleClickUncountableButton = () => {
-    setSingleButtonClicked(false);
-    setCountableButtonClicked(false);
-    setUncountableButtonClicked(true);
+    const optionIdx = selectedOptionIdx;
+    const isDefault = selectedOptions[optionIdx].isDefault;
+    const measureType = selectedOptions[optionIdx].measureType;
+    const measureValue = selectedOptions[optionIdx].measureValue;
+    const extraPrice = selectedOptions[optionIdx].extraPrice;
+    const orderIndex = selectedOptions[optionIdx].orderIndex;
+
+    if (selectedOptions[optionIdx].measureTypeButton !== "UNCOUNTABLE") {
+      setSelectedOptionIsDefault(false);
+      setSelectedOptionDefaultQuantity(1);
+      setSelectedOptionMaxQuantity(1);
+      setSelectedOptionExtraPrice(0);
+      setSelectedOptionOrderIndex("");
+      setSelectedOptionMeasureType("");
+      setSelectedOptionMeasureValue("");
+      setSelectedOptionMeasureTypeButton("UNCOUNTABLE");
+    }
+    else {
+      setSelectedOptionIsDefault(isDefault);
+      setSelectedOptionMeasureType(measureType);
+      setSelectedOptionMeasureValue(measureValue);
+      setSelectedOptionExtraPrice(extraPrice);
+      setSelectedOptionOrderIndex(orderIndex);
+      setSelectedOptionMeasureTypeButton("UNCOUNTABLE");
+    }
+
   }
 
-  const handleChangeMeasureType = (e) => {
-    setMeasureValue("");
-    setMeasureType(e.target.value)
+  const handleChangeSelectedOptionMeasureType = (e) => {
+    setSelectedOptionMeasureValue("");
+    setSelectedOptionMeasureType(e.target.value)
   }
 
   useEffect(() => {
@@ -233,17 +311,17 @@ const MenuCreate = () => {
                   >
                     <div className={styles.selectedOptionModalHeader}>
                       <div className={styles.selectedOptionCountModifier}>
-                        <button onClick={() => handleClickSingleButton()} disabled={singleButtonClicked ? true : false}>Single</button>
-                        <button onClick={() => handleClickCountableButton()} disabled={countableButtonClicked ? true : false}>Countable</button>
-                        <button onClick={() => handleClickUncountableButton()} disabled={uncountableButtonClicked ? true : false}>Uncountable</button>
+                        <button onClick={() => handleClickSingleButton()} disabled={selectedOptionMeasureTypeButton === "SINGLE" ? true : false}>Single</button>
+                        <button onClick={() => handleClickCountableButton()} disabled={selectedOptionMeasureTypeButton === "COUNTABLE" ? true : false}>Countable</button>
+                        <button onClick={() => handleClickUncountableButton()} disabled={selectedOptionMeasureTypeButton === "UNCOUNTABLE" ? true : false}>Uncountable</button>
                       </div>
                     </div>
                     <div className={styles.selectedOptionDetailInput}>
-                      {(singleButtonClicked == true || countableButtonClicked == true) && 
+                      {(selectedOptionMeasureTypeButton === "SINGLE" || selectedOptionMeasureTypeButton === "COUNTABLE") && 
                         <div className={styles.selectedOptionFormGrid}>
                           <label htmlFor="isDefaultInput">is default:</label>
                           <input id="isDefaultInput" type="checkbox" checked={selectedOptionIsDefault} onChange={(e) => setSelectedOptionIsDefault(e.target.checked)}/>
-                          {singleButtonClicked == true ?
+                          {selectedOptionMeasureTypeButton === "SINGLE" ?
                             <>
                             <label htmlFor="defaultQuantityInput">default quantity:</label>
                             <input id="defaultQuantityInput" type="number" value={1} disabled/>
@@ -265,12 +343,12 @@ const MenuCreate = () => {
                           <input id="orderIndexInput" type="number" value={selectedOptionOrderIndex} onChange={(e) => setSelectedOptionOrderIndex(e.target.value)}/>
                         </div>
                       }
-                      {uncountableButtonClicked === true && 
+                      {selectedOptionMeasureTypeButton === "UNCOUNTABLE" && 
                         <div className={styles.selectedOptionFormGrid}>
                           <label htmlFor="isDefaultInput">is default:</label>
                           <input id="isDefaultInput" type="checkbox" checked={selectedOptionIsDefault} onChange={(e) => setSelectedOptionIsDefault(e.target.checked)}/>
                           <label htmlFor="measureTypeInput">measure type:</label>
-                          <select id="measureTypeInput" value={measureType} onChange={(e) => handleChangeMeasureType(e)}>
+                          <select id="measureTypeInput" value={selectedOptionMeasureType} onChange={(e) => handleChangeSelectedOptionMeasureType(e)}>
                             <option value="">
                               {defaultOptionString}
                             </option>
@@ -282,12 +360,12 @@ const MenuCreate = () => {
                             </option>
                           </select>
                           <label htmlFor="measureTypeInput">default unit:</label>
-                          <select id="defaultMeasureValueInput" value={measureValue} disabled={measureType === "" ? true : false} onChange={(e) => setMeasureValue(e.target.value)}>
+                          <select id="defaultMeasureValueInput" value={selectedOptionMeasureValue} disabled={selectedOptionMeasureType === "" ? true : false} onChange={(e) => setSelectedOptionMeasureValue(e.target.value)}>
                             <option value="">
                               {defaultOptionString}
                             </option>
                             {
-                              measureType === "SIZE" &&
+                              selectedOptionMeasureType === "SIZE" &&
                               <>
                                 <option value="KIDS">
                                   Kids
@@ -304,7 +382,7 @@ const MenuCreate = () => {
                               </>
                             }
                             {
-                              measureType === "DEGREE" &&
+                              selectedOptionMeasureType === "DEGREE" &&
                               <>
                                 <option value="EASY">
                                   Easy
