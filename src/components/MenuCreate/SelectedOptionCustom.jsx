@@ -10,6 +10,8 @@ const SelectedOptionCustom = (
     setSelectedOptionIdx
   }) => {
 
+  const DEFAULT_OPTION_STRING = "----Select----";
+
   /* Countable */
   const [isDefault, setIsDefault] = useState(false);
   const [defaultQuantity, setDefaultQuantity] = useState("");

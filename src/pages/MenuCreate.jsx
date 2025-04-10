@@ -203,6 +203,7 @@ const MenuCreate = () => {
           setCustomizationType={setCustomizationType}
           setMinSelection={setMinSelection}
           setMaxSelection={setMaxSelection}
+          setSelectedOptions={setSelectedOptions}
         />
         <button>
           Create

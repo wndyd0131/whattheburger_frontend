@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import styles from '/src/styles/CustomizationDetailInput.module.css';
 
 const CustomizationDetailInput = ({
@@ -12,7 +12,8 @@ const CustomizationDetailInput = ({
   setCustomizationType,
   setMinSelection,
   setMaxSelection,
-  setSelectedCustomizationIdx
+  setSelectedCustomizationIdx,
+  setSelectedOptions
 }) => {
 
   const DEFAULT_OPTION_STRING = "----Select----";
@@ -54,7 +55,7 @@ const CustomizationDetailInput = ({
   const handleClickCancelButton = () => {
     setAddButtonClicked(false);
   }
-
+  
   return (
     <>
       <div className={styles.inputContainer}>
