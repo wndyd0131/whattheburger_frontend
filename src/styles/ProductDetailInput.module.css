@@ -6,8 +6,8 @@
 
 .productFormGrid {
   display: grid;
-  row-gap: 20px;
-  grid-template-columns: 200px;
+  row-gap: 15px;
+  grid-template-columns: 1fr;
 }
 
 .productInput {

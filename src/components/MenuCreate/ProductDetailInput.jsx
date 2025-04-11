@@ -23,13 +23,13 @@ const ProductDetailInput = ({
         <h2>Product</h2>
         <p>Please fill in information of new product.</p>
         <div className={styles.productFormGrid}>
-          <label htmlFor="productNameInput">product name:</label>
+          <label htmlFor="productNameInput">Product Name *</label>
           <input id="productNameInput" className={styles.productInput} name="product" value={productName} placeholder="new product's name" onChange={() => setProductName()}/>
-          <label htmlFor="productPriceInput">product price:</label>
+          <label htmlFor="productPriceInput">Product Price *</label>
           <input id="productPriceInput" className={styles.productInput} name="productPrice" value={productPrice} type="number" placeholder="new product's price" onChange={() => setProductPrice()}/>
-          <label htmlFor="productCaloriesInput">product calories:</label>
+          <label htmlFor="productCaloriesInput">Product Calories *</label>
           <input id="productCaloriesInput" className={styles.productInput} name="productCalories" value={productCalories} type="number" placeholder="new product's calories" onChange={() => setProductCalories()}/>
-          <label htmlFor="productTypeInput">product type:</label>
+          <label htmlFor="productTypeInput">Product Type *</label>
           <select id="productTypeInput" className={styles.productInput} value={productType} onChange={(e) => setProductType(e.target.value)}>
             <option value="" disabled>
               {DEFAULT_OPTION_STRING}
@@ -41,9 +41,9 @@ const ProductDetailInput = ({
               Meal
             </option>
           </select>
-          <label htmlFor="briefInfoInput">brief information:</label>
+          <label htmlFor="briefInfoInput">Brief Information</label>
           <input id="briefInfoInput" className={styles.productInput} name="briefInfo" value={briefInfo} placeholder="brief information about new product" onChange={() => setBriefInfo()}/>
-          <label htmlFor="categoryInput">category:</label>
+          <label htmlFor="categoryInput">Category *</label>
           <select id="categoryInput" className={styles.productInput} value={selectedCategoryId} onChange={(e) => setSelectedCategoryId(e.target.value)}>
             <option value="" disabled>
               {DEFAULT_OPTION_STRING}

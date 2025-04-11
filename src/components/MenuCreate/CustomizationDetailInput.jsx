@@ -44,7 +44,7 @@ const CustomizationDetailInput = ({
     const max = Number(maxSelection);
 
     return (
-    0 < min &&
+    0 <= min &&
     min <= 10 &&
     0 < max &&
     max <= 20 &&
@@ -87,6 +87,26 @@ const CustomizationDetailInput = ({
 
   const handleClickCancelButton = () => {
     setAddButtonClicked(false);
+  }
+
+  const handleChangeCustomRuleType = (e) => {
+    if (e.target.value === "UNIQUE") {
+      setMinSelection(1);
+      setMaxSelection(1);
+    }
+    else if (e.target.value === "FREE") {
+      setMinSelection(0);
+      setMaxSelection(20);
+    }
+    else if (e.target.value === "LIMIT") {
+      setMinSelection(2);
+      setMaxSelection(2);
+    }
+    else {
+      setMinSelection(0);
+      setMaxSelection(0);
+    }
+    setCustomRuleType(e.target.value);
   }
   
   return (
@@ -148,7 +168,7 @@ const CustomizationDetailInput = ({
                   <input className={styles.customRuleInput} name="customRuleName" value={customRuleName} placeholder="1-20 words" onChange={(e) => setCustomRuleName(e.target.value)}/>
                 </label>
                 <label className={styles.customizationInputGrid}>
-                  <select className={styles.customRuleInput} value={customRuleType} onChange={(e) => setCustomRuleType(e.target.value)}>
+                  <select className={styles.customRuleInput} value={customRuleType} onChange={(e) => handleChangeCustomRuleType(e)}>
                     <option value="">
                       {DEFAULT_OPTION_STRING}
                     </option>
@@ -164,10 +184,26 @@ const CustomizationDetailInput = ({
                   </select>
                 </label>
                 <label className={styles.customizationInputGrid}>
-                  <input className={styles.customRuleInput} name="minSelection" type="number" min={0} value={minSelection} onChange={(e) => setMinSelection(e.target.value)}/>
+                  <input 
+                    className={styles.customRuleInput}
+                    name="minSelection"
+                    type="number"
+                    min={0}
+                    value={minSelection}
+                    disabled={customRuleType === "UNIQUE" || customRuleType === "FREE"}
+                    onChange={(e) => setMinSelection(e.target.value)}
+                  />
                 </label>
                 <label className={styles.customizationInputGrid}>
-                  <input className={styles.customRuleInput} name="maxSelection" type="number" min={0} value={maxSelection} onChange={(e) => setMaxSelection(e.target.value)}/>
+                  <input
+                    className={styles.customRuleInput}
+                    name="maxSelection"
+                    type="number"
+                    min={0}
+                    value={maxSelection}
+                    disabled={customRuleType === "UNIQUE" || customRuleType === "FREE"}
+                    onChange={(e) => setMaxSelection(e.target.value)}
+                  />
                 </label>
               </div>
               
