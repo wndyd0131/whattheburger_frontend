@@ -129,7 +129,7 @@
 
 @font-face {
   font-family: "WhataFont";
-  src: url("/fonts/whata2.ttf") format("truetype");
+  src: url("/private/fonts/whata2.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }

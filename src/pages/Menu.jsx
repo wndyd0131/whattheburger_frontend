@@ -139,7 +139,7 @@ const Menu = (props) => {
             <h2>{categoryList[selectedCategory-1].name}</h2>
             <div className="menu-grid">
               {products.map( product => 
-                  <MenuBox key={product.productId} name={product.productName} description={product.briefInfo} calories={700} imgSrc="/src/assets/menu/Whataburger31.png" setModalOpened={() => orderButtonClickHandler(product)}></MenuBox>
+                  <MenuBox key={product.productId} name={product.productName} description={product.briefInfo} calories={700} imgSrc="/src/assets/private/menu/Whataburger31.png" setModalOpened={() => orderButtonClickHandler(product)}></MenuBox>
               )}
             </div>
           </div>

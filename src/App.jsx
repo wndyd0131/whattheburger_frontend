@@ -4,7 +4,7 @@ import Menu from "./pages/Menu";
 import AboutUs from "./pages/AboutUs";
 import MenuCreate from "./pages/MenuCreate";
 import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// const HomePage = () => <h1>Home Page</h1>
+
 function App() {
   return (
     <Router>

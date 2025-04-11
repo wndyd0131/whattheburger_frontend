@@ -1,8 +1,8 @@
-import Whataburger from "../../assets/menu/Whataburger35.png"
-import ChickenFajita from "../../assets/menu/ChickenFajitaTaco29.png";
-import HoneyBBQ from "../../assets/menu/HoneyBBQ-alacarte1.png";
-import PattyMelt from "../../assets/menu/PattyMelt-alacarte1.png";
-import ChickenStrips from "../../assets/menu/Whatachickn-3strips1.png"
+import Whataburger from "/src/assets/private/menu/Whataburger35.png"
+import ChickenFajita from "/src/assets/private/menu/ChickenFajitaTaco29.png";
+import HoneyBBQ from "/src/assets/private/menu/HoneyBBQ-alacarte1.png";
+import PattyMelt from "/src/assets/private/menu/PattyMelt-alacarte1.png";
+import ChickenStrips from "/src/assets/private/menu/Whatachickn-3strips1.png"
 const MenuList = () => {
   return (
     <div className="menu-list-box">

@@ -46,7 +46,7 @@ const OrderSummary = (
     )}
     <div className="order-summary-section">
       <div className="product-detail-section">
-        <MenuImageContainer width="100%" height="180px" imgSrc="/src/assets/menu/Whataburger31.png"/>
+        <MenuImageContainer width="100%" height="180px" imgSrc="/src/assets/private/menu/Whataburger31.png"/>
         <div className="product-detail">
           <h1>{product.productName}</h1>
           <div className="product-type">
