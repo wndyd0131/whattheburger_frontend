@@ -1,5 +1,4 @@
 import Navigation from "./Navigation";
-import SearchBar from "./SearchBar";
 import AuthSection from "./AuthSection";
 
 const Header = () => {
@@ -13,8 +12,7 @@ const Header = () => {
           </div>
           <Navigation></Navigation>
           <div className="misc-container">
-              <SearchBar></SearchBar>
-              <AuthSection></AuthSection>
+            <AuthSection></AuthSection>
           </div>
       </header>
   );

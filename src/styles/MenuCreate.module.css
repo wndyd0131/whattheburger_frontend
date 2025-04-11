@@ -3,6 +3,7 @@
   flex-direction: column;
   min-height: 100vh;
   padding: 150px 200px 0px 200px;
+  gap: 50px;
 }
 
 .contentSection {
@@ -27,10 +28,8 @@
 
 .optionModalHeader {
   display: flex;
-  width: 100%;
   height: 100px;
   background-color: #FE7800;
-  border-bottom: 1px solid black;
 }
 
 .closeOptionModalButton {
@@ -57,16 +56,14 @@
   display: flex;
   width: 100%;
   height: 50px;
-  background-color: black;
 }
 
 .optionModalSearchSection {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 70px;
-  background-color: pink;
+  background-color: #FE7800;
 }
 
 .optionModalSearchBar {
@@ -101,6 +98,11 @@
   height: 100px;
   justify-self: center;
   cursor: pointer;
+}
+
+.optionModalGrid:hover {
+  background-color: rgb(244, 244, 244);
+  transition: 0.2s;
 }
 
 .optionModalGrid.checked {
@@ -168,5 +170,42 @@
   height: 100px;
   padding: 0 30px;
   gap: 20px;
-  border-top: 1px solid black;
+}
+
+.customRuleButton {
+  height: 35px;
+  width: 60px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.customRuleButton:hover {
+  background-color: skyblue;
+  transition: 0.2s;
+}
+
+.finishButton {
+  display: flex;
+  width: 100px;
+  height: 50px;
+  font-size: 20px;
+  background-color: white;
+  color: #FE7800;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 5px;
+  font-family: 'Whatafont';
+  justify-self: center;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.finishButton:hover {
+  background-color: rgb(244, 244, 244);
+  transition: 0.2s;
 }

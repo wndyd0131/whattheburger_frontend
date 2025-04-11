@@ -93,7 +93,7 @@ const CustomizationDetailInput = ({
     <>
       <div className={styles.inputContainer}>
         <h2>Custom Rule</h2>
-        <button className={styles.addButton} onClick={() => handleClickAddButton()}>Add</button>
+        <button className={styles.customRuleButton} onClick={() => handleClickAddButton()}>Add</button>
       
         <div className={`${styles.customizationContainer} ${customRules.length > 0 || addButtonClicked ? "" : styles.empty}`}>
           {addButtonClicked || customRules.length > 0 ? 
@@ -131,9 +131,9 @@ const CustomizationDetailInput = ({
                   </div>
                 </div>
                 <div className={styles.customizationGridButton2}>
-                  <button onClick={() => handleClickAddOptionButton(customRuleIdx)}>Add Options</button>
-                  <button>Modify</button>
-                  <button onClick={() => handleClickDeleteGridButton(customRuleIdx)}>Delete</button>
+                  <button className={styles.customRuleButton} onClick={() => handleClickAddOptionButton(customRuleIdx)}>Add Options</button>
+                  <button className={styles.customRuleButton}>Modify</button>
+                  <button className={styles.customRuleButton} onClick={() => handleClickDeleteGridButton(customRuleIdx)}>Delete</button>
                 </div>
               </div>
               );
@@ -145,10 +145,10 @@ const CustomizationDetailInput = ({
             <div className={styles.customizationGrid}>
               <div className={styles.customizationInput}>
                 <label className={styles.customizationInputGrid}>
-                  <input name="customRuleName" value={customRuleName} placeholder="1-20 words" onChange={(e) => setCustomRuleName(e.target.value)}/>
+                  <input className={styles.customRuleInput} name="customRuleName" value={customRuleName} placeholder="1-20 words" onChange={(e) => setCustomRuleName(e.target.value)}/>
                 </label>
                 <label className={styles.customizationInputGrid}>
-                  <select value={customRuleType} onChange={(e) => setCustomRuleType(e.target.value)}>
+                  <select className={styles.customRuleInput} value={customRuleType} onChange={(e) => setCustomRuleType(e.target.value)}>
                     <option value="">
                       {DEFAULT_OPTION_STRING}
                     </option>
@@ -164,16 +164,16 @@ const CustomizationDetailInput = ({
                   </select>
                 </label>
                 <label className={styles.customizationInputGrid}>
-                  <input name="minSelection" type="number" min={0} value={minSelection} onChange={(e) => setMinSelection(e.target.value)}/>
+                  <input className={styles.customRuleInput} name="minSelection" type="number" min={0} value={minSelection} onChange={(e) => setMinSelection(e.target.value)}/>
                 </label>
                 <label className={styles.customizationInputGrid}>
-                  <input name="maxSelection" type="number" min={0} value={maxSelection} onChange={(e) => setMaxSelection(e.target.value)}/>
+                  <input className={styles.customRuleInput} name="maxSelection" type="number" min={0} value={maxSelection} onChange={(e) => setMaxSelection(e.target.value)}/>
                 </label>
               </div>
               
               <div className={styles.customizationGridButton1}>
-                <button onClick={() => handleClickSaveButton()}>Save</button>
-                <button onClick={() => handleClickCancelButton()}>Cancel</button>
+                <button className={styles.customRuleButton} onClick={() => handleClickSaveButton()}>Save</button>
+                <button className={styles.customRuleButton} onClick={() => handleClickCancelButton()}>Cancel</button>
               </div>
             </div>
           }

@@ -87,3 +87,19 @@
   min-width: 80px;
   padding: 10px;
 }
+
+.customRuleButton {
+  height: 35px;
+  width: 60px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.customRuleButton:hover {
+  background-color: skyblue;
+  transition: 0.2s;
+}

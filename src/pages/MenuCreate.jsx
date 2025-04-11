@@ -184,8 +184,8 @@ const MenuCreate = () => {
                           </div>
                         </div>
                         <div className={styles.selectedOptionBlockFooter}>
-                          <button className={styles.optionModalButton} onClick={() => handleClickSelectedOptionBlockCustomButton(optionIdx)}>Custom</button>
-                          <button className={styles.optionModalButton} onClick={() => handleClickSelectedOptionBlockDeleteButton(optionIdx)}>Delete</button>
+                          <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockCustomButton(optionIdx)}>Custom</button>
+                          <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockDeleteButton(optionIdx)}>Delete</button>
                         </div>
                       </div>
                     );
@@ -193,8 +193,8 @@ const MenuCreate = () => {
                   })}
                 </div>
                 <div className={styles.optionModalFooter}>
-                  <button className={styles.optionModalButton} onClick={() => handleClickOptionModalSaveButton()}>Save</button>
-                  <button className={styles.optionModalButton} onClick={() => handleClickOptionModalCancelButton()}>Cancel</button>
+                  <button className={styles.customRuleButton} onClick={() => handleClickOptionModalSaveButton()}>Save</button>
+                  <button className={styles.customRuleButton} onClick={() => handleClickOptionModalCancelButton()}>Cancel</button>
                 </div>
               </Modal>
       }
@@ -228,7 +228,7 @@ const MenuCreate = () => {
           setMaxSelection={setMaxSelection}
           setSelectedOptions={setSelectedOptions}
         />
-        <button onClick={() => handleClickCreateButton()}>
+        <button className={styles.finishButton} onClick={() => handleClickCreateButton()}>
           Create
         </button>
     </div>

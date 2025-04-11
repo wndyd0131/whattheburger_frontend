@@ -1,6 +1,11 @@
+import styles from "/src/styles/AuthSection.module.css";
+
 const AuthSection = () => {
   return (
-    <p>Sign in or Sign up to order faster</p>
+    <div className={styles.authSection}>
+      <button>Sign in</button>
+      <button>Register</button>
+    </div>
   );
 }
 

@@ -1,0 +1,23 @@
+.authSection {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.authSection button {
+  display: flex;
+  width: 70px;
+  height: 40px;
+  background-color: white;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.authSection button:hover {
+  background-color: #FE7800;
+  transition: 0.2s;
+}

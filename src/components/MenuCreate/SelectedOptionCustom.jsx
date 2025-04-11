@@ -285,8 +285,8 @@ const SelectedOptionCustom = (
         </div>
       </div>
       <div className={styles.selectedOptionModalFooter}>
-        <button className={styles.optionModalButton} onClick={() => handleClickSaveButton()}>Save</button>
-        <button className={styles.optionModalButton} onClick={() => handleClickCancelButton()}>Cancel</button>
+        <button className={styles.customRuleButton} onClick={() => handleClickSaveButton()}>Save</button>
+        <button className={styles.customRuleButton} onClick={() => handleClickCancelButton()}>Cancel</button>
       </div>
     </>
   );
