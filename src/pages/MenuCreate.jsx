@@ -28,26 +28,30 @@ const MenuCreate = () => {
   const [options, setOptions] = useState([]);
   const [optionTraits, setOptionTraits] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [customizationName, setCustomizationName] = useState("");
-  const [customizationType, setCustomizationType] = useState("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [customRuleName, setCustomRuleName] = useState("");
+  const [customRuleType, setCustomRuleType] = useState("");
   const [minSelection, setMinSelection] = useState(0);
   const [maxSelection, setMaxSelection] = useState(0);
-  const [customizations, setCustomizations] = useState([]);
-  const [selectedCustomizationIdx, setSelectedCustomizationIdx] = useState("");
+  const [customRules, setCustomRules] = useState([]);
+  const [selectedCustomRuleIdx, setSelectedCustomRuleIdx] = useState("");
+  const [requestObject, setRequestObject] = useState({});
 
   const [selectedOptionIdx, setSelectedOptionIdx] = useState("");
 
   const handleClickOptionGrid = (optionIdx) => {
     setSelectedOptions(prev => {
       const exists = prev.find(option => option.id === optionIdx);
+      const currentIndex = selectedOptions.length;
+
       const newOption = {
         id: optionIdx,
         item: options[optionIdx],
         isDefault: false,
-        defaultQuantity: 0,
-        maxQuantity: 0,
+        defaultQuantity: 1,
+        maxQuantity: 1,
         extraPrice: 0,
+        orderIndex: currentIndex,
         measureTypeButton: "SINGLE"
       }
       if (exists) {
@@ -70,9 +74,9 @@ const MenuCreate = () => {
   }
 
   const handleClickOptionModalSaveButton = () => {
-    const updatedCustomizations = structuredClone(customizations);
-    updatedCustomizations[selectedCustomizationIdx].options = selectedOptions;
-    setCustomizations(updatedCustomizations);
+    const updatedcustomRules = structuredClone(customRules);
+    updatedcustomRules[selectedCustomRuleIdx].options = selectedOptions;
+    setCustomRules(updatedcustomRules);
     closeOptionModal();
     // successfully saved notification
   }
@@ -83,7 +87,26 @@ const MenuCreate = () => {
 
   const closeOptionModal = () => {
     setSelectedOptions([]);
-    setSelectedCustomizationIdx("");
+    setSelectedCustomRuleIdx("");
+  }
+
+  const handleClickCreateButton = () => {
+    const updatedCustomRules = structuredClone(customRules);
+    updatedCustomRules.map((customRule, customRuleIdx) => {
+      customRule.rowIndex = customRuleIdx;
+    })
+
+    console.log(updatedCustomRules);
+
+    const obj = {
+      productName: productName,
+      productPrice: productPrice,
+      calories: productCalories,
+      productType: productType,
+      briefInfo: briefInfo,
+      categoryId: selectedCategoryId,
+      customRuleRequests: updatedCustomRules
+    }
   }
 
   useEffect(() => {
@@ -109,7 +132,7 @@ const MenuCreate = () => {
 
   return (
     <div className={styles.contentLayout}>
-      {selectedCustomizationIdx !== "" &&
+      {selectedCustomRuleIdx !== "" &&
               <Modal
                 height={optionModalStyle.height}
                 width={optionModalStyle.width}
@@ -182,30 +205,30 @@ const MenuCreate = () => {
           productCalories={productCalories}
           productType={productType}
           briefInfo={briefInfo}
-          selectedCategory={selectedCategory}
+          selectedCategoryId={selectedCategoryId}
           setProductName={setProductName}
           setProductPrice={setProductPrice}
           setProductCalories={setProductCalories}
           setProductType={setProductType}
           setBriefInfo={setBriefInfo}
-          setSelectedCategory={setSelectedCategory}
+          setSelectedCategoryId={setSelectedCategoryId}
         />
 
         <CustomizationDetailInput
-          customizations={customizations}
-          customizationName={customizationName}
-          customizationType={customizationType}
+          customRules={customRules}
+          customRuleName={customRuleName}
+          customRuleType={customRuleType}
           minSelection={minSelection}
           maxSelection={maxSelection}
-          setCustomizations={setCustomizations}
-          setSelectedCustomizationIdx={setSelectedCustomizationIdx}
-          setCustomizationName={setCustomizationName}
-          setCustomizationType={setCustomizationType}
+          setCustomRules={setCustomRules}
+          setSelectedCustomRuleIdx={setSelectedCustomRuleIdx}
+          setCustomRuleName={setCustomRuleName}
+          setCustomRuleType={setCustomRuleType}
           setMinSelection={setMinSelection}
           setMaxSelection={setMaxSelection}
           setSelectedOptions={setSelectedOptions}
         />
-        <button>
+        <button onClick={() => handleClickCreateButton()}>
           Create
         </button>
     </div>

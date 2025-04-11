@@ -14,10 +14,10 @@ const SelectedOptionCustom = (
 
   /* Countable */
   const [isDefault, setIsDefault] = useState(false);
-  const [defaultQuantity, setDefaultQuantity] = useState("");
-  const [maxQuantity, setMaxQuantity] = useState("");
-  const [extraPrice, setExtraPrice] = useState("");
-  const [orderIndex, setOrderIndex] = useState("");
+  const [defaultQuantity, setDefaultQuantity] = useState(1);
+  const [maxQuantity, setMaxQuantity] = useState(1);
+  const [extraPrice, setExtraPrice] = useState(0);
+  const [orderIndex, setOrderIndex] = useState(0);
   const [measureTypeButton, setMeasureTypeButton] = useState("SINGLE");
 
   /* Uncountable */
@@ -68,10 +68,10 @@ const SelectedOptionCustom = (
   const handleClickCancelButton = () => {
     setSelectedOptionIdx("");
     setIsDefault(false);
-    setDefaultQuantity("");
-    setMaxQuantity("");
-    setExtraPrice("");
-    setOrderIndex("");
+    setDefaultQuantity(1);
+    setMaxQuantity(1);
+    setExtraPrice(0);
+    setOrderIndex(0);
     setMeasureType("");
     setMeasureValue("");
     setMeasureType("SINGLE");
@@ -188,9 +188,9 @@ const SelectedOptionCustom = (
               {measureTypeButton === "SINGLE" ?
                 <>
                 <label htmlFor="defaultQuantityInput">default quantity:</label>
-                <input id="defaultQuantityInput" type="number" value={1} disabled/>
+                <input id="defaultQuantityInput" type="number" value={1} disabled onChange={() => setDefaultQuantity(1)}/>
                 <label htmlFor="maxQuantityInput">max quantity:</label>
-                <input id="maxQuantityInput" type="number" value={1} disabled/>
+                <input id="maxQuantityInput" type="number" value={1} disabled onChange={() => setMaxQuantity(1)}/>
                 </>
                 :
                 <>

@@ -7,13 +7,13 @@ const ProductDetailInput = ({
   productCalories,
   productType,
   briefInfo,
-  selectedCategory,
+  selectedCategoryId,
   setProductName,
   setProductPrice,
   setProductCalories,
   setProductType,
   setBriefInfo,
-  setSelectedCategory
+  setSelectedCategoryId
 }) => {
   const DEFAULT_OPTION_STRING = "----Select----";
 
@@ -50,7 +50,7 @@ const ProductDetailInput = ({
         </label>
         <label>
           category:
-            <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+            <select value={selectedCategoryId} onChange={(e) => setSelectedCategoryId(e.target.value)}>
               <option value="" disabled>
                 {DEFAULT_OPTION_STRING}
               </option>

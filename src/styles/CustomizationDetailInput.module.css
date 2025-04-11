@@ -1,7 +1,7 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
-  border: 1px solid rgb(225, 225, 225);
+  border: 0.5px solid rgb(225, 225, 225);
 }
 
 .addButton {
@@ -11,18 +11,18 @@
 .customizationContainer{
   display: grid;
   grid-auto-rows: 0fr;
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 350px;
   width: 100%;
-  border: 1px solid black;
+  border: 0.5px solid rgb(225, 225, 225);
 }
 
 .customizationContainer.empty{
-  display: grid;
-  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 350px;
-  width: 100%;
-  border: 1px solid black;
+  border: 1px solid rgb(225, 225, 225);
 }
 
 .customizationHead {
@@ -34,7 +34,7 @@
 
 .customizationHeadGrid {
   display: flex;
-  border: 1px solid black;
+  border: 0.5px solid rgb(225, 225, 225);
   justify-content: center;
   align-items: center;
 }
@@ -48,7 +48,7 @@
 .customizationGrid {
   display: flex;
   height: 90px;
-  border: 1px solid black;
+  border: 0.5px solid rgb(225, 225, 225);
   background-color: #FE7800;
 }
 
@@ -60,7 +60,7 @@
 
 .customizationInfoGrid {
   display: flex;
-  border: 1px solid black;
+  border: 0.5px solid rgb(225, 225, 225);
   justify-content: center;
   align-items: center;
 }
@@ -89,7 +89,13 @@
 
 .customizationInputGrid {
   display: flex;
-  border: 1px solid black;
+  flex-direction: column;
+  border: 0.5px solid rgb(225, 225, 225);
   justify-content: center;
   align-items: center;
+}
+
+.inputValidationPrompt {
+  display: flex;
+  position: fixed;
 }
