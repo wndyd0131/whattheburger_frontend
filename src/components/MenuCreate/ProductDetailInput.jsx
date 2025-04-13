@@ -24,11 +24,11 @@ const ProductDetailInput = ({
         <p>Please fill in information of new product.</p>
         <div className={styles.productFormGrid}>
           <label htmlFor="productNameInput">Product Name *</label>
-          <input id="productNameInput" className={styles.productInput} name="product" value={productName} placeholder="new product's name" onChange={() => setProductName()}/>
+          <input id="productNameInput" className={styles.productInput} name="product" value={productName} placeholder="new product's name" onChange={(e) => setProductName(e.target.value)}/>
           <label htmlFor="productPriceInput">Product Price *</label>
-          <input id="productPriceInput" className={styles.productInput} name="productPrice" value={productPrice} type="number" placeholder="new product's price" onChange={() => setProductPrice()}/>
+          <input id="productPriceInput" className={styles.productInput} name="productPrice" value={productPrice} type="number" placeholder="new product's price" onChange={(e) => setProductPrice(e.target.value)}/>
           <label htmlFor="productCaloriesInput">Product Calories *</label>
-          <input id="productCaloriesInput" className={styles.productInput} name="productCalories" value={productCalories} type="number" placeholder="new product's calories" onChange={() => setProductCalories()}/>
+          <input id="productCaloriesInput" className={styles.productInput} name="productCalories" value={productCalories} type="number" placeholder="new product's calories" onChange={(e) => setProductCalories(e.target.value)}/>
           <label htmlFor="productTypeInput">Product Type *</label>
           <select id="productTypeInput" className={styles.productInput} value={productType} onChange={(e) => setProductType(e.target.value)}>
             <option value="" disabled>

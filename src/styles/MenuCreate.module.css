@@ -184,7 +184,7 @@
 }
 
 .customRuleButton:hover {
-  background-color: skyblue;
+  background-color: rgb(244, 244, 244);
   transition: 0.2s;
 }
 

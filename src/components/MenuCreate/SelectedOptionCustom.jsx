@@ -1,14 +1,16 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import styles from '/src/styles/SelectedOptionCustom.module.css';
+import { SelectedOptionsContext } from '../../pages/MenuCreate';
 
-const SelectedOptionCustom = (
-  {
+const SelectedOptionCustom = () => {
+
+  const {
     selectedOptions,
     selectedOptionIdx,
     optionTraits,
     setSelectedOptions,
     setSelectedOptionIdx
-  }) => {
+  } = useContext(SelectedOptionsContext);
 
   const DEFAULT_OPTION_STRING = "----Select----";
 

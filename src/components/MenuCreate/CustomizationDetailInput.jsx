@@ -113,7 +113,7 @@ const CustomizationDetailInput = ({
     <>
       <div className={styles.inputContainer}>
         <h2>Custom Rule</h2>
-        <button className={styles.customRuleButton} onClick={() => handleClickAddButton()}>Add</button>
+        <button className={`${styles.customRuleButton} ${addButtonClicked ? styles.clicked: ""}`} disabled={addButtonClicked} onClick={() => handleClickAddButton()}>Add</button>
       
         <div className={`${styles.customizationContainer} ${customRules.length > 0 || addButtonClicked ? "" : styles.empty}`}>
           {addButtonClicked || customRules.length > 0 ? 

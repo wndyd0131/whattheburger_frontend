@@ -16,8 +16,13 @@
 }
 
 .customRuleButton:hover {
-  background-color: skyblue;
+  background-color: rgb(244, 244, 244);
   transition: 0.2s;
+}
+
+.customRuleButton.clicked {
+  cursor: default;
+  background-color: transparent;
 }
 
 .customizationContainer{
@@ -49,6 +54,7 @@
   border: 0.5px solid rgb(225, 225, 225);
   justify-content: center;
   align-items: center;
+  background-color: #FE7800;
 }
 
 .emptyOptionPrompt {
@@ -61,7 +67,6 @@
   display: flex;
   height: 90px;
   border: 0.5px solid rgb(225, 225, 225);
-  background-color: #FE7800;
 }
 
 .customizationInfo {

@@ -1,10 +1,12 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, createContext} from "react";
 import styles from "../styles/MenuCreate.module.css";
 import Modal from "../components/Modal.jsx";
 import axios from "axios";
 import SelectedOptionCustom from "../components/MenuCreate/SelectedOptionCustom.jsx";
 import ProductDetailInput from "../components/MenuCreate/ProductDetailInput.jsx";
 import CustomizationDetailInput from "../components/MenuCreate/CustomizationDetailInput.jsx";
+
+export const SelectedOptionsContext = createContext();
 
 const MenuCreate = () => {
 
@@ -90,22 +92,56 @@ const MenuCreate = () => {
     setSelectedCustomRuleIdx("");
   }
 
-  const handleClickCreateButton = () => {
-    const updatedCustomRules = structuredClone(customRules);
-    updatedCustomRules.map((customRule, customRuleIdx) => {
-      customRule.rowIndex = customRuleIdx;
+  const handleClickCreateButton = async () => {
+    const customRuleRequests = [];
+
+    customRules.map((customRule, customRuleIdx) => {
+      const optionRequests = [];
+
+      customRule.options.map((option, optionIdx) => {
+        const optionTraitRequests = [];
+
+        optionRequests.push({
+          optionId: option.item.optionId,
+          isDefault: option.isDefault,
+          measureType: option.measureType,
+          defaultQuantity: option.defaultQuantity,
+          maxQuantity: option.maxQuantity,
+          extraPrice: option.extraPrice,
+          orderIndex: option.orderIndex,
+          optionTraitRequests: optionTraitRequests
+        }
+        );
+      });
+      customRuleRequests.push(
+        {
+          customRuleName: customRule.customRuleName,
+          customRuleType: customRule.customRuleType,
+          maxSelection: customRule.maxSelection,
+          minSelection: customRule.minSelection,
+          rowIndex: customRuleIdx,
+          optionRequests: optionRequests
+        }
+      )
     })
 
-    console.log(updatedCustomRules);
-
-    const obj = {
+    const data = {
       productName: productName,
       productPrice: productPrice,
       calories: productCalories,
       productType: productType,
       briefInfo: briefInfo,
       categoryId: selectedCategoryId,
-      customRuleRequests: updatedCustomRules
+      customRuleRequests: customRuleRequests
+    }
+
+    console.log("Requested with", data);
+    try {
+      const response = await axios.post("http://localhost:8080/api/v1/products", data);
+      console.log("Response:", response.data);
+    }
+    catch (error) {
+      console.error("Error:", error);
     }
   }
 
@@ -131,107 +167,115 @@ const MenuCreate = () => {
   }, [])
 
   return (
-    <div className={styles.contentLayout}>
-      {selectedCustomRuleIdx !== "" &&
-              <Modal
-                height={optionModalStyle.height}
-                width={optionModalStyle.width}
-                flexDirection={optionModalStyle.flexDirection}
-              >
-                {selectedOptionIdx !== "" && 
-                  <Modal 
-                    height={selectedOptionModalStyle.height}
-                    width={selectedOptionModalStyle.width}
-                    flexDirection={selectedOptionModalStyle.flexDirection}
-                  >
-                    <SelectedOptionCustom selectedOptions={selectedOptions} selectedOptionIdx={selectedOptionIdx} optionTraits={optionTraits} setSelectedOptions={setSelectedOptions} setSelectedOptionIdx={setSelectedOptionIdx}/>
-                  </Modal>
-                }
-                <div className={styles.optionModalLayout}>
-                  <div className={styles.optionModalSearchSection}>
-                    <input className={styles.optionModalSearchBar} placeholder="Type to search for options..."></input>
+    <SelectedOptionsContext.Provider value={{
+      selectedOptions,
+      setSelectedOptions,
+      selectedOptionIdx,
+      setSelectedOptionIdx,
+      optionTraits
+      }}>
+      <div className={styles.contentLayout}>
+        {selectedCustomRuleIdx !== "" &&
+                <Modal
+                  height={optionModalStyle.height}
+                  width={optionModalStyle.width}
+                  flexDirection={optionModalStyle.flexDirection}
+                >
+                  {selectedOptionIdx !== "" && 
+                    <Modal 
+                      height={selectedOptionModalStyle.height}
+                      width={selectedOptionModalStyle.width}
+                      flexDirection={selectedOptionModalStyle.flexDirection}
+                    >
+                      <SelectedOptionCustom/>
+                    </Modal>
+                  }
+                  <div className={styles.optionModalLayout}>
+                    <div className={styles.optionModalSearchSection}>
+                      <input className={styles.optionModalSearchBar} placeholder="Type to search for options..."></input>
+                    </div>
+                    <div className={styles.optionModalSortSection}>
+                    </div>
+                    <div className={styles.optionModalItemSection}>
+                      <div className={styles.optionModalGridContainer}>
+                        {options.map((option, optionIdx) => {
+                          const exists = selectedOptions.find(item => item.id === optionIdx);
+                          return (
+                            <div key={optionIdx} className={`${styles.optionModalGrid} ${exists ? styles.checked : ""}`} onClick={() => handleClickOptionGrid(optionIdx)}>
+                              <div className={styles.optionImageContainer}>
+                              </div>
+                              <div className={styles.optionDetailContainer}>
+                                <p>{option.optionName}</p>
+                                <p>{option.optionCalories} Cal</p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
-                  <div className={styles.optionModalSortSection}>
-                  </div>
-                  <div className={styles.optionModalItemSection}>
-                    <div className={styles.optionModalGridContainer}>
-                      {options.map((option, optionIdx) => {
-                        const exists = selectedOptions.find(item => item.id === optionIdx);
-                        return (
-                          <div key={optionIdx} className={`${styles.optionModalGrid} ${exists ? styles.checked : ""}`} onClick={() => handleClickOptionGrid(optionIdx)}>
+                  <div className={styles.selectedOptionSection}>
+                    {selectedOptions.map((option, optionIdx) => {
+                      return (
+                        <div key={optionIdx} className={styles.selectedOptionBlock}>
+                          <div className={styles.selectedOptionInfo}>
                             <div className={styles.optionImageContainer}>
                             </div>
                             <div className={styles.optionDetailContainer}>
-                              <p>{option.optionName}</p>
-                              <p>{option.optionCalories} Cal</p>
+                              <p>{option.item.optionName}</p>
+                              <p>{option.item.optionCalories} Cal</p>
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
+                          <div className={styles.selectedOptionBlockFooter}>
+                            <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockCustomButton(optionIdx)}>Custom</button>
+                            <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockDeleteButton(optionIdx)}>Delete</button>
+                          </div>
+                        </div>
+                      );
+
+                    })}
                   </div>
-                </div>
-                <div className={styles.selectedOptionSection}>
-                  {selectedOptions.map((option, optionIdx) => {
-                    return (
-                      <div key={optionIdx} className={styles.selectedOptionBlock}>
-                        <div className={styles.selectedOptionInfo}>
-                          <div className={styles.optionImageContainer}>
-                          </div>
-                          <div className={styles.optionDetailContainer}>
-                            <p>{option.item.optionName}</p>
-                            <p>{option.item.optionCalories} Cal</p>
-                          </div>
-                        </div>
-                        <div className={styles.selectedOptionBlockFooter}>
-                          <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockCustomButton(optionIdx)}>Custom</button>
-                          <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockDeleteButton(optionIdx)}>Delete</button>
-                        </div>
-                      </div>
-                    );
+                  <div className={styles.optionModalFooter}>
+                    <button className={styles.customRuleButton} onClick={() => handleClickOptionModalSaveButton()}>Save</button>
+                    <button className={styles.customRuleButton} onClick={() => handleClickOptionModalCancelButton()}>Cancel</button>
+                  </div>
+                </Modal>
+        }
+          <ProductDetailInput
+            categories={categories}
+            productName={productName}
+            productPrice={productPrice}
+            productCalories={productCalories}
+            productType={productType}
+            briefInfo={briefInfo}
+            selectedCategoryId={selectedCategoryId}
+            setProductName={setProductName}
+            setProductPrice={setProductPrice}
+            setProductCalories={setProductCalories}
+            setProductType={setProductType}
+            setBriefInfo={setBriefInfo}
+            setSelectedCategoryId={setSelectedCategoryId}
+          />
 
-                  })}
-                </div>
-                <div className={styles.optionModalFooter}>
-                  <button className={styles.customRuleButton} onClick={() => handleClickOptionModalSaveButton()}>Save</button>
-                  <button className={styles.customRuleButton} onClick={() => handleClickOptionModalCancelButton()}>Cancel</button>
-                </div>
-              </Modal>
-      }
-        <ProductDetailInput
-          categories={categories}
-          productName={productName}
-          productPrice={productPrice}
-          productCalories={productCalories}
-          productType={productType}
-          briefInfo={briefInfo}
-          selectedCategoryId={selectedCategoryId}
-          setProductName={setProductName}
-          setProductPrice={setProductPrice}
-          setProductCalories={setProductCalories}
-          setProductType={setProductType}
-          setBriefInfo={setBriefInfo}
-          setSelectedCategoryId={setSelectedCategoryId}
-        />
-
-        <CustomizationDetailInput
-          customRules={customRules}
-          customRuleName={customRuleName}
-          customRuleType={customRuleType}
-          minSelection={minSelection}
-          maxSelection={maxSelection}
-          setCustomRules={setCustomRules}
-          setSelectedCustomRuleIdx={setSelectedCustomRuleIdx}
-          setCustomRuleName={setCustomRuleName}
-          setCustomRuleType={setCustomRuleType}
-          setMinSelection={setMinSelection}
-          setMaxSelection={setMaxSelection}
-          setSelectedOptions={setSelectedOptions}
-        />
-        <button className={styles.finishButton} onClick={() => handleClickCreateButton()}>
-          Create
-        </button>
-    </div>
+          <CustomizationDetailInput
+            customRules={customRules}
+            customRuleName={customRuleName}
+            customRuleType={customRuleType}
+            minSelection={minSelection}
+            maxSelection={maxSelection}
+            setCustomRules={setCustomRules}
+            setSelectedCustomRuleIdx={setSelectedCustomRuleIdx}
+            setCustomRuleName={setCustomRuleName}
+            setCustomRuleType={setCustomRuleType}
+            setMinSelection={setMinSelection}
+            setMaxSelection={setMaxSelection}
+            setSelectedOptions={setSelectedOptions}
+          />
+          <button className={styles.finishButton} onClick={() => handleClickCreateButton()}>
+            Create
+          </button>
+      </div>
+    </SelectedOptionsContext.Provider>
   );
 }
 
