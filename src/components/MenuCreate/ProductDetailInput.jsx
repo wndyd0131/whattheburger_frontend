@@ -7,15 +7,22 @@ const ProductDetailInput = ({
   productCalories,
   productType,
   briefInfo,
-  selectedCategoryId,
+  selectedCategoryIds,
   setProductName,
   setProductPrice,
   setProductCalories,
   setProductType,
   setBriefInfo,
-  setSelectedCategoryId
+  setSelectedCategoryIds
 }) => {
   const DEFAULT_OPTION_STRING = "----Select----";
+
+  const handleClickCategoryButton = (categoryId, checkedCategory) => {
+    if (checkedCategory)
+      setSelectedCategoryIds(prev => prev.filter(index => index !== categoryId))
+    else
+      setSelectedCategoryIds(prev => [...prev, categoryId]);
+  }
 
   return (
     <>
@@ -43,18 +50,33 @@ const ProductDetailInput = ({
           </select>
           <label htmlFor="briefInfoInput">Brief Information</label>
           <input id="briefInfoInput" className={styles.productInput} name="briefInfo" value={briefInfo} placeholder="brief information about new product" onChange={() => setBriefInfo()}/>
-          <label htmlFor="categoryInput">Category *</label>
-          <select id="categoryInput" className={styles.productInput} value={selectedCategoryId} onChange={(e) => setSelectedCategoryId(e.target.value)}>
-            <option value="" disabled>
-              {DEFAULT_OPTION_STRING}
-            </option>
-            {categories.map((category, categoryIdx) => {
-              return (
-                <option key={categoryIdx} value={category.categoryId}>{category.name}</option>
-              );
-            })}
-          </select>
         </div>
+        <label>Category *</label>
+          <div className="flex flex-wrap w-full justify-start gap-5">
+          {categories.map((category, categoryIdx) => {
+            const categoryId = category.categoryId;
+            const checkedCategory = selectedCategoryIds.find(index => index === categoryId);
+            const regularClassName = "min-w-[110px] min-h-[35px] border-1 border-orange-300 rounded-full hover:bg-orange-300 cursor-pointer";
+            const selectedClassName = "min-w-[110px] min-h-[35px] border-1 border-orange-300 bg-orange-300 rounded-full hover:bg-orange-400 cursor-pointer";
+
+            return (
+                <button
+                  className={checkedCategory ? selectedClassName : regularClassName}
+                  onClick={() => handleClickCategoryButton(categoryId, checkedCategory)}
+                >
+                  {category.name}
+                  {/* <input 
+                  className=""
+                  type="checkbox"
+                  name={category.name}
+                  value={category.categoryId}
+                  checked={checkedCategory}
+                  onChange={() => handleClickCategoryButton(categoryId)}
+                /> */}
+                </button>
+            );
+          })}
+          </div>
       </div>
     </>
   );

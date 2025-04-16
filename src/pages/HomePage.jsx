@@ -1,21 +1,26 @@
+import HomePageSection from "../components/HomePage/HomePageSection.jsx";
 import MenuList from "../components/HomePage/MenuList";
 import ImageSlider from "../components/ImageSlider";
-import "../styles/HomePage.styles.css";
+import styles from "../styles/HomePage.module.css";
 
 const HomePage = () => {
   return (
-    <div className="content-container">
-      <div className="image-slider-container">
+    <>
+      <HomePageSection
+      flexDirection="flex-col"
+      backgroundColor="bg-orange-100"
+      >
         <ImageSlider/>
-      </div>
-      <div className="order-button-container">
-          <a className="start-order-button" src="#">Order<br/>for<br/>Delivery</a>
-          <a className="start-order-button" src="#">Order<br/>for<br/>Pickup</a>
+      </HomePageSection>
+      <HomePageSection 
+        flexDirection="flex-col"
+      >
+        <div className={styles.orderButtonContainer}>
+              <a className={styles.startOrderButton} src="#">Let's Go Order!</a>
         </div>
-      <div className="menu-list-container">
         <MenuList/>
-      </div>
-    </div>
+      </HomePageSection>
+    </>
   );
 }
 

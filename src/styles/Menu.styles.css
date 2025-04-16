@@ -85,7 +85,7 @@
 }
 
 .category-nav img {
-  width: 60px;
+  min-width: 40px;
   margin: 20px 0 20px 20px;
   z-index: 3;
 }
@@ -94,7 +94,7 @@
 .menu-grid {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   row-gap: 50px;
 }
 
@@ -367,7 +367,7 @@
 .order-customize-grid-container {
   display: grid;
   border: 1px solid rgb(225, 225, 225);
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .order-customize-grid {

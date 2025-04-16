@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import styles from "../styles/HomePage.module.css";
+
 import Banner1 from "/src/assets/private/slideshow/whataburger_banner_1.jpg";
 import Banner2 from "/src/assets/private/slideshow/whataburger_banner_2.jpg";
 import Banner3 from "/src/assets/private/slideshow/whataburger_banner_3.jpg";
@@ -33,22 +35,22 @@ const ImageSlider = () => {
   }
 
   return (
-    <>
-      <img className="slideshow-image" src={images[index]}/>
-      <div className="slide-button">
-        <button className="slide-left-button" onClick={() => changeImage(0)}>
+    <div className={styles.imageSliderContainer}>
+      <img className={styles.slideshowImage} src={images[index]}/>
+      <div className={styles.slideButton}>
+        <button className={styles.slideLeftButton} onClick={() => changeImage(0)}>
           <img src="icons/image-slider-left-button.svg"/>
         </button>
-        <button className="slide-right-button" onClick={() => changeImage(1)}>
+        <button className={styles.slideRightButton} onClick={() => changeImage(1)}>
           <img src="icons/image-slider-right-button.svg"/>
         </button>
       </div>
-      <div className="index-selector">
+      <div className={styles.indexSelector}>
         {images.map((_, index_) => 
-          <div key={index_} className={`index-button ${index_ === index ? "active" : ""}`}></div>
+          <div key={index_} className={`${styles.indexButton} ${index_ === index ? styles.active : ""}`}></div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

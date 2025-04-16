@@ -71,11 +71,11 @@ const Menu = (props) => {
       let totalCalories = 0;
       
       for (let i = 0; i < optionLength; i++) {
-        let rowIndex = optionResponses[i].customRuleResponse.rowIndex;
-        if (!newCustomRules[rowIndex]) {
+        let orderIndex = optionResponses[i].customRuleResponse.orderIndex;
+        if (!newCustomRules[orderIndex]) {
           let customRuleName = optionResponses[i].customRuleResponse.name;
-          newCustomRules[rowIndex] = {customRuleName: customRuleName, productOptions: []};
-          ingredients[rowIndex] = {customRuleName: customRuleName, productOptions: [], totalCount: 0};
+          newCustomRules[orderIndex] = {customRuleName: customRuleName, productOptions: []};
+          ingredients[orderIndex] = {customRuleName: customRuleName, productOptions: [], totalCount: 0};
         }
         let orderObject = {
           ...optionResponses[i],
@@ -85,14 +85,14 @@ const Menu = (props) => {
         for (let j = 0; j < orderObject.optionTraitResponses.length; j++) {
           orderObject.optionTraitResponses[j].currentSelection = orderObject.optionTraitResponses[j].defaultSelection;
         }
-        newCustomRules[rowIndex].productOptions.push(orderObject);
+        newCustomRules[orderIndex].productOptions.push(orderObject);
         if (orderObject.isDefault === true) {
-          ingredients[rowIndex].productOptions.push(orderObject);
-          ingredients[rowIndex].totalCount++;
+          ingredients[orderIndex].productOptions.push(orderObject);
+          ingredients[orderIndex].totalCount++;
           totalCalories += orderObject.calories;
         }
         else {
-          ingredients[rowIndex].productOptions.push(null);
+          ingredients[orderIndex].productOptions.push(null);
         }
       }
       setCustomRules(newCustomRules);

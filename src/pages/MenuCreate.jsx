@@ -17,7 +17,7 @@ const MenuCreate = () => {
   }
   const selectedOptionModalStyle = {
     height: 350,
-    width: 600,
+    width:900,
     flexDirection: "column"
   };
 
@@ -30,7 +30,7 @@ const MenuCreate = () => {
   const [options, setOptions] = useState([]);
   const [optionTraits, setOptionTraits] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   const [customRuleName, setCustomRuleName] = useState("");
   const [customRuleType, setCustomRuleType] = useState("");
   const [minSelection, setMinSelection] = useState(0);
@@ -104,7 +104,7 @@ const MenuCreate = () => {
         optionRequests.push({
           optionId: option.item.optionId,
           isDefault: option.isDefault,
-          measureType: option.measureType,
+          measureType: option.measureType === "" ? null : option.measureType,
           defaultQuantity: option.defaultQuantity,
           maxQuantity: option.maxQuantity,
           extraPrice: option.extraPrice,
@@ -119,7 +119,7 @@ const MenuCreate = () => {
           customRuleType: customRule.customRuleType,
           maxSelection: customRule.maxSelection,
           minSelection: customRule.minSelection,
-          rowIndex: customRuleIdx,
+          orderIndex: customRuleIdx,
           optionRequests: optionRequests
         }
       )
@@ -131,7 +131,7 @@ const MenuCreate = () => {
       calories: productCalories,
       productType: productType,
       briefInfo: briefInfo,
-      categoryId: selectedCategoryId,
+      categoryIds: selectedCategoryIds,
       customRuleRequests: customRuleRequests
     }
 
@@ -148,6 +148,7 @@ const MenuCreate = () => {
   useEffect(() => {
     axios.get("http://localhost:8080/api/v1/category")
     .then(response => {
+      console.log(response);
       setCategories(response.data);
     })
     .catch(error => console.error(error));
@@ -248,13 +249,13 @@ const MenuCreate = () => {
             productCalories={productCalories}
             productType={productType}
             briefInfo={briefInfo}
-            selectedCategoryId={selectedCategoryId}
+            selectedCategoryIds={selectedCategoryIds}
             setProductName={setProductName}
             setProductPrice={setProductPrice}
             setProductCalories={setProductCalories}
             setProductType={setProductType}
             setBriefInfo={setBriefInfo}
-            setSelectedCategoryId={setSelectedCategoryId}
+            setSelectedCategoryIds={setSelectedCategoryIds}
           />
 
           <CustomizationDetailInput
