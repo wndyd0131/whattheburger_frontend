@@ -1,22 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import styles from '/src/styles/CustomizationDetailInput.module.css';
+import { MenuContext } from '../../pages/MenuCreate';
+import { ACTIONS } from '../../pages/MenuCreate';
 
 const CustomizationDetailInput = ({
-  customRules,
   customRuleName,
   customRuleType,
   minSelection,
   maxSelection,
-  setCustomRules,
   setCustomRuleName,
   setCustomRuleType,
   setMinSelection,
   setMaxSelection,
-  setSelectedCustomRuleIdx,
-  setSelectedOptions
 }) => {
 
   const DEFAULT_OPTION_STRING = "----Select----";
+
+  const {
+    customRuleState,
+    customRuleDispatch,
+    customRules, // temporary
+    setCustomRules, // temporary
+    setSelectedOptions,
+    setSelectedCustomRuleIdx,
+  } = useContext(MenuContext);
 
   const [addButtonClicked, setAddButtonClicked] = useState(false);
 
@@ -80,6 +87,7 @@ const CustomizationDetailInput = ({
         maxSelection: maxSelection,
         options: []
       };
+      customRuleDispatch({type: ACTIONS.ADD_CUSTOMRULE, payload: obj})
       setCustomRules((prev) => [...prev, obj]);
       setAddButtonClicked(false);
     }

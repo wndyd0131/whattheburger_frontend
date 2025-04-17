@@ -61,18 +61,11 @@ const ProductDetailInput = ({
 
             return (
                 <button
+                  key={categoryIdx}
                   className={checkedCategory ? selectedClassName : regularClassName}
                   onClick={() => handleClickCategoryButton(categoryId, checkedCategory)}
                 >
                   {category.name}
-                  {/* <input 
-                  className=""
-                  type="checkbox"
-                  name={category.name}
-                  value={category.categoryId}
-                  checked={checkedCategory}
-                  onChange={() => handleClickCategoryButton(categoryId)}
-                /> */}
                 </button>
             );
           })}

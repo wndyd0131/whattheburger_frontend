@@ -1,25 +1,45 @@
-import {useState, useEffect, createContext} from "react";
+import {useState, useEffect, createContext, useReducer} from "react";
 import styles from "../styles/MenuCreate.module.css";
-import Modal from "../components/Modal.jsx";
 import axios from "axios";
-import SelectedOptionCustom from "../components/MenuCreate/SelectedOptionCustom.jsx";
 import ProductDetailInput from "../components/MenuCreate/ProductDetailInput.jsx";
 import CustomizationDetailInput from "../components/MenuCreate/CustomizationDetailInput.jsx";
+import OptionModal from "../components/MenuCreate/OptionModal/OptionModal.jsx";
 
-export const SelectedOptionsContext = createContext();
+export const MenuContext = createContext();
+
+export const ACTIONS = {
+  ADD_CUSTOMRULE: 'addCustomRule',
+  SAVE_CUSTOMRULE: 'saveCustomRule',
+  ADD_OPTION: 'addOption',
+  SAVE_OPTION: 'saveOption',
+  SAVE_OPTION_TRAITS: 'saveOptionTraits'
+}
 
 const MenuCreate = () => {
-
-  const optionModalStyle = {
-    height: 850,
-    width: 1400,
-    flexDirection: "column"
+  const customRuleReducer = (state, action) => {
+    switch(action.type) {
+      case ACTIONS.ADD_CUSTOMRULE:
+        return [
+          ...state,
+          {
+            customRuleName: action.payload.customRuleName,
+            customRuleType: action.payload.customRuleType,
+            minSelection: action.payload.minSelection,
+            maxSelection: action.payload.maxSelection,
+            options: []
+          }
+        ];
+      case ACTIONS.SAVE_CUSTOMRULE:
+        return state.map((customRule, customRuleIdx) => 
+          customRuleIdx === action.payload.selectedCustomRuleIdx
+            ? {...customRule, options: action.payload.selectedOptionState} : customRule
+        );
+      default:
+        return state;
+    }
   }
-  const selectedOptionModalStyle = {
-    height: 350,
-    width:900,
-    flexDirection: "column"
-  };
+
+  const [customRuleState, customRuleDispatch] = useReducer(customRuleReducer, []);
 
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
@@ -41,56 +61,7 @@ const MenuCreate = () => {
 
   const [selectedOptionIdx, setSelectedOptionIdx] = useState("");
 
-  const handleClickOptionGrid = (optionIdx) => {
-    setSelectedOptions(prev => {
-      const exists = prev.find(option => option.id === optionIdx);
-      const currentIndex = selectedOptions.length;
-
-      const newOption = {
-        id: optionIdx,
-        item: options[optionIdx],
-        isDefault: false,
-        defaultQuantity: 1,
-        maxQuantity: 1,
-        extraPrice: 0,
-        orderIndex: currentIndex,
-        measureTypeButton: "SINGLE"
-      }
-      if (exists) {
-        return prev.filter(option => option.id !== optionIdx);
-      }
-      else {
-        return (
-          [...prev, newOption]
-        );
-      }
-    });
-  }
-
-  const handleClickSelectedOptionBlockCustomButton = (optionIdx) => {
-    setSelectedOptionIdx(optionIdx);
-  }
-
-  const handleClickSelectedOptionBlockDeleteButton = (optionIdx) => {
-    setSelectedOptions(prev => prev.filter((_, idx) => optionIdx !== idx));
-  }
-
-  const handleClickOptionModalSaveButton = () => {
-    const updatedcustomRules = structuredClone(customRules);
-    updatedcustomRules[selectedCustomRuleIdx].options = selectedOptions;
-    setCustomRules(updatedcustomRules);
-    closeOptionModal();
-    // successfully saved notification
-  }
-
-  const handleClickOptionModalCancelButton = () => {
-    closeOptionModal();
-  }
-
-  const closeOptionModal = () => {
-    setSelectedOptions([]);
-    setSelectedCustomRuleIdx("");
-  }
+  console.log("CR", customRuleState);
 
   const handleClickCreateButton = async () => {
     const customRuleRequests = [];
@@ -168,80 +139,21 @@ const MenuCreate = () => {
   }, [])
 
   return (
-    <SelectedOptionsContext.Provider value={{
-      selectedOptions,
-      setSelectedOptions,
-      selectedOptionIdx,
-      setSelectedOptionIdx,
-      optionTraits
-      }}>
+    <MenuContext.Provider value={{
+      customRuleState: customRuleState,
+      customRuleDispatch: customRuleDispatch,
+      customRules: customRules, // temporary
+      setCustomRules: setCustomRules, // temporary
+      options: options,
+      optionTraits: optionTraits,
+      selectedCustomRuleIdx: selectedCustomRuleIdx,
+      selectedOptions: selectedOptions,
+      setSelectedOptions: setSelectedOptions,
+      selectedOptionIdx: selectedOptionIdx,
+      setSelectedOptionIdx: setSelectedOptionIdx,
+      setSelectedCustomRuleIdx: setSelectedCustomRuleIdx
+    }}>
       <div className={styles.contentLayout}>
-        {selectedCustomRuleIdx !== "" &&
-                <Modal
-                  height={optionModalStyle.height}
-                  width={optionModalStyle.width}
-                  flexDirection={optionModalStyle.flexDirection}
-                >
-                  {selectedOptionIdx !== "" && 
-                    <Modal 
-                      height={selectedOptionModalStyle.height}
-                      width={selectedOptionModalStyle.width}
-                      flexDirection={selectedOptionModalStyle.flexDirection}
-                    >
-                      <SelectedOptionCustom/>
-                    </Modal>
-                  }
-                  <div className={styles.optionModalLayout}>
-                    <div className={styles.optionModalSearchSection}>
-                      <input className={styles.optionModalSearchBar} placeholder="Type to search for options..."></input>
-                    </div>
-                    <div className={styles.optionModalSortSection}>
-                    </div>
-                    <div className={styles.optionModalItemSection}>
-                      <div className={styles.optionModalGridContainer}>
-                        {options.map((option, optionIdx) => {
-                          const exists = selectedOptions.find(item => item.id === optionIdx);
-                          return (
-                            <div key={optionIdx} className={`${styles.optionModalGrid} ${exists ? styles.checked : ""}`} onClick={() => handleClickOptionGrid(optionIdx)}>
-                              <div className={styles.optionImageContainer}>
-                              </div>
-                              <div className={styles.optionDetailContainer}>
-                                <p>{option.optionName}</p>
-                                <p>{option.optionCalories} Cal</p>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div className={styles.selectedOptionSection}>
-                    {selectedOptions.map((option, optionIdx) => {
-                      return (
-                        <div key={optionIdx} className={styles.selectedOptionBlock}>
-                          <div className={styles.selectedOptionInfo}>
-                            <div className={styles.optionImageContainer}>
-                            </div>
-                            <div className={styles.optionDetailContainer}>
-                              <p>{option.item.optionName}</p>
-                              <p>{option.item.optionCalories} Cal</p>
-                            </div>
-                          </div>
-                          <div className={styles.selectedOptionBlockFooter}>
-                            <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockCustomButton(optionIdx)}>Custom</button>
-                            <button className={styles.customRuleButton} onClick={() => handleClickSelectedOptionBlockDeleteButton(optionIdx)}>Delete</button>
-                          </div>
-                        </div>
-                      );
-
-                    })}
-                  </div>
-                  <div className={styles.optionModalFooter}>
-                    <button className={styles.customRuleButton} onClick={() => handleClickOptionModalSaveButton()}>Save</button>
-                    <button className={styles.customRuleButton} onClick={() => handleClickOptionModalCancelButton()}>Cancel</button>
-                  </div>
-                </Modal>
-        }
           <ProductDetailInput
             categories={categories}
             productName={productName}
@@ -259,24 +171,24 @@ const MenuCreate = () => {
           />
 
           <CustomizationDetailInput
-            customRules={customRules}
             customRuleName={customRuleName}
             customRuleType={customRuleType}
             minSelection={minSelection}
             maxSelection={maxSelection}
-            setCustomRules={setCustomRules}
-            setSelectedCustomRuleIdx={setSelectedCustomRuleIdx}
             setCustomRuleName={setCustomRuleName}
             setCustomRuleType={setCustomRuleType}
             setMinSelection={setMinSelection}
             setMaxSelection={setMaxSelection}
-            setSelectedOptions={setSelectedOptions}
           />
           <button className={styles.finishButton} onClick={() => handleClickCreateButton()}>
             Create
           </button>
+
+          {selectedCustomRuleIdx !== "" &&
+            <OptionModal/>
+          }
       </div>
-    </SelectedOptionsContext.Provider>
+    </MenuContext.Provider>
   );
 }
 
