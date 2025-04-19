@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { useState, createContext, useContext, useReducer } from "react";
 import { MenuContext } from "../../../pages/MenuCreate";
 import Modal from "../../Modal";
 import SearchBar from "./SearchBar";
@@ -12,63 +12,14 @@ import { ACTIONS } from "../../../pages/MenuCreate";
 export const SelectedOptionContext = createContext();
 
 const OptionModal = () => {
-
-  const selectedOptionReducer = (state, action) => {
-    switch (action.type) {
-      case ACTIONS.ADD_OPTION:
-        const elementId = action.payload.elementId;
-        const option = action.payload.option;
-        const exists = state.find(selectedOption => selectedOption.elementId === elementId);
-        const nextIdx = state.length;
-
-        if (exists) {
-          return state.filter(
-            selectedOption => selectedOption.elementId !== elementId
-          );
-        }
-        else {
-          const newOption = {
-            elementId: elementId,
-            option: option,
-            isDefault: false,
-            defaultQuantity: 1,
-            maxQuantity: 1,
-            extraPrice: 0,
-            orderIndex: nextIdx,
-            measureTypeButton: "SINGLE"
-          }
-          return [...state, newOption];
-        }
-      case ACTIONS.SAVE_OPTION:
-        const optionDetail = action.payload.optionDetail;
-        const optionTraitDetail = action.payload.optionTraitDetail;
-
-        return state.map(((selectedOption, selectedOptionIdx) => 
-          selectedOptionIdx === action.payload.selectedOptionIdx 
-            ? {
-              ...selectedOption,
-              isDefault: optionDetail.isDefault,
-              defaultQuantity: optionDetail.defaultQuantity,
-              maxQuantity: optionDetail.maxQuantity,
-              extraPrice: optionDetail.extraPrice,
-              orderIndex: optionDetail.orderIndex,
-              measureTypeButton: optionDetail.measureTypeButton,
-              measureType: optionDetail.measureType,
-              measureValue: optionDetail.measureValue,
-              optionTrait: optionTraitDetail
-            }
-            : selectedOption
-        ));
-      default:
-        return state;
-    }
-  }
-
-  const [selectedOptionState, selectedOptionDispatch] = useReducer(selectedOptionReducer, []);
-
+  
   const {
-    selectedOptionIdx
+    selectedOptionState,
+    selectedOptionDispatch,
   } = useContext(MenuContext);
+
+  const [selectedOptionIdx, setSelectedOptionIdx] = useState(null);
+  const [selectedOptionTraitIdx, setSelectedOptionTraitIdx] = useState(null);
 
   const optionModalStyle = {
     height: 850,
@@ -79,14 +30,18 @@ const OptionModal = () => {
   return (
     <SelectedOptionContext.Provider value={{
       selectedOptionState: selectedOptionState,
-      selectedOptionDispatch: selectedOptionDispatch
+      selectedOptionDispatch: selectedOptionDispatch,
+      selectedOptionIdx: selectedOptionIdx,
+      selectedOptionTraitIdx: selectedOptionTraitIdx,
+      setSelectedOptionIdx: setSelectedOptionIdx,
+      setSelectedOptionTraitIdx: setSelectedOptionTraitIdx
     }}>
       <Modal
         height={optionModalStyle.height}
         width={optionModalStyle.width}
         flexDirection={optionModalStyle.flexDirection}
       >
-      {selectedOptionIdx !== "" && 
+      {selectedOptionIdx !== null && 
         <OptionDetailModal/>
       }
       <div className="flex flex-col flex-grow">

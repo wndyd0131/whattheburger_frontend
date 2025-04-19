@@ -14,15 +14,17 @@ const SelectedOptionInput = () => {
     customRuleState,
     customRuleDispatch,
     selectedOptions,
-    selectedOptionIdx,
     optionTraits,
     setSelectedOptions,
-    setSelectedOptionIdx
   } = useContext(MenuContext);
 
   const {
     selectedOptionState,
-    selectedOptionDispatch
+    selectedOptionDispatch,
+    selectedOptionIdx,
+    setSelectedOptionIdx,
+    selectedOptionTraitIdx,
+    setSelectedOptionTraitIdx
   } = useContext(SelectedOptionContext);
 
   /* Countable */
@@ -37,29 +39,7 @@ const SelectedOptionInput = () => {
   const [measureType, setMeasureType] = useState("");
   const [measureValue, setMeasureValue] = useState("");
 
-  const [selectedOptionTraitIdx, setSelectedOptionTraitIdx] = useState(null);
   const [defaultBinarySelection, setDefaultBinarySelection] = useState(false);
-
-  useEffect(() => {
-    const optionIdx = selectedOptionIdx;
-    const currentIsDefault = selectedOptions[optionIdx].isDefault;
-    const currentDefaultQuantity = selectedOptions[optionIdx].defaultQuantity;
-    const currentMaxQuantity = selectedOptions[optionIdx].maxQuantity;
-    const currentExtraPrice = selectedOptions[optionIdx].extraPrice;
-    const currentOrderIndex = selectedOptions[optionIdx].orderIndex;
-    const currentMeasureTypeButton = selectedOptions[optionIdx].measureTypeButton;
-    const currentMeasureType = selectedOptions[optionIdx].measureType;
-    const currentMeasureValue = selectedOptions[optionIdx].measureValue;
-
-    setIsDefault(currentIsDefault);
-    setDefaultQuantity(currentDefaultQuantity);
-    setMaxQuantity(currentMaxQuantity);
-    setExtraPrice(currentExtraPrice);
-    setOrderIndex(currentOrderIndex);
-    setMeasureTypeButton(currentMeasureTypeButton);
-    setMeasureType(currentMeasureType);
-    setMeasureValue(currentMeasureValue);
-  } ,[selectedOptionIdx])
 
   const handleClickSaveButton = () => {
     const optionTraitId = selectedOptionTraitIdx ? 
@@ -111,11 +91,11 @@ const SelectedOptionInput = () => {
       )
     });
     setSelectedOptions(updatedOptions);
-    setSelectedOptionIdx("");
+    
+    setSelectedOptionIdx(null);
   }
 
   const handleClickCancelButton = () => {
-    setSelectedOptionIdx("");
     setIsDefault(false);
     setDefaultQuantity(1);
     setMaxQuantity(1);
@@ -124,6 +104,8 @@ const SelectedOptionInput = () => {
     setMeasureType("");
     setMeasureValue("");
     setMeasureType("SINGLE");
+
+    setSelectedOptionIdx(null);
   }
 
   const handleClickSingleButton = () => {
@@ -218,15 +200,21 @@ const SelectedOptionInput = () => {
     setMeasureType(e.target.value)
   }
 
-  const handleClickOptionTraitButton = (optionTraitIdx, selectedOptionTraitIdx, selectedOptionIdx) => {
+  const handleClickOptionTraitButton = (optionTraitIdx) => {
     if (optionTraitIdx === selectedOptionTraitIdx) {
       setSelectedOptionTraitIdx(null);
       setDefaultBinarySelection(false);
     }
     else {
-      console.log(selectedOptionState[selectedOptionIdx]?.optionTrait);
+      const elementId = selectedOptionState[selectedOptionIdx]?.optionTrait.elementId;
       setSelectedOptionTraitIdx(optionTraitIdx);
-      setDefaultBinarySelection(selectedOptionState[selectedOptionIdx]?.optionTrait.defaultSelection ? 1 : 0);
+      if (elementId === optionTraitIdx) {
+        const selection = selectedOptionState[selectedOptionIdx]?.optionTrait.defaultSelection;
+        setDefaultBinarySelection(selection ? 1 : 0);
+      }
+      else {
+        setDefaultBinarySelection(0);
+      }
     }
   }
 
@@ -345,7 +333,7 @@ const SelectedOptionInput = () => {
                 <div 
                   key={optionTraitIdx}
                   className={optionTraitIdx === selectedOptionTraitIdx ? selectedClassName : regularClassName}
-                  onClick={() => handleClickOptionTraitButton(optionTraitIdx, selectedOptionTraitIdx, selectedOptionIdx)}
+                  onClick={() => handleClickOptionTraitButton(optionTraitIdx)}
                 >
                   {optionTrait.name}
                 </div>

@@ -6,21 +6,16 @@ import { SelectedOptionContext } from "./OptionModal";
 const DecisionFooter = () => {
 
   const {
+    selectedOptionState,
+    selectedOptionDispatch,
     customRuleDispatch,
     customRules, // temporary
-    selectedOptions,
     selectedCustomRuleIdx,
     setCustomRules,
-    setSelectedOptions,
     setSelectedCustomRuleIdx
   } = useContext(MenuContext);
 
-  const {
-    selectedOptionState
-  } = useContext(SelectedOptionContext);
-
   const handleClickSaveButton = () => {
-    console.log("HI", ACTIONS.SAVE_CUSTOMRULE);
     customRuleDispatch({
       type: ACTIONS.SAVE_CUSTOMRULE,
       payload: {
@@ -28,22 +23,24 @@ const DecisionFooter = () => {
         selectedOptionState: selectedOptionState
       }
     });
-    console.log(customRules);
-    console.log(selectedCustomRuleIdx);
+
     const updatedcustomRules = structuredClone(customRules);
-    updatedcustomRules[selectedCustomRuleIdx].options = selectedOptions;
+    updatedcustomRules[selectedCustomRuleIdx].options = selectedOptionState;
     setCustomRules(updatedcustomRules);
     closeOptionModal();
     // successfully saved notification
   }
 
   const handleClickCancelButton = () => {
+    selectedOptionDispatch({
+      type: ACTIONS.INIT_SELECTED_OPTIONS
+    });
     closeOptionModal();
   }
   
   const closeOptionModal = () => {
-    setSelectedOptions([]);
-    setSelectedCustomRuleIdx("");
+    selectedOptionDispatch
+    setSelectedCustomRuleIdx(null);
   }
 
   return (

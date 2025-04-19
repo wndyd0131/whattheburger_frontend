@@ -12,7 +12,9 @@ export const ACTIONS = {
   SAVE_CUSTOMRULE: 'saveCustomRule',
   ADD_OPTION: 'addOption',
   SAVE_OPTION: 'saveOption',
-  SAVE_OPTION_TRAITS: 'saveOptionTraits'
+  DELETE_OPTION: 'deleteOption',
+  INIT_SELECTED_OPTIONS: 'initSelectedOptions',
+  LOAD_SELECTED_OPTIONS: 'loadSelectedOptions'
 }
 
 const MenuCreate = () => {
@@ -34,12 +36,84 @@ const MenuCreate = () => {
           customRuleIdx === action.payload.selectedCustomRuleIdx
             ? {...customRule, options: action.payload.selectedOptionState} : customRule
         );
+
+      default:
+        return state;
+    }
+  }
+
+  const selectedOptionReducer = (state, action) => {
+    switch (action.type) {
+      case ACTIONS.ADD_OPTION:
+        const elementId = action.payload.elementId;
+        const option = action.payload.option;
+        const nextIdx = state.length;
+
+        const emptyOptionTrait = {
+          elementId: null,
+          defaultSelection: null,
+          extraPrice: null,
+          extraCalories: null
+        };
+        const newOption = {
+          elementId: elementId,
+          option: option,
+          isDefault: false,
+          defaultQuantity: 1,
+          maxQuantity: 1,
+          extraPrice: 0,
+          orderIndex: nextIdx,
+          measureTypeButton: "SINGLE",
+          optionTrait: emptyOptionTrait
+        };
+        return [...state, newOption];
+        
+      case ACTIONS.SAVE_OPTION:
+        const optionDetail = action.payload.optionDetail;
+        const optionTraitDetail = action.payload.optionTraitDetail;
+
+        return state.map(((selectedOption, _selectedOptionIdx) => 
+          _selectedOptionIdx === action.payload.selectedOptionIdx 
+            ? {
+              ...selectedOption,
+              isDefault: optionDetail.isDefault,
+              defaultQuantity: optionDetail.defaultQuantity,
+              maxQuantity: optionDetail.maxQuantity,
+              extraPrice: optionDetail.extraPrice,
+              orderIndex: optionDetail.orderIndex,
+              measureTypeButton: optionDetail.measureTypeButton,
+              measureType: optionDetail.measureType,
+              measureValue: optionDetail.measureValue,
+              optionTrait: optionTraitDetail
+            }
+            : selectedOption
+        ));
+        
+      case ACTIONS.DELETE_OPTION:
+        var optionIdx = action.payload.optionIdx;
+        switch (action.payload.deleteMethod) {
+          case "grid":
+            return state.filter((selectedOption, _) => selectedOption.elementId !== optionIdx); // filter by elementId
+          case "button":
+            return state.filter((_, idx) => idx !== optionIdx); // filter by index of array
+          default:
+            return state;
+        }
+
+      case ACTIONS.INIT_SELECTED_OPTIONS:
+        return [];
+
+      case ACTIONS.LOAD_SELECTED_OPTIONS:
+        const selectedOptions = action.payload.selectedOptions;
+        return selectedOptions;
+
       default:
         return state;
     }
   }
 
   const [customRuleState, customRuleDispatch] = useReducer(customRuleReducer, []);
+  const [selectedOptionState, selectedOptionDispatch] = useReducer(selectedOptionReducer, []);
 
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState(0);
@@ -56,12 +130,13 @@ const MenuCreate = () => {
   const [minSelection, setMinSelection] = useState(0);
   const [maxSelection, setMaxSelection] = useState(0);
   const [customRules, setCustomRules] = useState([]);
-  const [selectedCustomRuleIdx, setSelectedCustomRuleIdx] = useState("");
   const [requestObject, setRequestObject] = useState({});
 
-  const [selectedOptionIdx, setSelectedOptionIdx] = useState("");
+  const [selectedCustomRuleIdx, setSelectedCustomRuleIdx] = useState(null);
 
   console.log("CR", customRuleState);
+  console.log("SO", selectedOptionState);
+
 
   const handleClickCreateButton = async () => {
     const customRuleRequests = [];
@@ -142,6 +217,8 @@ const MenuCreate = () => {
     <MenuContext.Provider value={{
       customRuleState: customRuleState,
       customRuleDispatch: customRuleDispatch,
+      selectedOptionState: selectedOptionState,
+      selectedOptionDispatch: selectedOptionDispatch,
       customRules: customRules, // temporary
       setCustomRules: setCustomRules, // temporary
       options: options,
@@ -149,8 +226,6 @@ const MenuCreate = () => {
       selectedCustomRuleIdx: selectedCustomRuleIdx,
       selectedOptions: selectedOptions,
       setSelectedOptions: setSelectedOptions,
-      selectedOptionIdx: selectedOptionIdx,
-      setSelectedOptionIdx: setSelectedOptionIdx,
       setSelectedCustomRuleIdx: setSelectedCustomRuleIdx
     }}>
       <div className={styles.contentLayout}>
@@ -184,7 +259,7 @@ const MenuCreate = () => {
             Create
           </button>
 
-          {selectedCustomRuleIdx !== "" &&
+          {selectedCustomRuleIdx !== null &&
             <OptionModal/>
           }
       </div>

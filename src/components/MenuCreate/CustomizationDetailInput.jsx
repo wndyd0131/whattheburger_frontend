@@ -19,6 +19,8 @@ const CustomizationDetailInput = ({
   const {
     customRuleState,
     customRuleDispatch,
+    selectedOptionState,
+    selectedOptionDispatch,
     customRules, // temporary
     setCustomRules, // temporary
     setSelectedOptions,
@@ -68,9 +70,15 @@ const CustomizationDetailInput = ({
   }
 
   const handleClickAddOptionButton = (customRuleIdx) => {
-    const clonedcustomRules = structuredClone(customRules);
     setSelectedCustomRuleIdx(customRuleIdx);
-    setSelectedOptions(clonedcustomRules[customRuleIdx].options);
+    const selectedOptions = customRuleState[customRuleIdx].options;
+
+    selectedOptionDispatch({
+      type: ACTIONS.LOAD_SELECTED_OPTIONS,
+      payload: {
+        selectedOptions: selectedOptions
+      }
+    });
   }
 
   const handleClickDeleteGridButton = (gridIdx) => {
