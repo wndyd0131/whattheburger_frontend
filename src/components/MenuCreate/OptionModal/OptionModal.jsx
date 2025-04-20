@@ -21,6 +21,20 @@ const OptionModal = () => {
   const [selectedOptionIdx, setSelectedOptionIdx] = useState(null);
   const [selectedOptionTraitIdx, setSelectedOptionTraitIdx] = useState(null);
 
+  const [formData, setFormData] = useState({
+    isDefault: false,
+    defaultQuantity: 1,
+    maxQuantity: 1,
+    extraPrice: 0,
+    orderIndex: 0,
+    measureTypeButton: "SINGLE",
+    measureType: "",
+    measureValue: "",
+    defaultSelection: 0,
+    optionTraitExtraPrice: 0,
+    optionTraitExtraCalories: 0
+  });
+
   const optionModalStyle = {
     height: 850,
     width: 1400,
@@ -34,7 +48,9 @@ const OptionModal = () => {
       selectedOptionIdx: selectedOptionIdx,
       selectedOptionTraitIdx: selectedOptionTraitIdx,
       setSelectedOptionIdx: setSelectedOptionIdx,
-      setSelectedOptionTraitIdx: setSelectedOptionTraitIdx
+      setSelectedOptionTraitIdx: setSelectedOptionTraitIdx,
+      formData: formData,
+      setFormData: setFormData,
     }}>
       <Modal
         height={optionModalStyle.height}

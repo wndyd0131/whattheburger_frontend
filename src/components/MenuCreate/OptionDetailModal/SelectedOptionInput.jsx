@@ -24,7 +24,9 @@ const SelectedOptionInput = () => {
     selectedOptionIdx,
     setSelectedOptionIdx,
     selectedOptionTraitIdx,
-    setSelectedOptionTraitIdx
+    setSelectedOptionTraitIdx,
+    formData,
+    setFormData
   } = useContext(SelectedOptionContext);
 
   /* Countable */
@@ -39,29 +41,31 @@ const SelectedOptionInput = () => {
   const [measureType, setMeasureType] = useState("");
   const [measureValue, setMeasureValue] = useState("");
 
-  const [defaultBinarySelection, setDefaultBinarySelection] = useState(false);
+  const [defaultBinarySelection, setDefaultBinarySelection] = useState(0);
+  const [optionTraitExtraPrice, setOptionTraitExtraPrice] = useState(0);
+  const [optionTraitExtraCalories, setOptionTraitExtraCalories] = useState(0);
+
 
   const handleClickSaveButton = () => {
-    const optionTraitId = selectedOptionTraitIdx ? 
-      optionTraits[selectedOptionTraitIdx].optionTraitId : null;
-    const defaultSelection = defaultBinarySelection ? 1 : 0;
+    console.log(optionTraits);
+    console.log(selectedOptionTraitIdx);
 
     const optionTraitDetail = {
-      optionTraitId: optionTraitId,
-      defaultSelection: defaultSelection,
-      optionTraitExtraPrice: 0,
-      extraCalories: 0
+      elementId: selectedOptionTraitIdx,
+      defaultSelection: formData.defaultSelection,
+      extraPrice: formData.optionTraitExtraPrice,
+      extraCalories: formData.optionTraitExtraCalories
     }
 
     const optionDetail = {
-      isDefault: isDefault,
-      defaultQuantity: defaultQuantity,
-      maxQuantity: maxQuantity,
-      extraPrice: extraPrice,
-      orderIndex: orderIndex,
-      measureTypeButton: measureTypeButton,
-      measureType: measureType,
-      measureValue: measureValue,
+      isDefault: formData.isDefault,
+      defaultQuantity: formData.defaultQuantity,
+      maxQuantity: formData.maxQuantity,
+      extraPrice: formData.extraPrice,
+      orderIndex: formData.orderIndex,
+      measureTypeButton: formData.measureTypeButton,
+      measureType: formData.measureType,
+      measureValue: formData.measureValue,
     }
 
     selectedOptionDispatch({
@@ -73,38 +77,13 @@ const SelectedOptionInput = () => {
       }
     });
 
-    const updatedOptions = selectedOptions.map((option, optionIdx) => {
-
-      return (
-        selectedOptionIdx === optionIdx ? 
-        {...option,
-          isDefault: isDefault,
-          defaultQuantity: defaultQuantity,
-          maxQuantity: maxQuantity,
-          extraPrice: extraPrice,
-          orderIndex: orderIndex,
-          measureTypeButton: measureTypeButton,
-          measureType: measureType,
-          measureValue: measureValue,
-          optionTrait: optionTraitDetail
-        } : option
-      )
-    });
-    setSelectedOptions(updatedOptions);
-    
+    setFormData(null);
     setSelectedOptionIdx(null);
   }
 
   const handleClickCancelButton = () => {
-    setIsDefault(false);
-    setDefaultQuantity(1);
-    setMaxQuantity(1);
-    setExtraPrice(0);
-    setOrderIndex(0);
-    setMeasureType("");
-    setMeasureValue("");
-    setMeasureType("SINGLE");
-
+    
+    setFormData(null);
     setSelectedOptionIdx(null);
   }
 
@@ -203,23 +182,25 @@ const SelectedOptionInput = () => {
   const handleClickOptionTraitButton = (optionTraitIdx) => {
     if (optionTraitIdx === selectedOptionTraitIdx) {
       setSelectedOptionTraitIdx(null);
-      setDefaultBinarySelection(false);
+      setFormData({...formData, defaultSelection: null});
     }
     else {
-      const elementId = selectedOptionState[selectedOptionIdx]?.optionTrait.elementId;
       setSelectedOptionTraitIdx(optionTraitIdx);
+      const elementId = selectedOptionState[selectedOptionIdx]?.optionTrait.elementId;
       if (elementId === optionTraitIdx) {
         const selection = selectedOptionState[selectedOptionIdx]?.optionTrait.defaultSelection;
-        setDefaultBinarySelection(selection ? 1 : 0);
+        setFormData({...formData, defaultSelection: selection});
       }
       else {
-        setDefaultBinarySelection(0);
+        setFormData({...formData, defaultSelection: 0});
       }
     }
   }
 
   const handleClickToggleSwitch = (value) => {
-    setDefaultBinarySelection(!value);
+    value === 0
+    ? setFormData({...formData, defaultSelection: 1})
+    : setFormData({...formData, defaultSelection: 0});
   }
 
   return (
@@ -346,12 +327,12 @@ const SelectedOptionInput = () => {
           <div className="h-1/6 w-full flex justify-center items-center">
             Trait Information
           </div>
-          {console.log("SELECTED", selectedOptionTraitIdx, optionTraits[selectedOptionTraitIdx]?.optionTraitType)}
+          
           {
             selectedOptionTraitIdx !== null && optionTraits[selectedOptionTraitIdx]?.optionTraitType === 'BINARY' ?
             <div className="h-3/6 w-full flex-col justify-items-center content-center">
-              <ToggleSwitch value={defaultBinarySelection} setter={handleClickToggleSwitch}/>
-              <p>Default: {defaultBinarySelection ? "true" : "false"}</p>
+              <ToggleSwitch value={formData.defaultSelection} setter={handleClickToggleSwitch}/>
+              <p>Default: {formData.defaultSelection === 0 ? "false" : "true"}</p>
             </div>
             :
             ""

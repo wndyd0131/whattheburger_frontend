@@ -9,13 +9,30 @@ const SelectedOptionSection = () => {
     selectedOptionDispatch,
     setSelectedOptionIdx,
     setSelectedOptionTraitIdx,
+    formData,
+    setFormData,
   } = useContext(SelectedOptionContext);
 
   const handleClickCustomButton = (optionIdx) => {
+    console.log("SO!", selectedOptionState);
     const optionTraitIdx = selectedOptionState[optionIdx].optionTrait.elementId;
+    console.log("OT", optionTraitIdx);
 
     setSelectedOptionIdx(optionIdx);
     setSelectedOptionTraitIdx(optionTraitIdx);
+    setFormData({
+      isDefault: selectedOptionState[optionIdx].isDefault,
+      defaultQuantity: selectedOptionState[optionIdx].defaultQuantity,
+      maxQuantity: selectedOptionState[optionIdx].maxQuantity,
+      extraPrice: selectedOptionState[optionIdx].extraPrice,
+      orderIndex: selectedOptionState[optionIdx].orderIndex,
+      measureTypeButton: selectedOptionState[optionIdx].measureTypeButton,
+      measureType: selectedOptionState[optionIdx].measureType,
+      measureValue: selectedOptionState[optionIdx].measureValue,
+      defaultSelection: selectedOptionState[optionIdx].optionTrait.defaultSelection,
+      optionTraitExtraPrice: selectedOptionState[optionIdx].optionTrait.extraPrice,
+      optionTraitExtraCalories: selectedOptionState[optionIdx].optionTrait.extraCalories
+    });
   }
 
   const handleClickDeleteButton = (optionIdx) => {

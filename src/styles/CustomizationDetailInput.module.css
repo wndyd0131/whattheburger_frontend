@@ -54,7 +54,7 @@
   border: 0.5px solid rgb(225, 225, 225);
   justify-content: center;
   align-items: center;
-  background-color: #FE7800;
+  background-color: oklch(83.7% 0.128 66.29);
 }
 
 .emptyOptionPrompt {

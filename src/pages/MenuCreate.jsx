@@ -51,6 +51,7 @@ const MenuCreate = () => {
 
         const emptyOptionTrait = {
           elementId: null,
+          optionTraitId: null,
           defaultSelection: null,
           extraPrice: null,
           extraCalories: null
@@ -71,6 +72,8 @@ const MenuCreate = () => {
       case ACTIONS.SAVE_OPTION:
         const optionDetail = action.payload.optionDetail;
         const optionTraitDetail = action.payload.optionTraitDetail;
+        console.log("OD", optionDetail);
+        console.log("OTD", optionTraitDetail);
 
         return state.map(((selectedOption, _selectedOptionIdx) => 
           _selectedOptionIdx === action.payload.selectedOptionIdx 
@@ -84,7 +87,12 @@ const MenuCreate = () => {
               measureTypeButton: optionDetail.measureTypeButton,
               measureType: optionDetail.measureType,
               measureValue: optionDetail.measureValue,
-              optionTrait: optionTraitDetail
+              optionTrait: {
+                elementId: optionTraitDetail.elementId,
+                defaultSelection: optionTraitDetail.defaultSelection,
+                optionTraitExtraPrice: optionTraitDetail.extraPrice,
+                extraCalories: optionTraitDetail.extraCalories
+              }
             }
             : selectedOption
         ));
@@ -99,6 +107,8 @@ const MenuCreate = () => {
           default:
             return state;
         }
+
+      case ACTIONS.LOAD_OPTION:
 
       case ACTIONS.INIT_SELECTED_OPTIONS:
         return [];
