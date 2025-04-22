@@ -144,10 +144,6 @@ const MenuCreate = () => {
 
   const [selectedCustomRuleIdx, setSelectedCustomRuleIdx] = useState(null);
 
-  console.log("CR", customRuleState);
-  console.log("SO", selectedOptionState);
-
-
   const handleClickCreateButton = async () => {
     const customRuleRequests = [];
 
