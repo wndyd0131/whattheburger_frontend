@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MenuContext } from "../../../pages/MenuCreate";
+import { MenuCreateContext } from "../../../pages/MenuCreate";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
 import { ACTIONS } from "../../../pages/MenuCreate";
 
@@ -7,7 +7,7 @@ const OptionDetailFooter = () => {
 
   const {
     optionTraits
-  } = useContext(MenuContext);
+  } = useContext(MenuCreateContext);
 
   const {
     selectedOptionDispatch,
@@ -22,8 +22,17 @@ const OptionDetailFooter = () => {
     console.log("SAVE", optionTraits);
     console.log(selectedOptionTraitIdx);
 
+    const optionTraitId = 
+      selectedOptionTraitIdx !== null ?
+        optionTraits[selectedOptionTraitIdx].optionTraitId
+        :
+        null
+      ;
+    console.log("OTI", optionTraitId);
+
     const optionTraitDetail = {
       elementId: selectedOptionTraitIdx,
+      optionTraitId: optionTraitId,
       defaultSelection: formData.defaultSelection,
       extraPrice: formData.optionTraitExtraPrice,
       extraCalories: formData.optionTraitExtraCalories

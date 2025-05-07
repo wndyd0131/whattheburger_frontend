@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { MenuContext } from "../../../pages/MenuCreate";
+import { MenuCreateContext } from "../../../pages/MenuCreate";
 import { SelectedOptionContext } from "./OptionModal";
 import { ACTIONS } from "../../../pages/MenuCreate";
 
 const OptionItemSection = () => {
   const {
     options
-  } = useContext(MenuContext);
+  } = useContext(MenuCreateContext);
 
   const {
     selectedOptionState,

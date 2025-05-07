@@ -1,4 +1,4 @@
-import MenuImageContainer from "./MenuImageContainer";
+import MenuImageContainer from "../../MenuImageContainer";
 import { useState, useEffect } from "react";
 
 const OrderSummary = (

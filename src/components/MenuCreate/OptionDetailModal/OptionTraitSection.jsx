@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MenuContext } from "../../../pages/MenuCreate";
+import { MenuCreateContext } from "../../../pages/MenuCreate";
 import ToggleSwitch from "../../ToggleSwitch";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
 
@@ -7,7 +7,7 @@ const OptionTraitSection = () => {
 
   const {
     optionTraits,
-  } = useContext(MenuContext);
+  } = useContext(MenuCreateContext);
 
   const {
     selectedOptionState,
@@ -23,17 +23,26 @@ const OptionTraitSection = () => {
   const handleClickOptionTraitButton = (optionTraitIdx) => {
     if (optionTraitIdx === selectedOptionTraitIdx) {
       setSelectedOptionTraitIdx(null);
-      setFormData({...formData, defaultSelection: null});
+      setFormData({
+        ...formData,
+        defaultSelection: null,
+      });
     }
     else {
       setSelectedOptionTraitIdx(optionTraitIdx);
       const elementId = selectedOptionState[selectedOptionIdx]?.optionTrait.elementId;
       if (elementId === optionTraitIdx) {
-        const selection = selectedOptionState[selectedOptionIdx]?.optionTrait.defaultSelection;
-        setFormData({...formData, defaultSelection: selection});
+        const defaultSelection = selectedOptionState[selectedOptionIdx]?.optionTrait.defaultSelection;
+        setFormData({
+          ...formData,
+          defaultSelection: defaultSelection
+        });
       }
       else {
-        setFormData({...formData, defaultSelection: 0});
+        setFormData({
+          ...formData,
+          defaultSelection: 0,
+        });
       }
     }
   }

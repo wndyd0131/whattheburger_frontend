@@ -60,8 +60,8 @@ const SelectedOptionSection = () => {
                 <div className="w-[80px]">
                 </div>
                 <div className="flex flex-col items-center flex-grow">
-                  <p>{selectedOption.option.optionName}</p>
-                  <p>{selectedOption.option.optionCalories} Cal</p>
+                  <p>{selectedOption.optionName}</p>
+                  <p>{selectedOption.optionCalories} Cal</p>
                 </div>
               </div>
               <div className="flex justify-center items-center h-[60px] border-t-1 border-[rgb(225,225,225)] gap-[30px]">

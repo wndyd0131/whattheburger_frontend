@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MenuContext } from "../../../pages/MenuCreate";
+import { MenuCreateContext } from "../../../pages/MenuCreate";
 import { ACTIONS } from "../../../pages/MenuCreate";
 import { SelectedOptionContext } from "./OptionModal";
 
@@ -13,7 +13,7 @@ const DecisionFooter = () => {
     selectedCustomRuleIdx,
     setCustomRules,
     setSelectedCustomRuleIdx
-  } = useContext(MenuContext);
+  } = useContext(MenuCreateContext);
 
   const handleClickSaveButton = () => {
     customRuleDispatch({

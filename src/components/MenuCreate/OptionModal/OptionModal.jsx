@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, useReducer } from "react";
-import { MenuContext } from "../../../pages/MenuCreate";
+import { MenuCreateContext } from "../../../pages/MenuCreate";
 import Modal from "../../Modal";
 import SearchBar from "./SearchBar";
 import SortSection from "./SortSection";
@@ -16,7 +16,7 @@ const OptionModal = () => {
   const {
     selectedOptionState,
     selectedOptionDispatch,
-  } = useContext(MenuContext);
+  } = useContext(MenuCreateContext);
 
   const [selectedOptionIdx, setSelectedOptionIdx] = useState(null);
   const [selectedOptionTraitIdx, setSelectedOptionTraitIdx] = useState(null);
@@ -31,6 +31,7 @@ const OptionModal = () => {
     measureType: "",
     measureValue: "",
     defaultSelection: 0,
+    optionTraitId: null,
     optionTraitExtraPrice: 0,
     optionTraitExtraCalories: 0
   });

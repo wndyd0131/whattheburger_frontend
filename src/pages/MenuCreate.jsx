@@ -5,11 +5,12 @@ import ProductDetailInput from "../components/MenuCreate/ProductDetailInput.jsx"
 import CustomizationDetailInput from "../components/MenuCreate/CustomizationDetailInput.jsx";
 import OptionModal from "../components/MenuCreate/OptionModal/OptionModal.jsx";
 
-export const MenuContext = createContext();
+export const MenuCreateContext = createContext();
 
 export const ACTIONS = {
   ADD_CUSTOMRULE: 'addCustomRule',
   SAVE_CUSTOMRULE: 'saveCustomRule',
+  DELETE_CUSTOMRULE: 'deleteCustomRule',
   ADD_OPTION: 'addOption',
   SAVE_OPTION: 'saveOption',
   DELETE_OPTION: 'deleteOption',
@@ -31,6 +32,10 @@ const MenuCreate = () => {
             options: []
           }
         ];
+      case ACTIONS.DELETE_CUSTOMRULE:
+        console.log(state);
+        return state.filter((_, idx) => idx !== action.payload.customRuleIdx);
+        
       case ACTIONS.SAVE_CUSTOMRULE:
         return state.map((customRule, customRuleIdx) => 
           customRuleIdx === action.payload.selectedCustomRuleIdx
@@ -58,7 +63,10 @@ const MenuCreate = () => {
         };
         const newOption = {
           elementId: elementId,
-          option: option,
+          optionId: option.optionId,
+          optionName: option.optionName,
+          optionCalories: option.optionCalories,
+          imageSource: option.imageSource,
           isDefault: false,
           defaultQuantity: 1,
           maxQuantity: 1,
@@ -89,6 +97,7 @@ const MenuCreate = () => {
               measureValue: optionDetail.measureValue,
               optionTrait: {
                 elementId: optionTraitDetail.elementId,
+                optionTraitId: optionTraitDetail.optionTraitId,
                 defaultSelection: optionTraitDetail.defaultSelection,
                 optionTraitExtraPrice: optionTraitDetail.extraPrice,
                 extraCalories: optionTraitDetail.extraCalories
@@ -147,14 +156,24 @@ const MenuCreate = () => {
   const handleClickCreateButton = async () => {
     const customRuleRequests = [];
 
-    customRules.map((customRule, customRuleIdx) => {
+    customRuleState.map((customRule, customRuleIdx) => {
       const optionRequests = [];
+      console.log(customRule);
 
       customRule.options.map((option, optionIdx) => {
+        console.log(option);
         const optionTraitRequests = [];
+        if (option.optionTrait.optionTraitId !== null) {
+          optionTraitRequests.push({
+            optionTraitId: option.optionTrait.optionTraitId,
+            defaultSelection: option.optionTrait.defaultSelection,
+            optionTraitExtraPrice: option.optionTrait.optionTraitExtraPrice,
+            extraCalories: option.optionTrait.extraCalories
+          })
+        }
 
         optionRequests.push({
-          optionId: option.item.optionId,
+          optionId: option.optionId,
           isDefault: option.isDefault,
           measureType: option.measureType === "" ? null : option.measureType,
           defaultQuantity: option.defaultQuantity,
@@ -220,13 +239,11 @@ const MenuCreate = () => {
   }, [])
 
   return (
-    <MenuContext.Provider value={{
+    <MenuCreateContext.Provider value={{
       customRuleState: customRuleState,
       customRuleDispatch: customRuleDispatch,
       selectedOptionState: selectedOptionState,
       selectedOptionDispatch: selectedOptionDispatch,
-      customRules: customRules, // temporary
-      setCustomRules: setCustomRules, // temporary
       options: options,
       optionTraits: optionTraits,
       selectedCustomRuleIdx: selectedCustomRuleIdx,
@@ -269,7 +286,7 @@ const MenuCreate = () => {
             <OptionModal/>
           }
       </div>
-    </MenuContext.Provider>
+    </MenuCreateContext.Provider>
   );
 }
 

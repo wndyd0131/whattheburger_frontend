@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import styles from '/src/styles/CustomizationDetailInput.module.css';
-import { MenuContext } from '../../pages/MenuCreate';
+import { MenuCreateContext } from '../../pages/MenuCreate';
 import { ACTIONS } from '../../pages/MenuCreate';
 
 const CustomizationDetailInput = ({
@@ -21,11 +21,9 @@ const CustomizationDetailInput = ({
     customRuleDispatch,
     selectedOptionState,
     selectedOptionDispatch,
-    customRules, // temporary
-    setCustomRules, // temporary
     setSelectedOptions,
     setSelectedCustomRuleIdx,
-  } = useContext(MenuContext);
+  } = useContext(MenuCreateContext);
 
   const [addButtonClicked, setAddButtonClicked] = useState(false);
 
@@ -81,9 +79,20 @@ const CustomizationDetailInput = ({
     });
   }
 
-  const handleClickDeleteGridButton = (gridIdx) => {
-    setCustomRules((prev) => prev.filter((_, i) => i !== gridIdx));
-    setSelectedOptions([]);
+  const handleClickDeleteGridButton = (customRuleIdx) => {
+    customRuleDispatch(
+      {
+        type: ACTIONS.DELETE_CUSTOMRULE,
+        payload: {
+          customRuleIdx: customRuleIdx
+        }
+      }
+    );
+    customRuleDispatch(
+      {
+        type: ACTIONS.INIT_SELECTED_OPTIONS
+      }
+    )
   }
 
   const handleClickSaveButton = () => {
@@ -96,7 +105,6 @@ const CustomizationDetailInput = ({
         options: []
       };
       customRuleDispatch({type: ACTIONS.ADD_CUSTOMRULE, payload: obj})
-      setCustomRules((prev) => [...prev, obj]);
       setAddButtonClicked(false);
     }
   }
@@ -131,8 +139,8 @@ const CustomizationDetailInput = ({
         <h2>Custom Rule</h2>
         <button className={`${styles.customRuleButton} ${addButtonClicked ? styles.clicked: ""}`} disabled={addButtonClicked} onClick={() => handleClickAddButton()}>Add</button>
       
-        <div className={`${styles.customizationContainer} ${customRules.length > 0 || addButtonClicked ? "" : styles.empty}`}>
-          {addButtonClicked || customRules.length > 0 ? 
+        <div className={`${styles.customizationContainer} ${customRuleState.length > 0 || addButtonClicked ? "" : styles.empty}`}>
+          {addButtonClicked || customRuleState.length > 0 ? 
           <>          
             <div className={styles.customizationHead}>
             <div className={styles.customizationHeadGrid}>
@@ -149,7 +157,7 @@ const CustomizationDetailInput = ({
             </div>
           </div>
           {
-            customRules.map((customRule, customRuleIdx) => {
+            customRuleState.map((customRule, customRuleIdx) => {
               return (
               <div key={customRuleIdx} className={styles.customizationGrid}>
                 <div className={styles.customizationInfo}>

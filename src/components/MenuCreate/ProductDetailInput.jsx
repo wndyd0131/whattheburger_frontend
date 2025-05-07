@@ -49,7 +49,7 @@ const ProductDetailInput = ({
             </option>
           </select>
           <label htmlFor="briefInfoInput">Brief Information</label>
-          <input id="briefInfoInput" className={styles.productInput} name="briefInfo" value={briefInfo} placeholder="brief information about new product" onChange={() => setBriefInfo()}/>
+          <input id="briefInfoInput" className={styles.productInput} name="briefInfo" value={briefInfo} placeholder="brief information about new product" onChange={(e) => setBriefInfo(e.target.value)}/>
         </div>
         <label>Category *</label>
           <div className="flex flex-wrap w-full justify-start gap-5">

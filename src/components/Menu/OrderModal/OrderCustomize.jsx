@@ -154,18 +154,29 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
         {customRules.map((customRule, rowIdx) => 
           <div key={rowIdx}>
             <h1>{customRule.customRuleName}</h1>
-            <div className="order-customize-grid-container">
+            <div className="grid border-1 grid-cols-3 border-[rgb(225,225,225)]">
+              {console.log("CR", customRule)}
               {customRule.productOptions.map((productOption, optionIdx) => {
                 const currentIngredientOption = currentIngredients.ingredients[rowIdx]?.productOptions[optionIdx];
                 const extraPrice = currentIngredientOption ? currentIngredientOption.extraPrice * currentIngredientOption.optionQuantity : productOption.extraPrice;
                 const calories = currentIngredientOption ? currentIngredientOption.calories * currentIngredientOption.optionQuantity : productOption.calories;
                 const extraPriceText = extraPrice > 0 ? `$${extraPrice.toFixed(2)}` : "No Extra Charge";
                 return (
-                  <div key={optionIdx} className="order-customize-grid">
-                    <div className="option-image-container"></div>
-                    <div className="option-detail-container">
-                      <div className="option-trait-container">
+                  <div key={optionIdx} className="flex justify-center p-5">
+                    <div className="flex flex-col">
+                      <div className="border-1 border-[rgb(225,225,225)] w-[200px] h-[250px] rounded-2xl">
+                        <div className="flex min-h-[150px] w-full"></div> {/* image */}
+                        <div className="flex flex-col flex-grow justify-center p-2">
+                          <span className="text-[17px]"><strong>{productOption.name}</strong></span>
+                          <p>{extraPriceText}</p>
+                          <p>{calories}Cal</p>
+                        </div>
+                      </div>
+
+                      <div className="flex h-[60px]">
+                        {console.log(productOption.optionTraitResponses)}
                         {productOption.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
+                          console.log(optionTrait.name);
                           switch(optionTrait.name) {
                             case "TBS":
                               const currentIngredientOptionTrait = currentIngredients.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx];
@@ -211,11 +222,6 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
                               )
                           }
                         })}
-                      </div>
-                      <div className="option-detail">
-                        <h3>{productOption.name}</h3>
-                        <p>{extraPriceText}, {calories}Cal</p>
-                        {/* <p>{(productOption.extraPrice) > 0 ? `$${productOption.extraPrice.toFixed(2)}` : "No Extra Charge"}, {productOption.calories}Cal</p> */}
                       </div>
                       { renderByCustomRuleType(productOption, rowIdx, optionIdx) }
                     </div>
