@@ -7,12 +7,9 @@ import { ACTIONS } from "../../pages/Menu";
 const MenuBox = ({product, productIdx, imgSrc, calories}) => {
 
   const {
-    setSelectedProductIdx,
+    setSelectedProduct,
     setProductResponse,
-    customRuleState,
-    dispatchCustomRule,
-    selectedOptionState,
-    dispatchSelectedOption
+    dispatchOrder
   } = useContext(MenuContext);
 
   const handleClickStartOrderButton = () => {
@@ -20,13 +17,7 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
     .then(response => {
       console.log("RESPONSE: ", response.data);
       const optionResponse = response.data.optionResponses;
-      dispatchCustomRule({
-        type: ACTIONS.LOAD_CUSTOMRULES,
-        payload: {
-          optionResponse: optionResponse
-        }
-      })
-      dispatchSelectedOption({
+      dispatchOrder({
         type: ACTIONS.LOAD_OPTIONS,
         payload: {
           optionResponse: optionResponse
@@ -35,7 +26,7 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
       setProductResponse(response.data);
     })
     .catch(error => console.error(error));
-    setSelectedProductIdx(productIdx);
+    setSelectedProduct(product);
   }
 
   return (

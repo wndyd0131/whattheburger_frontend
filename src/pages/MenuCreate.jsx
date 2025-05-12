@@ -16,7 +16,7 @@ export const ACTIONS = {
   DELETE_OPTION: 'deleteOption',
   INIT_SELECTED_OPTIONS: 'initSelectedOptions',
   LOAD_SELECTED_OPTIONS: 'loadSelectedOptions'
-}
+};
 
 const MenuCreate = () => {
   const customRuleReducer = (state, action) => {

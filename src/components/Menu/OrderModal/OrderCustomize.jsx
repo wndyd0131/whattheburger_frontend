@@ -1,4 +1,16 @@
-const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}) => {
+import { useContext } from "react";
+import { MenuContext } from "../../../contexts/MenuContext";
+
+const OrderCustomize = () => {
+
+  const {
+    customRules, // temporary
+    currentIngredients, // temporary
+    setCurrentIngredients, // temporary
+    orderState,
+    dispatchOrder
+  } = useContext(MenuContext);
+
   const handleClickToggleButton = (rowIdx, optionIdx, optionTraitIdx) => {
     const updatedObject = structuredClone(currentIngredients);
     const optionTrait = updatedObject.ingredients[rowIdx].productOptions[optionIdx]?.optionTraitResponses[optionTraitIdx];
@@ -151,13 +163,13 @@ const OrderCustomize = ({customRules, currentIngredients, setCurrentIngredients}
     <div className="order-customize-section">
       <div className="start-customize-container"></div>
       <div className="order-customize-container">
-        {customRules.map((customRule, rowIdx) => 
+        {orderState.customRules.items.map((customRule, rowIdx) => 
           <div key={rowIdx}>
             <h1>{customRule.customRuleName}</h1>
             <div className="grid border-1 grid-cols-3 border-[rgb(225,225,225)]">
               {console.log("CR", customRule)}
-              {customRule.productOptions.map((productOption, optionIdx) => {
-                const currentIngredientOption = currentIngredients.ingredients[rowIdx]?.productOptions[optionIdx];
+              {customRule.optionDetails.map((productOption, optionIdx) => {
+                const currentIngredientOption = orderState.selections.items[rowIdx]?.optionDetails[optionIdx];
                 const extraPrice = currentIngredientOption ? currentIngredientOption.extraPrice * currentIngredientOption.optionQuantity : productOption.extraPrice;
                 const calories = currentIngredientOption ? currentIngredientOption.calories * currentIngredientOption.optionQuantity : productOption.calories;
                 const extraPriceText = extraPrice > 0 ? `$${extraPrice.toFixed(2)}` : "No Extra Charge";

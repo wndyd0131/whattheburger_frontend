@@ -7,8 +7,8 @@ import OrderModal from "../components/Menu/OrderModal/OrderModal";
 import { MenuContext } from "../contexts/MenuContext";
 
 export const ACTIONS = {
-  LOAD_CUSTOMRULES: 'loadCustomRules',
-  LOAD_OPTIONS: 'loadOptions'
+  LOAD_OPTIONS: 'loadOptions',
+  LOAD_DEFAULT: 'loadDefault'
 };
 
 const Menu = (props) => {
@@ -33,12 +33,12 @@ const Menu = (props) => {
   const [products, setProducts] = useState([]);
   const [productResponse, setProductResponse] = useState(null);
   const [customRules, setCustomRules] = useState([]);
-  const [selectedProductIdx, setSelectedProductIdx] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const selectedOptionReducer = (state, action) => {
     switch(action.type) {
-      case LOAD_OPTIONS:
+      case ACTIONS.LOAD_OPTIONS:
         const optionResponse = action.payload.optionResponse;
         const updatedState = structuredClone(state);
 
@@ -48,6 +48,8 @@ const Menu = (props) => {
             ...option,
             optionQuantity: option.defaultQuantity
           };
+          let totalCalories = 0;
+
 
           if (!updatedState[orderIndex]) {
             const customRuleName = option.customRuleResponse.name;
@@ -64,39 +66,89 @@ const Menu = (props) => {
           else {
             updatedState[orderIndex].productOptions.push(null);
           }
-          return updatedState;
         })
+        return updatedState;
     }
   }
-  const [selectedOptionState, dispatchSelectedOption] = useReducer(selectedOptionReducer, []);
+  const [selectedOptionState, dispatchSelectedOption] = useReducer();
 
-  const customRuleReducer = (state, action) => {
+  const orderReducer = (state, action) => {
+
     switch(action.type) {
-      case LOAD_CUSTOMRULES:
-        const optionResponse = action.payload.optionResponse;
+      case ACTIONS.LOAD_OPTIONS: {
         const updatedState = structuredClone(state);
-
+        const optionResponse = action.payload.optionResponse;
+        const customRules = [];
+        const selections = [];
+        let totalCalories = 0;
+        
         optionResponse.forEach((option) => {
-          const orderIndex = option.customRuleResponse.orderIndex;
-          const orderObject = {
+          const customRuleIdx = option.customRuleResponse.orderIndex;
+          
+          const optionDetailObject = {
             ...option,
             optionQuantity: option.defaultQuantity
           };
 
-          if (!updatedState[orderIndex]) {
+          if (!customRules[customRuleIdx]) {
             const customRuleName = option.customRuleResponse.name;
-            updatedState[orderIndex] = {customRuleName: customRuleName, productOptions: []};
+            customRules[customRuleIdx] = {
+              customRuleName: customRuleName,
+              optionDetails: []
+            };
+            selections[customRuleIdx] = {
+              customRuleName: customRuleName,
+              optionDetails: [],
+              totalCount: 0
+            }
           }
-          for (let i = 0; i < orderObject.optionTraitResponses.length; i++) {
-            orderObject.optionTraitResponses[i].currentSelection = orderObject.optionTraitResponses[i].defaultSelection;
-          }
-          updatedState[orderIndex].productOptions.push(orderObject);
+          optionDetailObject.optionTraitResponses.forEach((optionTraitResponse) => {
+            optionTraitResponse.currentSelection = optionTraitResponse.defaultSelection;
+          });
+          customRules[customRuleIdx].optionDetails.push(optionDetailObject);
 
-          return updatedState;
-        })
+          if (optionDetailObject.isDefault) {
+            selections[customRuleIdx].optionDetails.push(optionDetailObject);
+            selections[customRuleIdx].totalCount++;
+            totalCalories += optionDetailObject.calories;
+          }
+          else {
+            selections[customRuleIdx].optionDetails.push(null);
+          }
+        });
+        updatedState.customRules.items = customRules;
+        updatedState.selections.items = selections;
+        updatedState.defaultSelections.items = selections;
+        updatedState.selections.totalCalories = totalCalories;
+        updatedState.defaultSelections.totalCalories = totalCalories;
+        return updatedState;
+      }
+      case ACTIONS.LOAD_DEFAULT: {
+        const updatedState = structuredClone(state);
+        updatedState.defaultSelections = updatedState.selections;
+      }
+      default:
+        return state;
     }
   }
-  const [customRuleState, dispatchCustomRule] = useReducer(customRuleReducer, []);
+  const [orderState, dispatchOrder] = useReducer(
+    orderReducer,
+    {
+      customRules: {
+        items: []
+      },
+      selections: {
+        totalExtraPrice: 0,
+        totalCalories: 0,
+        items: []
+      },
+      defaultSelections: {
+        totalExtraPrice: 0,
+        totalCalories: 0,
+        items: []
+      }
+    }
+  );
 
   useEffect(() => { /* Get Product By Category */
     axios.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
@@ -105,12 +157,12 @@ const Menu = (props) => {
   }, []);
 
   useEffect(() => { /* Get Product By Product Id */
-    if (!selectedProductIdx) return;
+    if (!selectedProduct) return;
 
     setIsLoading(true);
     setCustomRules([]);
 
-    axios.get(`http://localhost:8080/api/v1/products/${selectedProductIdx.productId}`)
+    axios.get(`http://localhost:8080/api/v1/products/${selectedProduct.productId}`)
     .then(response => {
       console.log("RESPONSE: ", response.data);
       const optionLength = response.data.optionResponses.length;
@@ -150,11 +202,10 @@ const Menu = (props) => {
     })
     .catch(error => console.error("Error: ", error))
     .finally(() => setIsLoading(false));
-  }, [selectedProductIdx]);
+  }, [selectedProduct]);
 
   {
-    console.log("CSS: ", customRuleState);
-    console.log("SOS: ", selectedOptionState);
+    console.log("OS: ", orderState);
   }
 
   return (
@@ -162,25 +213,24 @@ const Menu = (props) => {
       categoryList: categoryList,
       products: products,
       customRules: customRules,
+      currentIngredients: currentIngredients,
       setCustomRules: setCustomRules,
       setProducts: setProducts,
       selectedCategory: selectedCategory,
       setSelectedCategory: setSelectedCategory,
-      selectedProductIdx: selectedProductIdx,
-      setSelectedProductIdx: setSelectedProductIdx,
+      selectedProduct: selectedProduct,
+      setSelectedProduct: setSelectedProduct,
       setCurrentIngredients: setCurrentIngredients,
       setProductResponse: setProductResponse,
-      customRuleState: customRuleState,
-      dispatchCustomRule: dispatchCustomRule,
-      selectedOptionState: selectedOptionState,
-      dispatchSelectedOption: dispatchSelectedOption
+      orderState: orderState,
+      dispatchOrder: dispatchOrder
     }}>
       <div className="flex flex-col pt-[150px] px-[200px]">
         <div className="flex justify-center items-start rounded-[40px] h-[100vh] pb-[50px]">
           <CategoryNav/>
           <MenuContainer/>
         </div>
-        {selectedProductIdx !== null && (
+        {selectedProduct !== null && (
           <OrderModal/>
         )}
       </div>

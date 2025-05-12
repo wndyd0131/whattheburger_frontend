@@ -14,28 +14,49 @@ const OrderModal = () => {
     position: "relative"
   }
 
-  const [setConfirmModalOpened, confirmModalOpened] = useState(false);
+  const {
+    selectedProduct,
+    setSelectedProduct,
+    setCustomRules,
+    currentIngredients, // temporary
+    setCurrentIngredients, // temporary
+    defaultIngredients, //temporary
+    isLoading, //temporary
+    customRules,
+  } = useContext(MenuContext);
+
+  const [confirmModalOpened, setConfirmModalOpened] = useState(false);
+  const confirmModalMessage = "Are you sure you want to cancel order?";
 
   const handleClickCloseButton = () => {
     setConfirmModalOpened(true);
   }
 
+  const handleConfirmCloseButton = () => {
+    setConfirmModalOpened(false);
+    setSelectedProduct(null);
+    setCustomRules([]);
+    setCurrentIngredients({totalExtraPrice: 0, ingredients: []});
+  }
+
   return (
+    <>
     <Modal
       height={modalStyle.height}
       width={modalStyle.width}
       flexDirection={modalStyle.flexDirection}
       position={modalStyle.position}
     >
-      {confirmModalOpened && (
-        <ConfirmModal setConfirmModalOpened={setConfirmModalOpened}/>
-        )}
-        <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
-          X
-        </div>
-        <OrderSummary product={selectedProductIdx} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} defaultIngredients={defaultIngredients} isLoading={isLoading}/>
-        <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
+      <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
+        X
+      </div>
+      <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} defaultIngredients={defaultIngredients} isLoading={isLoading}/>
+      <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
     </Modal>
+    {confirmModalOpened && (
+      <ConfirmModal setConfirmModalOpened={setConfirmModalOpened} message={confirmModalMessage} handlerFunction={handleConfirmCloseButton}/>
+    )}
+    </>
   );
 }
 
