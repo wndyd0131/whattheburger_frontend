@@ -11,7 +11,7 @@ const OrderSummaryDetail = ({setConfirmModalOpened}) => {
   }
 
   return (
-    <div className="flex flex-col relative flex-grow p-[30px] overflow-y-auto border-t-1 border-[rgb(197,197,197)]">
+    <div className="flex flex-col basis-3/6 relative p-[30px] overflow-y-auto border-t-1 border-[rgb(197,197,197)]">
       <div className="flex flex-col absolute top-[20px] right-[0px]">
         <div className="flex justify-center items-center w-[70px] h-[30px] rounded-[20px] text-[15px] text-white bg-[#FE7800] my-[10px] cursor-pointer" onClick={() => handleClickDefaultButton()}>
           default
@@ -20,13 +20,13 @@ const OrderSummaryDetail = ({setConfirmModalOpened}) => {
       <h2 className="flex self-center font-['Whatafont'] text-[30px] text-[rgb(63,63,63)]">[Order Summary]</h2>
       <div className="flex flex-col flex-grow pt-[10px] pl-[30px]">
         <ul>
-          {orderState.selections.items.map((customRule, idx) => {
-            if (customRule.totalCount > 0) {
+          {orderState.currentSelections.items.map((customRule, idx) => {
+            if (customRule.selectedCount > 0) {
               return (
                 <div className="flex flex-col gap-[5px] mb-[15px]" key={idx}>
                   <h3 className="font-['Whatafont'] text-[#FE7800] text-[25px] underline">{customRule.customRuleName}</h3>
                   {customRule.optionDetails.map((option, idx) => 
-                    option ? 
+                    option.isSelected ? 
                     <li className="font-['Whatafont']" key={idx}>
                       {option.name} {option.optionQuantity > 1 ? `(x${option.optionQuantity})` : ""}
                         {option.optionTraitResponses.map((optionTrait, optionTraitIdx) => {

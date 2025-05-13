@@ -25,7 +25,7 @@ const SelectedOptionSection = () => {
       maxQuantity: selectedOptionState[optionIdx].maxQuantity,
       extraPrice: selectedOptionState[optionIdx].extraPrice,
       orderIndex: selectedOptionState[optionIdx].orderIndex,
-      measureTypeButton: selectedOptionState[optionIdx].measureTypeButton,
+      countType: selectedOptionState[optionIdx].countType,
       measureType: selectedOptionState[optionIdx].measureType,
       measureValue: selectedOptionState[optionIdx].measureValue,
       defaultSelection: selectedOptionState[optionIdx].optionTrait.defaultSelection,

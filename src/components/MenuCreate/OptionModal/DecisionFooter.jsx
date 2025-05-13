@@ -24,9 +24,6 @@ const DecisionFooter = () => {
       }
     });
 
-    const updatedcustomRules = structuredClone(customRules);
-    updatedcustomRules[selectedCustomRuleIdx].options = selectedOptionState;
-    setCustomRules(updatedcustomRules);
     closeOptionModal();
     // successfully saved notification
   }

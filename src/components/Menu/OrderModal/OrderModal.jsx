@@ -8,8 +8,6 @@ import { MenuContext } from "../../../contexts/MenuContext";
 const OrderModal = () => {
 
   const modalStyle = {
-    height: 800,
-    width: 1400,
     flexDirection: "row",
     position: "relative"
   }

@@ -37,7 +37,7 @@ const OrderSummary = () => {
     (
       <ConfirmModal setConfirmModalOpened={setConfirmModalOpened} message={confirmModalMessage} handlerFunction={handleConfirmDefaultButton}/>
     )}
-    <div className="flex flex-col justify-between border-r-1 border-r-[rgb(197,197,197)] w-[450px] h-[800px] bg-white">
+    <div className="flex flex-col justify-between border-r-1 border-r-[rgb(197,197,197)] basis-1/4 bg-white">
       <ProductInfo/>
       <OrderSummaryDetail setConfirmModalOpened={setConfirmModalOpened}/>
       <DecisionFooter/>

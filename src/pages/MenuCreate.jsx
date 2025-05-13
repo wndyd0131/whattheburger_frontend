@@ -72,7 +72,7 @@ const MenuCreate = () => {
           maxQuantity: 1,
           extraPrice: 0,
           orderIndex: nextIdx,
-          measureTypeButton: "SINGLE",
+          countType: "SINGLE",
           optionTrait: emptyOptionTrait
         };
         return [...state, newOption];
@@ -80,8 +80,6 @@ const MenuCreate = () => {
       case ACTIONS.SAVE_OPTION:
         const optionDetail = action.payload.optionDetail;
         const optionTraitDetail = action.payload.optionTraitDetail;
-        console.log("OD", optionDetail);
-        console.log("OTD", optionTraitDetail);
 
         return state.map(((selectedOption, _selectedOptionIdx) => 
           _selectedOptionIdx === action.payload.selectedOptionIdx 
@@ -92,7 +90,7 @@ const MenuCreate = () => {
               maxQuantity: optionDetail.maxQuantity,
               extraPrice: optionDetail.extraPrice,
               orderIndex: optionDetail.orderIndex,
-              measureTypeButton: optionDetail.measureTypeButton,
+              countType: optionDetail.countType,
               measureType: optionDetail.measureType,
               measureValue: optionDetail.measureValue,
               optionTrait: {
@@ -148,8 +146,6 @@ const MenuCreate = () => {
   const [customRuleType, setCustomRuleType] = useState("");
   const [minSelection, setMinSelection] = useState(0);
   const [maxSelection, setMaxSelection] = useState(0);
-  const [customRules, setCustomRules] = useState([]);
-  const [requestObject, setRequestObject] = useState({});
 
   const [selectedCustomRuleIdx, setSelectedCustomRuleIdx] = useState(null);
 
@@ -172,10 +168,15 @@ const MenuCreate = () => {
           })
         }
 
+        const countType = option.countType === "SINGLE" || option.countType === "COUNTABLE" ? "COUNTABLE" : "UNCOUNTABLE";
+        const measureType = option.measureType === "" || option.measureType === undefined ? null : option.measureType;
+        const measureValue = option.measureValue === "" || option.measureValue === undefined ? null : option.measureValue;
         optionRequests.push({
           optionId: option.optionId,
           isDefault: option.isDefault,
-          measureType: option.measureType === "" ? null : option.measureType,
+          countType: countType,
+          measureType: measureType,
+          measureValue: measureValue,
           defaultQuantity: option.defaultQuantity,
           maxQuantity: option.maxQuantity,
           extraPrice: option.extraPrice,

@@ -6,14 +6,13 @@ const ProductInfo = () => {
 
   const {
     selectedProduct,
-    currentIngredients,
     orderState
   } = useContext(MenuContext)
 
   const [selectedButton, setSelectedButton] = useState("");
 
   return (
-    <div className="flex flex-col items-center w-full h-[350px]">
+    <div className="flex basis-2/6 flex-col items-center">
       <MenuImageContainer width="200px" height="180px" imgSrc="/src/assets/private/menu/Whataburger31.png"/>
       <div className="flex flex-col gap-[10px]">
         <h1>{selectedProduct.productName}</h1>
@@ -21,7 +20,7 @@ const ProductInfo = () => {
           <button className={selectedButton === "ONLY" ? "active" : ""} onClick={() => setSelectedButton("ONLY")} disabled={selectedButton === "ONLY"}>ONLY</button>
           <button className={selectedButton === "MEAL" ? "active" : ""} onClick={() => setSelectedButton("MEAL")} disabled={selectedButton === "MEAL"}>MEAL</button>
         </div>
-        <h2>${(selectedProduct.productPrice + orderState.selections.totalExtraPrice).toFixed(2)} | {orderState.selections.totalCalories}Cal</h2>
+        <h2>${(selectedProduct.productPrice + orderState.currentSelections.totalExtraPrice).toFixed(2)} | {orderState.currentSelections.totalCalories}Cal</h2>
         <div className="flex justify-center items-center text-[#FE7800]">
           <strong className="cursor-pointer">Show Nutrition</strong>
         </div>

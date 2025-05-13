@@ -8,7 +8,8 @@ import { MenuContext } from "../contexts/MenuContext";
 
 export const ACTIONS = {
   LOAD_OPTIONS: 'loadOptions',
-  LOAD_DEFAULT: 'loadDefault'
+  LOAD_DEFAULT: 'loadDefault',
+  MODIFY_SELECTION: 'modifySelection'
 };
 
 const Menu = (props) => {
@@ -36,50 +37,49 @@ const Menu = (props) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const selectedOptionReducer = (state, action) => {
-    switch(action.type) {
-      case ACTIONS.LOAD_OPTIONS:
-        const optionResponse = action.payload.optionResponse;
-        const updatedState = structuredClone(state);
-
-        optionResponse.forEach((option) => {
-          const orderIndex = option.customRuleResponse.orderIndex;
-          const orderObject = {
-            ...option,
-            optionQuantity: option.defaultQuantity
-          };
-          let totalCalories = 0;
-
-
-          if (!updatedState[orderIndex]) {
-            const customRuleName = option.customRuleResponse.name;
-            updatedState[orderIndex] = {customRuleName: customRuleName, productOptions: [], totalCount: 0};
-          }
-          for (let i = 0; i < orderObject.optionTraitResponses.length; i++) {
-            orderObject.optionTraitResponses[i].currentSelection = orderObject.optionTraitResponses[i].defaultSelection;
-          }
-          if (orderObject.isDefault === true) {
-            updatedState[orderIndex].productOptions.push(orderObject);
-            updatedState[orderIndex].totalCount++;
-            totalCalories += orderObject.calories;
-          }
-          else {
-            updatedState[orderIndex].productOptions.push(null);
-          }
-        })
-        return updatedState;
-    }
-  }
-  const [selectedOptionState, dispatchSelectedOption] = useReducer();
-
   const orderReducer = (state, action) => {
 
     switch(action.type) {
+      case ACTIONS.MODIFY_SELECTION: {
+        const {
+          customRuleIdx,
+          customRuleType,
+          optionId,
+        } = action.payload;
+        const updatedState = structuredClone(state);
+        switch(customRuleType) {
+          case "UNIQUE": {
+            let oldExtraPrice = 0;
+            let oldCalories = 0;
+            let newExtraPrice = 0;
+            let newCalories = 0;
+            updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+              if (optionDetail.isSelected) {
+                oldExtraPrice = optionDetail.extraPrice;
+                oldCalories = optionDetail.calories;
+              }
+              if (optionDetail.optionId === optionId) {
+                optionDetail.isSelected = true;
+                newExtraPrice = optionDetail.extraPrice;
+                newCalories = optionDetail.calories;
+              } else {
+                optionDetail.isSelected = false;
+              }
+            });
+
+            updatedState.currentSelections.totalExtraPrice = updatedState.currentSelections.totalExtraPrice - oldExtraPrice + newExtraPrice;
+            updatedState.currentSelections.totalCalories = updatedState.currentSelections.totalCalories - oldCalories + newCalories;
+            
+            return updatedState;
+          }
+          default:
+            return state;
+        }
+      }
       case ACTIONS.LOAD_OPTIONS: {
         const updatedState = structuredClone(state);
         const optionResponse = action.payload.optionResponse;
         const customRules = [];
-        const selections = [];
         let totalCalories = 0;
         
         optionResponse.forEach((option) => {
@@ -87,45 +87,42 @@ const Menu = (props) => {
           
           const optionDetailObject = {
             ...option,
-            optionQuantity: option.defaultQuantity
+            optionQuantity: option.defaultQuantity,
+            isSelected: false
           };
 
           if (!customRules[customRuleIdx]) {
             const customRuleName = option.customRuleResponse.name;
+            const customRuleType = option.customRuleResponse.customRuleType;
             customRules[customRuleIdx] = {
               customRuleName: customRuleName,
-              optionDetails: []
-            };
-            selections[customRuleIdx] = {
-              customRuleName: customRuleName,
+              customRuleType: customRuleType,
               optionDetails: [],
-              totalCount: 0
-            }
+              selectedCount: 0
+            };
           }
           optionDetailObject.optionTraitResponses.forEach((optionTraitResponse) => {
             optionTraitResponse.currentSelection = optionTraitResponse.defaultSelection;
           });
-          customRules[customRuleIdx].optionDetails.push(optionDetailObject);
-
+          
           if (optionDetailObject.isDefault) {
-            selections[customRuleIdx].optionDetails.push(optionDetailObject);
-            selections[customRuleIdx].totalCount++;
+            optionDetailObject.isSelected = true;
+            customRules[customRuleIdx].selectedCount++;
             totalCalories += optionDetailObject.calories;
           }
-          else {
-            selections[customRuleIdx].optionDetails.push(null);
-          }
+
+          customRules[customRuleIdx].optionDetails.push(optionDetailObject);
         });
-        updatedState.customRules.items = customRules;
-        updatedState.selections.items = selections;
-        updatedState.defaultSelections.items = selections;
-        updatedState.selections.totalCalories = totalCalories;
+        updatedState.currentSelections.items = customRules;
+        updatedState.defaultSelections.items = customRules;
+        updatedState.currentSelections.totalCalories = totalCalories;
         updatedState.defaultSelections.totalCalories = totalCalories;
         return updatedState;
       }
       case ACTIONS.LOAD_DEFAULT: {
         const updatedState = structuredClone(state);
-        updatedState.defaultSelections = updatedState.selections;
+        updatedState.currentSelections = updatedState.defaultSelections;
+        return updatedState;
       }
       default:
         return state;
@@ -134,10 +131,7 @@ const Menu = (props) => {
   const [orderState, dispatchOrder] = useReducer(
     orderReducer,
     {
-      customRules: {
-        items: []
-      },
-      selections: {
+      currentSelections: {
         totalExtraPrice: 0,
         totalCalories: 0,
         items: []

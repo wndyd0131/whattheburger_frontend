@@ -44,7 +44,7 @@ const OptionDetailFooter = () => {
       maxQuantity: formData.maxQuantity,
       extraPrice: formData.extraPrice,
       orderIndex: formData.orderIndex,
-      measureTypeButton: formData.measureTypeButton,
+      countType: formData.countType,
       measureType: formData.measureType,
       measureValue: formData.measureValue,
     }
