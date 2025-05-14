@@ -1,13 +1,16 @@
+import { motion } from "framer-motion";
+
 const Navigation = () => {
   return (
-    <nav className="nav">
-      <a className="nav-menu" href="/menu">MENU</a>
-      <a href="#">REWARDS</a>
-      <a href="#">CAREERS</a>
-      <a href="https://shop.whataburger.com/">WHATASTORE</a>
-      <a href="#">STORIES</a>
-      <a href="#">COMMUNITY</a>
-      <a href="#">GROCERY</a>
+    <nav
+      className="nav">
+      <motion.a whileHover={{scale: 1.1}} className="nav-menu" href="/menu">MENU</motion.a>
+      <motion.a whileHover={{scale: 1.1}} href="#">REWARDS</motion.a>
+      <motion.a whileHover={{scale: 1.1}} href="#">CAREERS</motion.a>
+      <motion.a whileHover={{scale: 1.1}} href="#">WHATTHESTORE</motion.a>
+      <motion.a whileHover={{scale: 1.1}} href="#">STORIES</motion.a>
+      <motion.a whileHover={{scale: 1.1}} href="#">COMMUNITY</motion.a>
+      <motion.a whileHover={{scale: 1.1}} href="#">GROCERY</motion.a>
     </nav>
   );
 }

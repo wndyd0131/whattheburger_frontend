@@ -3,6 +3,7 @@ import MenuImageContainer from "../MenuImageContainer";
 import { MenuContext } from "../../contexts/MenuContext";
 import axios from "axios";
 import { ACTIONS } from "../../reducers/Menu/actions";
+import { motion } from "framer-motion";
 
 const MenuBox = ({product, productIdx, imgSrc, calories}) => {
 
@@ -34,7 +35,10 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
   }
 
   return (
-    <div className="flex flex-col border-1 border-[rgb(226,226,226)] rounded-[15px] w-[300px] justify-self-center self-center justify-center items-center text-[#FE7800] font-['Whatafont']">
+    <motion.div
+      initial={{opacity: 0}}
+      whileInView={{opacity: 1}}
+      className="flex flex-col border-1 border-[rgb(226,226,226)] rounded-[15px] w-[300px] justify-self-center self-center justify-center items-center text-[#FE7800] font-['Whatthefont']">
       <MenuImageContainer width="100%" height="220px" imgSrc={imgSrc}/>
       <div className="flex flex-col w-full h-[150px]">
         <div className="flex flex-col gap-[10px] px-[20px]">
@@ -46,14 +50,14 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
       <div className="flex justify-center items-center w-full mt-[30px] mb-[20px]">
         <a>
           <div 
-            className="flex justify-center items-center border-1 border-[#FE7800] font-['Whatafont'] text-[20px] text-[#FE7800] bg-white rounded-[100px] w-[200px] h-[45px] cursor-pointer hover:bg-[#FE7800] hover:text-white hover:transition-[0.5s]"
+            className="flex justify-center items-center border-1 border-[#FE7800] font-['Whatthefont'] text-[20px] text-[#FE7800] bg-white rounded-[100px] w-[200px] h-[45px] cursor-pointer hover:bg-[#FE7800] hover:text-white hover:transition-[0.5s]"
             onClick={() => handleClickStartOrderButton()}
           >
             Start Order
           </div>
         </a>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

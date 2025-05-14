@@ -1,8 +1,13 @@
+import { motion } from "framer-motion";
+
 const Footer = () => {
   return (
-    <div className="footer h-[400px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      className="footer h-[400px]">
       <h1>Footer</h1>
-    </div>
+    </motion.div>
   );
 }
 

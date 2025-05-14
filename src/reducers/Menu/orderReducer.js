@@ -3,8 +3,7 @@ import { ACTIONS } from "./actions";
 export const orderReducer = (state, action) => {
   switch(action.type) {
     case ACTIONS.INIT_SELECTION: {
-      const updatedState = structuredClone(state);
-      updatedState = {
+      const updatedState = {
         currentSelections: {
         totalExtraPrice: 0,
         totalCalories: 0,

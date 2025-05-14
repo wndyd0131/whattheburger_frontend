@@ -6,6 +6,7 @@ import MenuContainer from "../components/Menu/MenuContainer";
 import OrderModal from "../components/Menu/OrderModal/OrderModal";
 import { MenuContext } from "../contexts/MenuContext";
 import { orderReducer } from "../reducers/Menu/orderReducer";
+import { motion } from "framer-motion";
 
 const Menu = (props) => {
 
@@ -78,7 +79,7 @@ const Menu = (props) => {
       setIsLoading: setIsLoading
     }}>
       <div className="flex flex-col pt-[150px] px-[200px]">
-        <div className="flex justify-center items-start rounded-[40px] h-full pb-[50px]">
+        <div className="flex justify-center items-start rounded-[40px] pb-[50px]">
           <CategoryNav/>
           <MenuContainer/>
         </div>

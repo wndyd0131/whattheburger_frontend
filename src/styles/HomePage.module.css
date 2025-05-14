@@ -32,7 +32,7 @@
   border-radius: 50px;
   display: flex;
   justify-content: center;
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
   color: #FE7800;
   min-width: 90px;
   padding: 20px 20px 20px 20px;
@@ -131,8 +131,8 @@
 }
 
 @font-face {
-  font-family: "WhataFont";
-  src: url("/private/fonts/whata2.ttf") format("truetype");
+  font-family: "WhattheFont";
+  src: url("/private/fonts/whatthe2.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }

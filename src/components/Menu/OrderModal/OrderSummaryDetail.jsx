@@ -17,17 +17,17 @@ const OrderSummaryDetail = ({setConfirmModalOpened}) => {
           default
         </div>
       </div>
-      <h2 className="flex self-center font-['Whatafont'] text-[30px] text-[rgb(63,63,63)]">[Order Summary]</h2>
+      <h2 className="flex self-center font-['Whatthefont'] text-[30px] text-[rgb(63,63,63)]">[Order Summary]</h2>
       <div className="flex flex-col flex-grow pt-[10px] pl-[30px]">
         <ul>
           {orderState.currentSelections.items.map((customRule, idx) => {
             if (customRule.selectedCount > 0) {
               return (
                 <div className="flex flex-col gap-[5px] mb-[15px]" key={idx}>
-                  <h3 className="font-['Whatafont'] text-[#FE7800] text-[25px] underline">{customRule.customRuleName}</h3>
+                  <h3 className="font-['Whatthefont'] text-[#FE7800] text-[25px] underline">{customRule.customRuleName}</h3>
                   {customRule.optionDetails.map((option, idx) => 
                     option.isSelected ? 
-                    <li className="font-['Whatafont']" key={idx}>
+                    <li className="font-['Whatthefont']" key={idx}>
                       {option.name} {option.optionQuantity > 1 ? `(x${option.optionQuantity})` : ""}
                         {option.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
                           if (optionTrait.name === "UCNT") {

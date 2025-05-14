@@ -13,17 +13,17 @@ const MenuContainer = () => {
   return (
     <div className="flex flex-col w-[1000px]">
       <div className="flex flex-col justify-center items-center">
-        <h1 className="text-[#FE7800] font-['Whatafont']">MENU</h1>
+        <h1 className="text-[#FE7800] font-['Whatthefont']">MENU</h1>
         <h2>{categoryList[selectedCategory - 1].name}</h2>
       </div>
-      <div className="grid grid-cols-2 gap-y-[50px] mt-[50px]">
+      <div className="grid gap-y-[50px] mt-[50px] xl:grid-cols-2">
         {products.map((product, productIdx) => 
             <MenuBox
               key={productIdx}
               product={product}
               productIdx = {productIdx}
               calories={700}
-              imgSrc="/src/assets/private/menu/Whataburger31.png"
+              imgSrc="/src/assets/private/menu/Whattheburger31.png"
             />
         )}
       </div>

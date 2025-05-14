@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/HomePage.module.css";
 
-import Banner1 from "/src/assets/private/slideshow/whataburger_banner_1.jpg";
-import Banner2 from "/src/assets/private/slideshow/whataburger_banner_2.jpg";
-import Banner3 from "/src/assets/private/slideshow/whataburger_banner_3.jpg";
-import Banner4 from "/src/assets/private/slideshow/whataburger_banner_4.jpg";
+import Banner1 from "/src/assets/private/slideshow/whattheburger_banner_1.jpg";
+import Banner2 from "/src/assets/private/slideshow/whattheburger_banner_2.jpg";
+import Banner3 from "/src/assets/private/slideshow/whattheburger_banner_3.jpg";
+import Banner4 from "/src/assets/private/slideshow/whattheburger_banner_4.jpg";
 
 const images = [Banner1, Banner2, Banner3, Banner4];
 

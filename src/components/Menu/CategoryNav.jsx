@@ -31,7 +31,7 @@ const CategoryNav = () => {
             <a onClick={() => handleClickCategoryButton(category.id)}>
               <img className="h-[50px] max-w-[50px] mt-[20px] mb-[20px]" src={category.imgSrc}/>
             </a>
-            <div className={`${hoveredCategory === category.id ? "absolute flex text-[22px] justify-center items-center whitespace-nowrap w-auto h-[80px] rounded-[60px] shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)] z-[-1] pl-[100px] pr-[20px] bg-white text-[#FE7800] font-['Whatafont'] translate-x-[-20px] translate-y-[5px]" : "hidden"}`}>
+            <div className={`${hoveredCategory === category.id ? "absolute flex text-[22px] justify-center items-center whitespace-nowrap w-auto h-[80px] rounded-[60px] shadow-[2px_2px_15px_2px_rgba(0,0,0,0.2)] z-[-1] pl-[100px] pr-[20px] bg-white text-[#FE7800] font-['Whatthefont'] translate-x-[-20px] translate-y-[5px]" : "hidden"}`}>
               {category.name}
             </div>
 

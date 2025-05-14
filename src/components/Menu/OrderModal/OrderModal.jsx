@@ -5,6 +5,7 @@ import OrderSummary from "./OrderSummary";
 import OrderCustomize from "./OrderCustomize";
 import { MenuContext } from "../../../contexts/MenuContext";
 import { ACTIONS } from "../../../reducers/Menu/actions";
+import { motion } from "framer-motion";
 
 const OrderModal = () => {
 
@@ -15,7 +16,6 @@ const OrderModal = () => {
 
   const {
     setSelectedProduct,
-    setCustomRules,
     dispatchOrder
   } = useContext(MenuContext);
 
@@ -32,8 +32,6 @@ const OrderModal = () => {
     dispatchOrder({
       type: ACTIONS.INIT_SELECTION
     })
-    setCustomRules([]);
-    setCurrentIngredients({totalExtraPrice: 0, ingredients: []});
   }
 
   return (

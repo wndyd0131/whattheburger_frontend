@@ -23,7 +23,7 @@
   display: flex;
   margin-top: 50px;
   justify-content: center;
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
   color: #FE7800;
   font-size: 50px;
 }
@@ -69,7 +69,7 @@
   position: absolute;
   font-size: 22px;
   color: #FE7800;
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
   display: flex;
   justify-content: end;
   align-items: center;
@@ -109,7 +109,7 @@
   justify-content: center;
   align-items: center;
   color: #FE7800;
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
 }
 
 .menu-image-container {
@@ -169,7 +169,7 @@
   justify-content: center;
   align-items: center;
   border: 1px solid #FE7800;
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
   font-size: 20px;
   color: #FE7800;
   background-color: white;
@@ -280,7 +280,7 @@
 .product-ingredient-section h2 {
   display: flex;
   align-self: center;
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
   font-size: 30px;
   color: rgb(63, 63, 63);
 }
@@ -322,14 +322,14 @@
 }
 
 .ingredient-list h3 {
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
   color: #FE7800;
   font-size: 25px;
   text-decoration: underline;
 }
 
 .ingredient-list li {
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
 }
 
 .order-customize-section {
@@ -342,7 +342,7 @@
 }
 
 .order-customize-section h1 {
-  font-family: "Whatafont";
+  font-family: "Whatthefont";
   color: #FE7800;
 }
 
