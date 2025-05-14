@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { OptionContext } from "./contexts/OptionContext";
-import { ACTIONS } from "../../../pages/Menu";
+import { ACTIONS } from "../../../reducers/Menu/actions";
 
 const OptionCard = () => {
   
@@ -17,17 +17,14 @@ const OptionCard = () => {
 
   const handleClickOptionCard = () => {
     const customRuleType = customRule.customRuleType;
-    if (customRuleType === "UNIQUE") {
-      console.log("YES")
-      dispatchOrder({
-        type: ACTIONS.MODIFY_SELECTION,
-        payload: {
-          customRuleIdx: customRuleIdx,
-          customRuleType: customRuleType,
-          optionId: option.optionId
-        }
-      });
-    }
+    dispatchOrder({
+      type: ACTIONS.MODIFY_SELECTION,
+      payload: {
+        customRuleIdx: customRuleIdx,
+        customRuleType: customRuleType,
+        optionId: option.optionId
+      }
+    });
   }
 
   return (

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { SelectedOptionContext } from "./OptionModal";
-import { ACTIONS } from "../../../pages/MenuCreate";
 import { DndContext } from "@dnd-kit/core";
+import { ACTIONS } from "../../../reducers/MenuCreate/actions";
 
 const SelectedOptionSection = () => {
 

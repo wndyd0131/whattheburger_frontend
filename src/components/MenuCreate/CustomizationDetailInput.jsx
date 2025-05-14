@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import styles from '/src/styles/CustomizationDetailInput.module.css';
 import { MenuCreateContext } from '../../pages/MenuCreate';
-import { ACTIONS } from '../../pages/MenuCreate';
+import { ACTIONS } from '../../reducers/MenuCreate/actions';
 
 const CustomizationDetailInput = ({
   customRuleName,

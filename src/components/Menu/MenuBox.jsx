@@ -2,17 +2,20 @@ import { useContext } from "react";
 import MenuImageContainer from "../MenuImageContainer";
 import { MenuContext } from "../../contexts/MenuContext";
 import axios from "axios";
-import { ACTIONS } from "../../pages/Menu";
+import { ACTIONS } from "../../reducers/Menu/actions";
 
 const MenuBox = ({product, productIdx, imgSrc, calories}) => {
 
   const {
     setSelectedProduct,
     setProductResponse,
-    dispatchOrder
+    dispatchOrder,
+    setIsLoading
   } = useContext(MenuContext);
 
   const handleClickStartOrderButton = () => {
+    setIsLoading(true);
+
     axios.get(`http://localhost:8080/api/v1/products/${product.productId}`)
     .then(response => {
       console.log("RESPONSE: ", response.data);
@@ -25,7 +28,8 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
       })
       setProductResponse(response.data);
     })
-    .catch(error => console.error(error));
+    .catch(error => console.error(error))
+    .finally(() => setIsLoading(false));
     setSelectedProduct(product);
   }
 

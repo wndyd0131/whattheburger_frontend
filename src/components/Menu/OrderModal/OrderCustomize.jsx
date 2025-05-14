@@ -21,7 +21,7 @@ const OrderCustomize = () => {
             <h1>{customRule.customRuleName}</h1>
             <div className="grid border-1 grid-cols-4 border-[rgb(225,225,225)] overflow-auto">
               {customRule.optionDetails.map((option, optionIdx) => 
-                <OptionBox customRule={customRule} customRuleIdx={customRuleIdx} option={option} optionIdx={optionIdx}/>
+                <OptionBox key={optionIdx} customRule={customRule} customRuleIdx={customRuleIdx} option={option} optionIdx={optionIdx}/>
               )}
             </div>
           </div>

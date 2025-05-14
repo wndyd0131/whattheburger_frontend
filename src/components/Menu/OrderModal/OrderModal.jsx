@@ -4,6 +4,7 @@ import ConfirmModal from "./ConfirmModal";
 import OrderSummary from "./OrderSummary";
 import OrderCustomize from "./OrderCustomize";
 import { MenuContext } from "../../../contexts/MenuContext";
+import { ACTIONS } from "../../../reducers/Menu/actions";
 
 const OrderModal = () => {
 
@@ -13,14 +14,9 @@ const OrderModal = () => {
   }
 
   const {
-    selectedProduct,
     setSelectedProduct,
     setCustomRules,
-    currentIngredients, // temporary
-    setCurrentIngredients, // temporary
-    defaultIngredients, //temporary
-    isLoading, //temporary
-    customRules,
+    dispatchOrder
   } = useContext(MenuContext);
 
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
@@ -33,6 +29,9 @@ const OrderModal = () => {
   const handleConfirmCloseButton = () => {
     setConfirmModalOpened(false);
     setSelectedProduct(null);
+    dispatchOrder({
+      type: ACTIONS.INIT_SELECTION
+    })
     setCustomRules([]);
     setCurrentIngredients({totalExtraPrice: 0, ingredients: []});
   }
@@ -48,8 +47,8 @@ const OrderModal = () => {
       <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
         X
       </div>
-      <OrderSummary product={selectedProduct} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients} defaultIngredients={defaultIngredients} isLoading={isLoading}/>
-      <OrderCustomize customRules={customRules} currentIngredients={currentIngredients} setCurrentIngredients={setCurrentIngredients}/>
+      <OrderSummary/>
+      <OrderCustomize/>
     </Modal>
     {confirmModalOpened && (
       <ConfirmModal setConfirmModalOpened={setConfirmModalOpened} message={confirmModalMessage} handlerFunction={handleConfirmCloseButton}/>

@@ -1,25 +1,17 @@
-import MenuImageContainer from "../../MenuImageContainer";
 import { useState, useContext } from "react";
 import ConfirmModal from "./ConfirmModal";
 import { MenuContext } from "../../../contexts/MenuContext";
 import ProductInfo from "./ProductInfo";
 import OrderSummaryDetail from "./OrderSummaryDetail";
 import DecisionFooter from "./DecisionFooter";
-import { ACTIONS } from "../../../pages/Menu";
+import { ACTIONS } from "../../../reducers/Menu/actions";
 
 const OrderSummary = () => {
 
   const {
-    selectedProduct,
-    currentIngredients, // temporary
-    setCurrentIngredients, // temporary
-    defaultIngredients, //temporary
-    isLoading, //temporary
-    orderState,
     dispatchOrder
   } = useContext(MenuContext);
 
-  console.log("DEFAULT", defaultIngredients);
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
   const confirmModalMessage = "Return to default setting?";
 
@@ -27,7 +19,6 @@ const OrderSummary = () => {
     dispatchOrder({
       type: ACTIONS.LOAD_DEFAULT
     })
-    setCurrentIngredients(structuredClone(defaultIngredients));
     setConfirmModalOpened(false);
   }
 

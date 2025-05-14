@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { MenuCreateContext } from "../../../pages/MenuCreate";
-import { ACTIONS } from "../../../pages/MenuCreate";
-import { SelectedOptionContext } from "./OptionModal";
+import { ACTIONS } from "../../../reducers/MenuCreate/actions";
 
 const DecisionFooter = () => {
 
@@ -9,9 +8,7 @@ const DecisionFooter = () => {
     selectedOptionState,
     selectedOptionDispatch,
     customRuleDispatch,
-    customRules, // temporary
     selectedCustomRuleIdx,
-    setCustomRules,
     setSelectedCustomRuleIdx
   } = useContext(MenuCreateContext);
 

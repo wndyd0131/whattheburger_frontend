@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { OptionContext } from "./contexts/OptionContext";
 import OptionCard from "./OptionCard";
 import { MenuContext } from "../../../contexts/MenuContext";
-import { ACTIONS } from "../../../pages/Menu";
 
 const OptionBox = ({customRule, customRuleIdx, option, optionIdx}) => {
 
@@ -18,63 +17,6 @@ const OptionBox = ({customRule, customRuleIdx, option, optionIdx}) => {
       optionTrait.currentSelection = optionTrait.currentSelection == 0 ? 1 : 0;
       setCurrentIngredients(updatedObject);
     }
-  }
-  
-  const handleUniqueType = (customRuleIdx, customRuleType, option, optionIdx) => {
-    dispatchOrder({
-      type: ACTIONS.MODIFY_SELECTION,
-      payload: {
-        customRuleIdx: customRuleIdx,
-        customRuleType: customRuleType,
-        optionId: option.optionId
-      }
-    });
-  }
-
-  const handleLimitType = (productOption, rowIdx, optionIdx) => {
-    const updatedObject = structuredClone(currentIngredients);
-    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx]) {
-      if (updatedObject.ingredients[rowIdx].totalCount > productOption.customRuleResponse.minSelection) { // only remove if selected ingredient number is more than minSelection
-        let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice * updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
-        let oldCalories = updatedObject.ingredients[rowIdx].productOptions[optionIdx].calories * updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
-        updatedObject.totalExtraPrice -= oldExtraPrice;
-        updatedObject.totalCalories -= oldCalories;
-        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = null;
-        updatedObject.ingredients[rowIdx].totalCount--;
-      }
-    }
-    else {
-      if (updatedObject.ingredients[rowIdx].totalCount < productOption.customRuleResponse.maxSelection) { // only add if selected ingredient number is less than maxSelection
-        let newExtraPrice = productOption.extraPrice;
-        let newCalories = productOption.calories;
-        updatedObject.totalExtraPrice += newExtraPrice;
-        updatedObject.totalCalories += newCalories;
-        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = productOption;
-        updatedObject.ingredients[rowIdx].totalCount++;
-      }
-    }
-    setCurrentIngredients(updatedObject);
-  }
-
-  const handleFreeType = (productOption, rowIdx, optionIdx) => {
-    const updatedObject = structuredClone(currentIngredients);
-    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx]) {
-        let oldExtraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice * updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
-        let oldCalories = updatedObject.ingredients[rowIdx].productOptions[optionIdx].calories * updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
-        updatedObject.totalExtraPrice -= oldExtraPrice;
-        updatedObject.totalCalories -= oldCalories;
-        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = null;
-        updatedObject.ingredients[rowIdx].totalCount--;
-    }
-    else {
-        let newExtraPrice = productOption.extraPrice;
-        let newCalories = productOption.calories;
-        updatedObject.totalExtraPrice += newExtraPrice;
-        updatedObject.totalCalories += newCalories;
-        updatedObject.ingredients[rowIdx].productOptions[optionIdx] = productOption;
-        updatedObject.ingredients[rowIdx].totalCount++;
-    }
-    setCurrentIngredients(updatedObject);
   }
 
   const handleClickPlusButton = (rowIdx, optionIdx) => {

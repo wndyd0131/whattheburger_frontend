@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { MenuCreateContext } from "../../../pages/MenuCreate";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
-import { ACTIONS } from "../../../pages/MenuCreate";
+import { ACTIONS } from "../../../reducers/MenuCreate/actions";
 
 const OptionDetailFooter = () => {
 
