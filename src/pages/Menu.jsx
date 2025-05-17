@@ -6,7 +6,8 @@ import MenuContainer from "../components/Menu/MenuContainer";
 import OrderModal from "../components/Menu/OrderModal/OrderModal";
 import { MenuContext } from "../contexts/MenuContext";
 import { orderReducer } from "../reducers/Menu/orderReducer";
-import { motion } from "framer-motion";
+import ImageSlider from "../components/ImageSlider";
+import { motion } from "motion/react";
 
 const Menu = (props) => {
 
@@ -78,14 +79,22 @@ const Menu = (props) => {
       isLoading: isLoading,
       setIsLoading: setIsLoading
     }}>
-      <div className="flex flex-col pt-[150px] px-[200px]">
-        <div className="flex justify-center items-start rounded-[40px] pb-[50px]">
-          <CategoryNav/>
-          <MenuContainer/>
+      <div className="flex flex-col bg-amber-600">
+        <ImageSlider/>
+        <div className="rounded-t-[60px] bg-white">
+          <div className="flex flex-col justify-center items-center pt-10">
+            <h1 className="text-[#FE7800] font-['Whatthefont']">MENU</h1>
+            <h2>{categoryList[selectedCategory - 1].name}</h2>
+          </div>
+          <div className="flex justify-center items-start pb-[50px]">
+            <CategoryNav/>
+            <MenuContainer/>
+          </div>
+          {selectedProduct !== null && (
+            <OrderModal/>
+          )}
         </div>
-        {selectedProduct !== null && (
-          <OrderModal/>
-        )}
+
       </div>
     </MenuContext.Provider>
   );

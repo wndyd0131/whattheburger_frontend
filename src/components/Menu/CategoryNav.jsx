@@ -21,9 +21,9 @@ const CategoryNav = () => {
   }
 
   return (
-    <ul className="flex flex-col sticky top-[60px] ml-[40px] mr-[60px]">
+    <ul className="flex flex-col sticky top-[60px]">
       {categoryList.map((category) => 
-          <li className="flex relative cursor-pointer"
+          <li className="flex max-w-[50px] relative cursor-pointer"
             key={category.id}
             onMouseEnter={() => setHoveredCategory(category.id)}
             onMouseLeave={() => setHoveredCategory(null)}

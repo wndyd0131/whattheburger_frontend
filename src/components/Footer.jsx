@@ -5,8 +5,7 @@ const Footer = () => {
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      className="footer h-[400px]">
-      <h1>Footer</h1>
+      className="text-white bg-gray-800 h-[500px]">
     </motion.div>
   );
 }

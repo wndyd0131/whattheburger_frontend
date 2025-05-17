@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { OptionContext } from "./contexts/OptionContext";
 import { ACTIONS } from "../../../reducers/Menu/actions";
+import { motion } from "framer-motion";
 
 const OptionCard = () => {
   
@@ -28,8 +29,9 @@ const OptionCard = () => {
   }
 
   return (
-    <div
-      className={`border-1 border-[rgb(225,225,225)] w-[200px] h-[270px] rounded-2xl cursor-pointer transition ${option.isSelected ? "bg-amber-400 hover:bg-amber-500" : "hover:bg-gray-100"}`}
+    <motion.div
+      whileHover={{scale: 1.03}}
+      className={`border-1 border-[rgb(225,225,225)] w-[200px] h-[270px] rounded-2xl cursor-pointer transition ${option.isSelected ? "bg-amber-500 hover:bg-amber-600" : "hover:bg-gray-100"}`}
       onClick={() => handleClickOptionCard()}  
     >
       <div className="flex min-h-[150px] w-full"></div> {/* image */}
@@ -38,7 +40,7 @@ const OptionCard = () => {
         <p>{extraPriceText}</p>
         <p>{calories}Cal</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
