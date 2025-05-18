@@ -1,20 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import HomePageSection from "../components/HomePage/HomePageSection.jsx";
 import MenuMarquee from "../components/HomePage/MenuMarquee.jsx";
 import ImageSlider from "../components/ImageSlider";
-import styles from "../styles/HomePage.module.css";
-import { motion } from "framer-motion";
 import axios from "axios";
+import FeaturedCategory from "../components/HomePage/FeaturedCategory.jsx";
+import GoOrderButton from "../components/HomePage/GoOrderButton.jsx";
+import {motion} from "motion/react";
 
 const HomePage = () => {
-  const featuredCategory = [
-    {categoryId: 1, name: "All-Time Favorites", imgSrc: "public/private/category/all_time_favorites.png"},
-    {categoryId: 2, name: "Burgers", imgSrc: "public/private/category/burgers.png"},
-    {categoryId: 3, name: "Chicken", imgSrc: "public/private/category/chicken.png"},
-    {categoryId: 4, name: "Sides", imgSrc: "public/private/category/sides.png"},
-    {categoryId: 5, name: "Drinks", imgSrc: "public/private/category/drinks.png"},
-    {categoryId: 6, name: "Group Order", imgSrc: "public/private/category/group_order.png"}
-  ]
+
+  const [goOrderButtonHovered, setGoOrderButtonHovered] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:8080/api/v1/category")
@@ -35,31 +30,40 @@ const HomePage = () => {
       <HomePageSection 
         flexDirection="column"
       >
-        <div className={styles.orderButtonContainer}>
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className={styles.startOrderButton} src="#">Let's Go Order!</motion.a>
-        </div>
+        <motion.div
+          className="relative flex justify-center h-50 gap-10 overflow-hidden"
+          onHoverEnd={() => setGoOrderButtonHovered(false)}
+        >
+          <GoOrderButton
+            goOrderButtonHovered={goOrderButtonHovered}
+            setGoOrderButtonHovered={setGoOrderButtonHovered}
+          />
+          <motion.div
+            initial={{x: "-100vw"}}
+            animate={{x: goOrderButtonHovered ? 0 : "-100vw"}}
+            whileHover={{scale: 1.1}}
+            whileTap={{scale: 0.9}}
+            transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8}}
+            className={`flex justify-center self-center h-auto w-40 shadow-lg items-center border-1 border-[#FE7800] rounded-[50px] bg-white font-['Whatthefont'] text-[#FE7800] p-[20px] text-[25px] min-w-[90px] cursor-pointer ${goOrderButtonHovered ? "" : "absolute"}`}>
+            Pick Up
+          </motion.div>
+          <motion.div
+            initial={{x: "-100vw"}}
+            animate={{x: goOrderButtonHovered ? 0 : "-100vw"}}
+            whileHover={{scale: 1.1}}
+            whileTap={{scale: 0.9}}
+            transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8}}
+            className={`flex justify-center self-center h-auto w-40 shadow-lg items-center border-1 border-[#FE7800] rounded-[50px] bg-white font-['Whatthefont'] text-[#FE7800] p-[20px] text-[25px] min-w-[90px] cursor-pointer ${goOrderButtonHovered ? "" : "absolute"}`}>
+            Delivery
+          </motion.div>
+        </motion.div>
         <MenuMarquee/>
       </HomePageSection>
       <HomePageSection
         flexDirection="column"
         padding="60px 0"
       >
-        <h1 className="flex justify-center text-5xl text-[#FE7800] font-['Whatthefont']">MENU</h1>
-        <div className="flex justify-around px-[80px] pt-[70px] h-full w-full ">
-          {featuredCategory.map((category, idx) => {
-            return (
-              <div className="flex flex-col h-[300px] w-[250px] max-w-xs bg-white shadow-md rounded-2xl overflow-hidden">
-                  <img className="w-full h-full object-cover" src={category.imgSrc} alt="Food" />
-                  <div className="p-4">
-                    <p className="text-lg justify-self-center font-semibold mb-2">{category.name}</p>
-                  </div>
-              </div>
-            );
-          })}
-        </div>
+      <FeaturedCategory/>
       </HomePageSection>
     </>
   );
