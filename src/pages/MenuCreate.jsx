@@ -7,8 +7,6 @@ import OptionModal from "../components/MenuCreate/OptionModal/OptionModal.jsx";
 import {customRuleReducer} from "../reducers/MenuCreate/customRuleReducer.js";
 import {selectedOptionReducer} from "../reducers/MenuCreate/selectedOptionReducer.js";
 
-
-
 export const MenuCreateContext = createContext();
 
 const MenuCreate = () => {

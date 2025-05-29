@@ -1,16 +1,16 @@
 import { useState, useContext } from "react";
 import ConfirmModal from "./ConfirmModal";
-import { MenuContext } from "../../../contexts/MenuContext";
 import ProductInfo from "./ProductInfo";
 import OrderSummaryDetail from "./OrderSummaryDetail";
 import DecisionFooter from "./DecisionFooter";
 import { ACTIONS } from "../../../reducers/Menu/actions";
+import { OrderContext } from "./contexts/OrderContext";
 
 const OrderSummary = () => {
 
   const {
     dispatchOrder
-  } = useContext(MenuContext);
+  } = useContext(OrderContext);
 
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
   const confirmModalMessage = "Return to default setting?";

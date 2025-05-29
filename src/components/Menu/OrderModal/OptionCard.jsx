@@ -31,11 +31,13 @@ const OptionCard = () => {
   return (
     <motion.div
       whileHover={{scale: 1.03}}
-      className={`border-1 border-[rgb(225,225,225)] w-[200px] h-[270px] rounded-2xl cursor-pointer transition ${option.isSelected ? "bg-amber-500 hover:bg-amber-600" : "hover:bg-gray-100"}`}
+      className={`border-1 border-[rgb(225,225,225)] w-[200px] h-[270px] rounded-2xl cursor-pointer transition overflow-hidden ${option.isSelected ? "bg-amber-500 hover:bg-amber-600" : "hover:bg-gray-100"}`}
       onClick={() => handleClickOptionCard()}  
     >
-      <div className="flex min-h-[150px] w-full"></div> {/* image */}
-      <div className="flex flex-col flex-grow justify-center p-2">
+      <div className="flex justify-center items-center min-h-[150px] w-full bg-white">
+        <img className="w-[130px] h-[130px]" src="/src/assets/private/options/large_bun.png"></img>
+      </div> {/* image */}
+      <div className="flex flex-col justify-center p-2">
         <span className="text-[17px]"><strong>{option.name}</strong></span>
         <p>{extraPriceText}</p>
         <p>{calories}Cal</p>

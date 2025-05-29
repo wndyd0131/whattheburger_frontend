@@ -27,7 +27,6 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
           optionResponse: optionResponse
         }
       })
-      setProductResponse(response.data);
     })
     .catch(error => console.error(error))
     .finally(() => setIsLoading(false));

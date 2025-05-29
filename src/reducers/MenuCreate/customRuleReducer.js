@@ -1,3 +1,5 @@
+import { ACTIONS } from "./actions";
+
 export const customRuleReducer = (state, action) => {
   switch(action.type) {
     case ACTIONS.ADD_CUSTOMRULE:

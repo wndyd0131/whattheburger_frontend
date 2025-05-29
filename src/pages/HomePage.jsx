@@ -27,11 +27,14 @@ const HomePage = () => {
       >
         <ImageSlider/>
       </HomePageSection>
+        <motion.h1 className="flex justify-self-center text-7xl text-[#FE7800] p-[100px] font-['Whatthefont']">
+          Welcome to Whattheburger
+        </motion.h1>
       <HomePageSection 
         flexDirection="column"
       >
         <motion.div
-          className="relative flex justify-center h-50 gap-10 overflow-hidden"
+          className={`relative flex justify-center h-50 gap-10 overflow-hidden transition-colors duration-500 ease-in-out ${goOrderButtonHovered ? "bg-orange-100" : ""}`}
           onHoverEnd={() => setGoOrderButtonHovered(false)}
         >
           <GoOrderButton
@@ -39,8 +42,8 @@ const HomePage = () => {
             setGoOrderButtonHovered={setGoOrderButtonHovered}
           />
           <motion.div
-            initial={{x: "-100vw"}}
-            animate={{x: goOrderButtonHovered ? 0 : "-100vw"}}
+            initial={{x: "100vw"}}
+            animate={{x: goOrderButtonHovered ? 0 : "100vw"}}
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.9}}
             transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8}}
@@ -48,8 +51,8 @@ const HomePage = () => {
             Pick Up
           </motion.div>
           <motion.div
-            initial={{x: "-100vw"}}
-            animate={{x: goOrderButtonHovered ? 0 : "-100vw"}}
+            initial={{x: "100vw"}}
+            animate={{x: goOrderButtonHovered ? 0 : "100vw"}}
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.9}}
             transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8}}

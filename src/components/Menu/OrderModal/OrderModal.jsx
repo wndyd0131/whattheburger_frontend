@@ -5,7 +5,8 @@ import OrderSummary from "./OrderSummary";
 import OrderCustomize from "./OrderCustomize";
 import { MenuContext } from "../../../contexts/MenuContext";
 import { ACTIONS } from "../../../reducers/Menu/actions";
-import { motion } from "framer-motion";
+import { OrderContext } from "./contexts/OrderContext";
+import { CloseButton } from "../../../svg/Utils";
 
 const OrderModal = () => {
 
@@ -16,9 +17,11 @@ const OrderModal = () => {
 
   const {
     setSelectedProduct,
-    dispatchOrder
+    dispatchOrder,
+    orderState
   } = useContext(MenuContext);
 
+  const [isCustomizeDone, setIsCustomizeDone] = useState(false);
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
   const confirmModalMessage = "Are you sure you want to cancel order?";
 
@@ -35,23 +38,33 @@ const OrderModal = () => {
   }
 
   return (
-    <>
+    <OrderContext.Provider
+      value={{
+        setSelectedProduct: setSelectedProduct,
+        dispatchOrder: dispatchOrder,
+        orderState: orderState,
+        isCustomizeDone: isCustomizeDone,
+        setIsCustomizeDone: setIsCustomizeDone
+      }}
+    >
     <Modal
       height={modalStyle.height}
       width={modalStyle.width}
       flexDirection={modalStyle.flexDirection}
       position={modalStyle.position}
     >
-      <div className="close-order-modal-button" onClick={() => handleClickCloseButton()}>
-        X
+      <div className="flex absolute justify-center items-center rounded-full top-2 right-2 w-[30px] h-[30px] bg-gray-200 cursor-pointer" onClick={() => handleClickCloseButton()}>
+        <CloseButton/>
       </div>
       <OrderSummary/>
-      <OrderCustomize/>
+      {!isCustomizeDone && (
+        <OrderCustomize/>
+      )}
     </Modal>
     {confirmModalOpened && (
       <ConfirmModal setConfirmModalOpened={setConfirmModalOpened} message={confirmModalMessage} handlerFunction={handleConfirmCloseButton}/>
     )}
-    </>
+    </OrderContext.Provider>
   );
 }
 

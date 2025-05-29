@@ -106,6 +106,22 @@ export const orderReducer = (state, action) => {
           return state;
       }
     }
+    case ACTIONS.MODIFY_TRAIT: {
+      const {
+        option,
+        optionTrait,
+      } = action.payload;
+      const updatedState = structuredClone(state);
+      const optionId = option.optionId;
+      const optionTraitType = optionTrait.optionTraitType;
+      const customRuleIdx = option.customRuleResponse.orderIndex;
+      updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+        if (optionDetail.optionId === optionId && optionTraitType === "BINARY") {
+          optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].currentSelection === 0 ? 1 : 0;
+        }
+      })
+      return updatedState;
+    }
     case ACTIONS.LOAD_OPTIONS: {
       console.log("LOADED: ", state);
       const updatedState = structuredClone(state);
