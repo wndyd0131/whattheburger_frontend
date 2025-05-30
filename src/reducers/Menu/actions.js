@@ -3,5 +3,6 @@ export const ACTIONS = {
   LOAD_DEFAULT: 'loadDefault',
   MODIFY_SELECTION: 'modifySelection',
   INIT_SELECTION: 'initSelection',
-  MODIFY_TRAIT: 'modifyTrait'
+  MODIFY_TRAIT: 'modifyTrait',
+  MODIFY_QUANTITY: 'modifyQuantity'
 };

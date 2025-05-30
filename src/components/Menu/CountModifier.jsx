@@ -11,9 +11,14 @@ const CountModifier = () => {
 
   switch(option.countType) {
     case "COUNTABLE": {
-      return (
-      <CountableModifier/>
-      );
+      if (option.maxQuantity !== 1) {
+        return (
+          <CountableModifier/>
+        );
+      }
+      else {
+        return <></>;
+      }
     }
     case "UNCOUNTABLE": {
       return (

@@ -9,14 +9,14 @@ import { OrderContext } from "./contexts/OrderContext";
 const OrderSummary = () => {
 
   const {
-    dispatchOrder
+    dispatchOption
   } = useContext(OrderContext);
 
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
   const confirmModalMessage = "Return to default setting?";
 
   const handleConfirmDefaultButton = () => {
-    dispatchOrder({
+    dispatchOption({
       type: ACTIONS.LOAD_DEFAULT
     })
     setConfirmModalOpened(false);

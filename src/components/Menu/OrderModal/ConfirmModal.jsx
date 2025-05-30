@@ -17,12 +17,12 @@ const ConfirmModal = ({setConfirmModalOpened, message, handlerFunction}) => {
       flexDirection={modalStyle.flexDirection}
       position={modalStyle.position}
     >
-      <div className="flex flex-grow justify-center items-center">
-        <h3>{message}</h3>
+      <div className="flex flex-grow justify-center items-center text-lg">
+        <p>{message}</p>
       </div>
-      <div className="flex flex-grow justify-center items-center">
-        <button onClick={() => handlerFunction()}><strong>Yes</strong></button>
-        <button onClick={() => setConfirmModalOpened(false)}><strong>No</strong></button>
+      <div className="flex flex-grow justify-center items-center gap-10">
+        <button className="flex border-1 justify-center items-center border-[#FE7800] rounded-sm h-[35px] w-[50px] cursor-pointer" onClick={() => handlerFunction()}><strong>Yes</strong></button>
+        <button className="flex border-1 justify-center items-center border-[#FE7800] rounded-sm h-[35px] w-[50px] cursor-pointer" onClick={() => setConfirmModalOpened(false)}><strong>No</strong></button>
       </div>
     </Modal>
   );

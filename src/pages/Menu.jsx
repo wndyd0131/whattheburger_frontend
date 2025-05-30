@@ -5,7 +5,7 @@ import CategoryNav from "../components/Menu/CategoryNav";
 import MenuContainer from "../components/Menu/MenuContainer";
 import OrderModal from "../components/Menu/OrderModal/OrderModal";
 import { MenuContext } from "../contexts/MenuContext";
-import { orderReducer } from "../reducers/Menu/orderReducer";
+import { optionReducer } from "../reducers/Menu/optionReducer";
 import ImageSlider from "../components/ImageSlider";
 import { motion } from "motion/react";
 import { BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from "../svg/categoryNav";
@@ -31,8 +31,8 @@ const Menu = (props) => {
     { id: 10, name: "Large Order", icon: <GroupIcon color={selectedCategory == 10 ? "#FE7800" : "#555555"}/>},
   ]
 
-  const [orderState, dispatchOrder] = useReducer(
-    orderReducer,
+  const [optionState, dispatchOption] = useReducer(
+    optionReducer,
     {
       currentSelections: {
         totalExtraPrice: 0,
@@ -54,7 +54,7 @@ const Menu = (props) => {
   }, []);
 
   {
-    console.log("OS: ", orderState);
+    console.log("OS: ", optionState);
   }
 
   return (
@@ -68,8 +68,8 @@ const Menu = (props) => {
       setSelectedCategory: setSelectedCategory,
       selectedProduct: selectedProduct,
       setSelectedProduct: setSelectedProduct,
-      orderState: orderState,
-      dispatchOrder: dispatchOrder,
+      optionState: optionState,
+      dispatchOption: dispatchOption,
       isLoading: isLoading,
       setIsLoading: setIsLoading,
     }}>

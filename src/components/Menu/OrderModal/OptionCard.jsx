@@ -9,7 +9,7 @@ const OptionCard = () => {
     customRule,
     customRuleIdx,
     option,
-    dispatchOrder
+    dispatchOption
   } = useContext(OptionContext);
 
   const extraPrice = option ? option.extraPrice * option.optionQuantity : option.extraPrice;
@@ -18,7 +18,7 @@ const OptionCard = () => {
 
   const handleClickOptionCard = () => {
     const customRuleType = customRule.customRuleType;
-    dispatchOrder({
+    dispatchOption({
       type: ACTIONS.MODIFY_SELECTION,
       payload: {
         customRuleIdx: customRuleIdx,
@@ -27,7 +27,7 @@ const OptionCard = () => {
       }
     });
   }
-
+  {console.log(option.optionId, option.imageSource)}
   return (
     <motion.div
       whileHover={{scale: 1.03}}
@@ -35,8 +35,8 @@ const OptionCard = () => {
       onClick={() => handleClickOptionCard()}  
     >
       <div className="flex justify-center items-center min-h-[150px] w-full bg-white">
-        <img className="w-[130px] h-[130px]" src="/src/assets/private/options/large_bun.png"></img>
-      </div> {/* image */}
+        <img className="w-[130px] h-[130px]" src={option.imageSource} alt="Image"></img>
+      </div>
       <div className="flex flex-col justify-center p-2">
         <span className="text-[17px]"><strong>{option.name}</strong></span>
         <p>{extraPriceText}</p>

@@ -1,65 +1,59 @@
 import { useContext } from "react";
-import { OrderContext } from "./OrderModal/contexts/OrderContext";
 import { OptionContext } from "./OrderModal/contexts/OptionContext";
+import { ACTIONS } from "../../reducers/Menu/actions";
 
 const CountableModifier = () => {
-
   const {
-    dispatchOrder,
-    orderState
-  } = useContext(OrderContext);
-
-  const {
+    customRuleIdx,
     option,
-    customRUleIdx
+    dispatchOption
   } = useContext(OptionContext);
 
-  const handleClickPlusButton = (rowIdx, optionIdx) => {
-    const updatedObject = structuredClone(currentIngredients);
-    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx] && 
-      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity < updatedObject.ingredients[rowIdx].productOptions[optionIdx].maxQuantity) {
-      let extraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice;
-      let calories = updatedObject.ingredients[rowIdx].productOptions[optionIdx].calories;
-      let currentQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
-      let defaultQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].defaultQuantity;
-      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity++;
-      if (currentQuantity >= defaultQuantity) {
-        updatedObject.totalExtraPrice += extraPrice;
+  const handleClickPlusButton = (customRuleIdx, option) => {
+    const modifyType = "PLUS";
+    dispatchOption({
+      type: ACTIONS.MODIFY_QUANTITY,
+      payload: {
+        customRuleIdx: customRuleIdx,
+        optionId: option.optionId,
+        modifyType: modifyType
       }
-      updatedObject.totalCalories += calories;
-      setCurrentIngredients(updatedObject);
-    }
+    });
   }
 
-  const handleClickMinusButton = (rowIdx, optionIdx) => {
-    const updatedObject = structuredClone(currentIngredients);
-    let minQuantity = 1;
-    if (updatedObject.ingredients[rowIdx].productOptions[optionIdx] &&
-      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity > minQuantity) {
-      let extraPrice = updatedObject.ingredients[rowIdx].productOptions[optionIdx].extraPrice;
-      let calories = updatedObject.ingredients[rowIdx].productOptions[optionIdx].calories;
-      let currentQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity;
-      let defaultQuantity = updatedObject.ingredients[rowIdx].productOptions[optionIdx].defaultQuantity;
-      updatedObject.ingredients[rowIdx].productOptions[optionIdx].optionQuantity--;
-      if (currentQuantity > defaultQuantity) {
-        updatedObject.totalExtraPrice -= extraPrice;
+  const handleClickMinusButton = (customRuleIdx, option) => {
+    const modifyType = "MINUS";
+    dispatchOption({
+      type: ACTIONS.MODIFY_QUANTITY,
+      payload: {
+        customRuleIdx: customRuleIdx,
+        optionId: option.optionId,
+        modifyType: modifyType
       }
-      updatedObject.totalCalories -= calories;
-      setCurrentIngredients(updatedObject);
-    }
+    });
   }
 
   return (
     <div className="flex justify-between w-[160px] h-[40px]">
-      <div className="flex justify-center border-1 border-[#FE7800] rounded-[5px] text-[#FE7800] h-[30px] w-[50px] cursor-pointer" onClick={() => handleClickMinusButton(rowIdx, optionIdx)}>
+      <button
+        className={`flex justify-center border-1 rounded-[5px] h-[30px] w-[50px] ${option.isSelected ? "border-[#FE7800] text-[#FE7800] cursor-pointer" : "bg-gray-100 text-gray-300"}`}
+        onClick={() => handleClickMinusButton(customRuleIdx, option)}
+        disabled={option.isSelected === false}
+      >
         <strong>-</strong>
-      </div>
+      </button>
+      {option.isSelected &&
         <h3>
           {option.optionQuantity}
         </h3>
-      <div className="flex justify-center border-1 border-[#FE7800] rounded-[5px] text-[#FE7800] h-[30px] w-[50px] cursor-pointer" onClick={() => handleClickPlusButton(rowIdx, optionIdx)}>
+      }
+      <button
+        className={`flex justify-center border-1 rounded-[5px] h-[30px] w-[50px] ${option.isSelected ? "border-[#FE7800] text-[#FE7800] cursor-pointer" : "bg-gray-100 text-gray-300"}`}
+        onClick={() => handleClickPlusButton(customRuleIdx, option)}
+        disabled={option.isSelected === false}
+      >
         <strong>+</strong>
-      </div>
+      </button>
     </div>
   );
 }

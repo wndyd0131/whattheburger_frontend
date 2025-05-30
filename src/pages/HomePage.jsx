@@ -6,6 +6,7 @@ import axios from "axios";
 import FeaturedCategory from "../components/HomePage/FeaturedCategory.jsx";
 import GoOrderButton from "../components/HomePage/GoOrderButton.jsx";
 import {motion} from "motion/react";
+import { ChatbotIcon } from "../svg/Utils.jsx";
 
 const HomePage = () => {
 
@@ -27,7 +28,9 @@ const HomePage = () => {
       >
         <ImageSlider/>
       </HomePageSection>
-        <motion.h1 className="flex justify-self-center text-7xl text-[#FE7800] p-[100px] font-['Whatthefont']">
+        <motion.h1
+           
+          className="flex justify-self-center text-7xl text-[#FE7800] p-[100px] font-['Whatthefont']">
           Welcome to Whattheburger
         </motion.h1>
       <HomePageSection 
@@ -71,12 +74,5 @@ const HomePage = () => {
     </>
   );
 }
-
-// <div className="flex flex-col h-[300px] w-[250px] max-w-xs shadow-lg bg-white rounded-2xl overflow-hidden">
-//     <img className="w-full h-48 object-cover" src="/images/example.jpg" alt="Food" />
-//     <div className="p-4">
-//       <h3 className="text-lg font-semibold mb-2">Delicious Burger</h3>
-//     </div>
-// </div>
 
 export default HomePage;

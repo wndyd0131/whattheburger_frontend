@@ -10,7 +10,7 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
   const {
     setSelectedProduct,
     setProductResponse,
-    dispatchOrder,
+    dispatchOption,
     setIsLoading
   } = useContext(MenuContext);
 
@@ -21,7 +21,7 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
     .then(response => {
       console.log("RESPONSE: ", response.data);
       const optionResponse = response.data.optionResponses;
-      dispatchOrder({
+      dispatchOption({
         type: ACTIONS.LOAD_OPTIONS,
         payload: {
           optionResponse: optionResponse

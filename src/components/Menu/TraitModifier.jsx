@@ -7,11 +7,11 @@ const TraitModifier = ({optionTrait, optionTraitIdx}) => {
   const {
     customRule,
     option,
-    dispatchOrder
+    dispatchOption
   } = useContext(OptionContext);
 
   const handleClickToggleButton = (customRule, option, optionTrait) => {
-    dispatchOrder({
+    dispatchOption({
       type: ACTIONS.MODIFY_TRAIT,
       payload: {
         customRule,

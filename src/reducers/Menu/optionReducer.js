@@ -1,6 +1,6 @@
 import { ACTIONS } from "./actions";
 
-export const orderReducer = (state, action) => {
+export const optionReducer = (state, action) => {
   switch(action.type) {
     case ACTIONS.INIT_SELECTION: {
       const updatedState = {
@@ -16,6 +16,62 @@ export const orderReducer = (state, action) => {
         }
       };
       return updatedState;
+    }
+    case ACTIONS.MODIFY_QUANTITY: {
+      const {
+        customRuleIdx,
+        optionId,
+        modifyType
+      } = action.payload;
+      
+      const updatedState = structuredClone(state);
+      switch (modifyType) {
+        case 'PLUS': {
+          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+            if (optionDetail.optionId === optionId && optionDetail.optionQuantity < optionDetail.maxQuantity) {
+              let extraPrice = optionDetail.extraPrice;
+              let calories = optionDetail.calories;
+              let currentQuantity = optionDetail.optionQuantity;
+              let defaultQuantity = optionDetail.defaultQuantity;
+              optionDetail.optionQuantity++;
+              if (currentQuantity >= defaultQuantity) {
+                updatedState.totalExtraPrice += extraPrice;
+              }
+              updatedState.totalCalories += calories;
+            }
+          });
+          return updatedState;
+        }
+        case 'MINUS': {
+          const minQuantity = 1;
+          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+            if (optionDetail.optionId === optionId && optionDetail.optionQuantity > minQuantity) {
+              let extraPrice = optionDetail.extraPrice;
+              let calories = optionDetail.calories;
+              let currentQuantity = optionDetail.optionQuantity;
+              let defaultQuantity = optionDetail.defaultQuantity;
+              optionDetail.optionQuantity--;
+              if (currentQuantity > defaultQuantity) {
+                updatedState.totalExtraPrice -= extraPrice;
+              }
+              updatedState.totalCalories -= calories;
+            }
+          });
+          return updatedState;
+        }
+        case 'DISCRETE': {
+          const {
+            value
+          } = action.payload;
+          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+            if (optionDetail.optionId === optionId)
+              optionDetail.optionQuantity = value;
+          });
+          return updatedState;
+        }
+        default:
+          return state;
+      }
     }
     case ACTIONS.MODIFY_SELECTION: {
       const {
@@ -39,8 +95,11 @@ export const orderReducer = (state, action) => {
               optionDetail.isSelected = true;
               newExtraPrice = optionDetail.extraPrice;
               newCalories = optionDetail.calories;
-            } else {
+            } else { // initialize to default setting
               optionDetail.isSelected = false;
+              optionDetail.optionQuantity = optionDetail.defaultQuantity;
+              if (optionDetail.optionTraitResponses[0])
+                optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
             }
           });
           updatedState.currentSelections.totalExtraPrice = updatedState.currentSelections.totalExtraPrice - oldExtraPrice + newExtraPrice;
@@ -58,14 +117,20 @@ export const orderReducer = (state, action) => {
           updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
             if (optionDetail.optionId === optionId) {
               if (optionDetail.isSelected && selectedCount > minSelection) {
+                // remove
                 let oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
                 let oldCalories = optionDetail.calories * optionDetail.optionQuantity;
                 updatedState.currentSelections.totalExtraPrice -= oldExtraPrice;
                 updatedState.currentSelections.totalCalories -= oldCalories;
                 updatedState.currentSelections.items[customRuleIdx].selectedCount--;
+                // init
+                if (optionDetail.optionTraitResponses[0])
+                  optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
+                optionDetail.optionQuantity = optionDetail.defaultQuantity;
                 optionDetail.isSelected = false;
               }
               else if (!optionDetail.isSelected && selectedCount < maxSelection){
+                // add
                 let newExtraPrice = optionDetail.extraPrice;
                 let newCalories = optionDetail.calories;
                 updatedState.currentSelections.totalExtraPrice += newExtraPrice;
@@ -83,19 +148,25 @@ export const orderReducer = (state, action) => {
           updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
             if (optionDetail.optionId === optionId) {
               if (optionDetail.isSelected) {
+                // remove
                 let oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
                 let oldCalories = optionDetail.calories * optionDetail.optionQuantity;
                 updatedState.currentSelections.totalExtraPrice -= oldExtraPrice;
                 updatedState.currentSelections.totalCalories -= oldCalories;
-                updatedState.currentSelections.selectedCount--;
+                updatedState.currentSelections.items[customRuleIdx].selectedCount--;
+                // init
+                if (optionDetail.optionTraitResponses[0])
+                  optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
+                optionDetail.optionQuantity = optionDetail.defaultQuantity;
                 optionDetail.isSelected = false;
               }
               else {
+                // add
                 let newExtraPrice = optionDetail.extraPrice;
                 let newCalories = optionDetail.calories;
                 updatedState.currentSelections.totalExtraPrice += newExtraPrice;
                 updatedState.currentSelections.totalCalories += newCalories;
-                updatedState.currentSelections.selectedCount++;
+                updatedState.currentSelections.items[customRuleIdx].selectedCount++;
                 optionDetail.isSelected = true;
               }
             }

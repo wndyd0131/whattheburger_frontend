@@ -17,8 +17,8 @@ const OrderModal = () => {
 
   const {
     setSelectedProduct,
-    dispatchOrder,
-    orderState
+    dispatchOption,
+    optionState
   } = useContext(MenuContext);
 
   const [isCustomizeDone, setIsCustomizeDone] = useState(false);
@@ -32,7 +32,7 @@ const OrderModal = () => {
   const handleConfirmCloseButton = () => {
     setConfirmModalOpened(false);
     setSelectedProduct(null);
-    dispatchOrder({
+    dispatchOption({
       type: ACTIONS.INIT_SELECTION
     })
   }
@@ -41,8 +41,8 @@ const OrderModal = () => {
     <OrderContext.Provider
       value={{
         setSelectedProduct: setSelectedProduct,
-        dispatchOrder: dispatchOrder,
-        orderState: orderState,
+        dispatchOption: dispatchOption,
+        optionState: optionState,
         isCustomizeDone: isCustomizeDone,
         setIsCustomizeDone: setIsCustomizeDone
       }}
