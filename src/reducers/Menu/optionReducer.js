@@ -194,10 +194,9 @@ export const optionReducer = (state, action) => {
       return updatedState;
     }
     case ACTIONS.LOAD_OPTIONS: {
-      console.log("LOADED: ", state);
       const updatedState = structuredClone(state);
       const optionResponse = action.payload.optionResponse;
-      console.log("O_RESPONSE", optionResponse);
+      console.log("OPTION_RESPONSE", optionResponse);
       const customRules = [];
       let totalCalories = 0;
       
@@ -234,15 +233,15 @@ export const optionReducer = (state, action) => {
         }
         customRules[customRuleIdx].optionDetails.push(optionDetailObject);
       });
-      updatedState.currentSelections.items = customRules;
-      updatedState.defaultSelections.items = customRules;
+      updatedState.currentSelections.items = structuredClone(customRules);
+      updatedState.defaultSelections.items = structuredClone(customRules);
       updatedState.currentSelections.totalCalories = totalCalories;
       updatedState.defaultSelections.totalCalories = totalCalories;
       return updatedState;
     }
     case ACTIONS.LOAD_DEFAULT: {
       const updatedState = structuredClone(state);
-      updatedState.currentSelections = updatedState.defaultSelections;
+      updatedState.currentSelections = structuredClone(state.defaultSelections);
       return updatedState;
     }
     default:

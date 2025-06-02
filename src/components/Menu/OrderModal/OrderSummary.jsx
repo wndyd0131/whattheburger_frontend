@@ -12,28 +12,12 @@ const OrderSummary = () => {
     dispatchOption
   } = useContext(OrderContext);
 
-  const [confirmModalOpened, setConfirmModalOpened] = useState(false);
-  const confirmModalMessage = "Return to default setting?";
-
-  const handleConfirmDefaultButton = () => {
-    dispatchOption({
-      type: ACTIONS.LOAD_DEFAULT
-    })
-    setConfirmModalOpened(false);
-  }
-
   return (
-    <>
-    {confirmModalOpened && 
-    (
-      <ConfirmModal setConfirmModalOpened={setConfirmModalOpened} message={confirmModalMessage} handlerFunction={handleConfirmDefaultButton}/>
-    )}
-    <div className="flex flex-col justify-between border-r-1 border-r-[rgb(197,197,197)] basis-1/4 bg-white">
+    <div className="flex flex-col justify-between border-r-1 border-gray-300 basis-1/4 bg-white">
       <ProductInfo/>
-      <OrderSummaryDetail setConfirmModalOpened={setConfirmModalOpened}/>
+      <OrderSummaryDetail/>
       <DecisionFooter/>
     </div>
-    </>
   );
 }
 

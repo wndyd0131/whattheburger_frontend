@@ -5,11 +5,10 @@ import axios from "axios";
 import { ACTIONS } from "../../reducers/Menu/actions";
 import { motion } from "framer-motion";
 
-const MenuBox = ({product, productIdx, imgSrc, calories}) => {
+const MenuBox = ({product, imgSrc, calories}) => {
 
   const {
     setSelectedProduct,
-    setProductResponse,
     dispatchOption,
     setIsLoading
   } = useContext(MenuContext);
@@ -38,7 +37,7 @@ const MenuBox = ({product, productIdx, imgSrc, calories}) => {
       initial={{opacity: 0}}
       whileInView={{opacity: 1}}
       className="flex flex-col border-1 border-[rgb(226,226,226)] rounded-[15px] w-[300px] justify-self-center self-center justify-center items-center text-[#FE7800] font-['Whatthefont']">
-      <MenuImageContainer width="100%" height="220px" imgSrc={imgSrc}/>
+      <MenuImageContainer width="200px" height="200px" imgSrc={imgSrc}/>
       <div className="flex flex-col w-full h-[150px]">
         <div className="flex flex-col gap-[10px] px-[20px]">
           <h2>{product.productName}</h2>

@@ -13,7 +13,7 @@ const ProductInfo = () => {
 
   return (
     <div className="flex basis-2/6 flex-col items-center">
-      <MenuImageContainer width="200px" height="180px" imgSrc="/src/assets/private/menu/Whattheburger31.png"/>
+      <MenuImageContainer width="200px" height="180px" imgSrc="/src/assets/private/menu/whattheburger.png"/>
       <div className="flex flex-col gap-[10px]">
         <h1>{selectedProduct.productName}</h1>
         <div className="flex justify-center items-center gap-[40px]">

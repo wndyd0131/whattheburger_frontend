@@ -27,11 +27,10 @@ const OptionCard = () => {
       }
     });
   }
-  {console.log(option.optionId, option.imageSource)}
   return (
     <motion.div
       whileHover={{scale: 1.03}}
-      className={`border-1 border-[rgb(225,225,225)] w-[200px] h-[270px] rounded-2xl cursor-pointer transition overflow-hidden ${option.isSelected ? "bg-amber-500 hover:bg-amber-600" : "hover:bg-gray-100"}`}
+      className={`border-1 border-gray-300 w-[200px] h-[270px] rounded-2xl cursor-pointer transition overflow-hidden ${option.isSelected ? "bg-[#FE7800] hover:bg-amber-600" : "hover:bg-gray-100"}`}
       onClick={() => handleClickOptionCard()}  
     >
       <div className="flex justify-center items-center min-h-[150px] w-full bg-white">

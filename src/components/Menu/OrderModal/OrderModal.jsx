@@ -53,7 +53,7 @@ const OrderModal = () => {
       flexDirection={modalStyle.flexDirection}
       position={modalStyle.position}
     >
-      <div className="flex absolute justify-center items-center rounded-full top-2 right-2 w-[30px] h-[30px] bg-gray-200 cursor-pointer" onClick={() => handleClickCloseButton()}>
+      <div className="flex absolute justify-center items-center rounded-full top-2 right-2 w-[30px] h-[30px] bg-gray-300 cursor-pointer" onClick={() => handleClickCloseButton()}>
         <CloseButton/>
       </div>
       <OrderSummary/>

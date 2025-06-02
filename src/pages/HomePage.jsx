@@ -12,14 +12,6 @@ const HomePage = () => {
 
   const [goOrderButtonHovered, setGoOrderButtonHovered] = useState(false);
 
-  useEffect(() => {
-    axios.get("http://localhost:8080/api/v1/category")
-    .then(response => {
-      console.log(response);
-      setCategories(response.data);
-    })
-    .catch(error => console.error(error));
-  }, []);
   return (
     <>
       <HomePageSection
@@ -29,8 +21,7 @@ const HomePage = () => {
         <ImageSlider/>
       </HomePageSection>
         <motion.h1
-           
-          className="flex justify-self-center text-7xl text-[#FE7800] p-[100px] font-['Whatthefont']">
+          className="flex justify-self-center self-center text-7xl text-[#FE7800] p-[100px] font-['Whatthefont']">
           Welcome to Whattheburger
         </motion.h1>
       <HomePageSection 

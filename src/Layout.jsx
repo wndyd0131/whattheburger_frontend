@@ -8,7 +8,7 @@ const Layout = ({ children }) => { {/* nested components */}
   return (
     <>
       <Header></Header>
-      <main>{children}</main> {/* inserting nested components as dynamic content */}
+      <main className="flex flex-col flex-grow min-h-screen">{children}</main> {/* inserting nested components as dynamic content */}
       <Footer></Footer>
       <motion.div
         className="flex justify-center items-center fixed bottom-15 right-10 h-[70px] w-[70px] shadow-md cursor-pointer rounded-full bg-gray-100 z-50"

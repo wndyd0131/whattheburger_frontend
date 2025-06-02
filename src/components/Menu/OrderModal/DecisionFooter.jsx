@@ -9,7 +9,7 @@ const DecisionFooter = () => {
   } = useContext(OrderContext);
 
   return (
-    <div className="flex basis-1/6 justify-center items-center gap-[20px] border-t-1 border-[gray]">
+    <div className="flex basis-1/6 justify-center items-center gap-[20px] border-t-1 border-gray-300">
       <motion.div
         whileHover={{scale: 1.1}}
         whileTap={{scale: 0.9}}

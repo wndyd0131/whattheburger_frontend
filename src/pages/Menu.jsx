@@ -19,16 +19,16 @@ const Menu = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const categoryList = [
-    { id: 1, name: "Burgers", icon: <BurgerIcon color={selectedCategory == 1 ? "#FE7800" : "#555555"}/>},
-    { id: 2, name: "Chickens", icon: <ChickenIcon color={selectedCategory == 2 ? "#FE7800" : "#555555"}/>},
-    { id: 3, name: "Fish", icon: <FishIcon color={selectedCategory == 3 ? "#FE7800" : "#555555"}/>},
-    { id: 4, name: "ATF & LTO", icon: <SpecialIcon color={selectedCategory == 4 ? "#FE7800" : "#555555"}/>},
-    { id: 5, name: "Kids", icon: <KidsIcon color={selectedCategory == 5 ? "#FE7800" : "#555555"}/>},
-    { id: 6, name: "Sides", icon: <SidesIcon color={selectedCategory == 6 ? "#FE7800" : "#555555"}/>},
-    { id: 7, name: "Salad", icon: <SaladIcon color={selectedCategory == 7 ? "#FE7800" : "#555555"}/>},
-    { id: 8, name: "Dessert", icon: <DessertIcon color={selectedCategory == 8 ? "#FE7800" : "#555555"}/>},
-    { id: 9, name: "Drink", icon: <DrinkIcon color={selectedCategory == 9 ? "#FE7800" : "#555555"}/>},
-    { id: 10, name: "Large Order", icon: <GroupIcon color={selectedCategory == 10 ? "#FE7800" : "#555555"}/>},
+    { id: 1, name: "Burgers", icon: <BurgerIcon color={selectedCategory === 1 ? "#FE7800" : "#555555"}/>},
+    { id: 2, name: "Chickens", icon: <ChickenIcon color={selectedCategory === 2 ? "#FE7800" : "#555555"}/>},
+    { id: 3, name: "Fish", icon: <FishIcon color={selectedCategory === 3 ? "#FE7800" : "#555555"}/>},
+    { id: 4, name: "ATF & LTO", icon: <SpecialIcon color={selectedCategory === 4 ? "#FE7800" : "#555555"}/>},
+    { id: 5, name: "Kids", icon: <KidsIcon color={selectedCategory === 5 ? "#FE7800" : "#555555"}/>},
+    { id: 6, name: "Sides", icon: <SidesIcon color={selectedCategory === 6 ? "#FE7800" : "#555555"}/>},
+    { id: 7, name: "Salad", icon: <SaladIcon color={selectedCategory === 7 ? "#FE7800" : "#555555"}/>},
+    { id: 8, name: "Dessert", icon: <DessertIcon color={selectedCategory === 8 ? "#FE7800" : "#555555"}/>},
+    { id: 9, name: "Drink", icon: <DrinkIcon color={selectedCategory === 9 ? "#FE7800" : "#555555"}/>},
+    { id: 10, name: "Large Order", icon: <GroupIcon color={selectedCategory === 10 ? "#FE7800" : "#555555"}/>},
   ]
 
   const [optionState, dispatchOption] = useReducer(

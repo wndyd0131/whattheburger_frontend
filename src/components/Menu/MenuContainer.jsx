@@ -17,7 +17,7 @@ const MenuContainer = () => {
               product={product}
               productIdx = {productIdx}
               calories={700}
-              imgSrc="/src/assets/private/menu/Whattheburger31.png"
+              imgSrc="/src/assets/private/menu/whattheburger.png"
             />
         )}
       </div>
