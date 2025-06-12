@@ -8,6 +8,8 @@ import { useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { UserContext } from "./contexts/UserContext";
+import Layout from "./Layout";
+import { LayoutProvider } from "./contexts/LayoutContext";
 
 function App() {
 
@@ -21,6 +23,7 @@ function App() {
       axios.get('http://localhost:8080/api/v1/users', {
         headers: {Authorization: `Bearer ${accessToken}`}
       }).then (response => {
+          console.log("HI", response.data);
           setUserDetails((prev) => ({
             ...prev,
             userId: response.data.userId,
@@ -32,17 +35,21 @@ function App() {
           }));
       }).catch(err => console.error(err));
     }
-  })
+  }, [])
 
   return (
       <Router>
-          <Routes>
-            <Route path="/" element={<HomePage/>}></Route>
-            <Route path="/menu" element={<Menu/>}></Route>
-            <Route path="/about" element={<AboutUs/>}></Route>
-            <Route path="/admin/menu" element={<MenuCreate/>}></Route>
-            <Route path="/auth" element={<Auth/>}></Route>
-          </Routes>
+        <LayoutProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage/>}></Route>
+              <Route path="/menu" element={<Menu/>}></Route>
+              <Route path="/about" element={<AboutUs/>}></Route>
+              <Route path="/admin/menu" element={<MenuCreate/>}></Route>
+              <Route path="/auth" element={<Auth/>}></Route>
+            </Routes>
+          </Layout>
+        </LayoutProvider>
       </Router>
 
   );

@@ -8,9 +8,7 @@ import Layout from './Layout';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <UserProvider>
-      <Layout>
-        <App/>
-      </Layout>
+      <App/>
     </UserProvider>
   </StrictMode>,
 )

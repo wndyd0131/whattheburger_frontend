@@ -4,7 +4,7 @@ import ConfirmModal from "./ConfirmModal";
 import OrderSummary from "./OrderSummary";
 import OrderCustomize from "./OrderCustomize";
 import { MenuContext } from "../../../contexts/MenuContext";
-import { ACTIONS } from "../../../reducers/Menu/actions";
+import { ACTIONS } from "../../../reducers/Option/actions";
 import { OrderContext } from "./contexts/OrderContext";
 import { CloseButton } from "../../../svg/Utils";
 
@@ -17,8 +17,9 @@ const OrderModal = () => {
 
   const {
     setSelectedProduct,
-    dispatchOption,
-    optionState
+    dispatchRoot,
+    optionState,
+    orderState
   } = useContext(MenuContext);
 
   const [isCustomizeDone, setIsCustomizeDone] = useState(false);
@@ -32,7 +33,7 @@ const OrderModal = () => {
   const handleConfirmCloseButton = () => {
     setConfirmModalOpened(false);
     setSelectedProduct(null);
-    dispatchOption({
+    dispatchRoot({
       type: ACTIONS.INIT_SELECTION
     })
   }
@@ -41,10 +42,9 @@ const OrderModal = () => {
     <OrderContext.Provider
       value={{
         setSelectedProduct: setSelectedProduct,
-        dispatchOption: dispatchOption,
+        dispatchRoot: dispatchRoot,
         optionState: optionState,
-        isCustomizeDone: isCustomizeDone,
-        setIsCustomizeDone: setIsCustomizeDone
+        orderState: orderState
       }}
     >
     <Modal

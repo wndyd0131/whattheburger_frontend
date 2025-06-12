@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 const Navigation = () => {
   return (
     <nav
-      className="nav">
+      className="flex justify-center max-2xl:hidden gap-[40px] flex-grow text-[#FE7800] font-['Whatthefont'] text-[20px]">
       <motion.a whileHover={{scale: 1.1}} className="nav-menu" href="/menu">MENU</motion.a>
       <motion.a whileHover={{scale: 1.1}} href="#">REWARDS</motion.a>
       <motion.a whileHover={{scale: 1.1}} href="#">CAREERS</motion.a>

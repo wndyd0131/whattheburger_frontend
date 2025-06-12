@@ -5,9 +5,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import { ACCESS_TOKEN_EXPIRATION_TIME, REFRESH_TOKEN_EXPIRATION_TIME } from "../../utils/jwtExpirationTime";
 
 const SignInForm = () => {
-
   const {
     signInForm,
     setSignInForm
@@ -41,8 +41,8 @@ const SignInForm = () => {
       console.log(response);
       const accessToken = response.data.accessToken;
       const refreshToken = response.data.refreshToken;
-      Cookies.set('accessToken', accessToken, { expires: 7});
-      Cookies.set('refreshToken', refreshToken, { expires: 7});
+      Cookies.set('accessToken', accessToken, { expires: ACCESS_TOKEN_EXPIRATION_TIME});
+      Cookies.set('refreshToken', refreshToken, { expires: REFRESH_TOKEN_EXPIRATION_TIME});
       setSignInForm((prev) => (
         { ...prev,
           email: '',
@@ -72,6 +72,7 @@ const SignInForm = () => {
 
   return (
     <>
+      <h2>Sign In</h2>
       <label htmlFor="email">email</label>
       <input
         type="email"

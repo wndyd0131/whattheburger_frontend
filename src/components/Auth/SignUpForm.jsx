@@ -31,9 +31,9 @@ const SignUpForm = () => {
     return requestObject;
   }
 
-  const handleClickSubmitButton = async () => {
+  const handleClickSubmitButton = () => {
     const requestObject = fromFormToRequest(signUpForm);
-    await axios.post('http://localhost:8080/api/v1/signup', requestObject)
+    axios.post('http://localhost:8080/api/v1/signup', requestObject)
     .then(response => {
       console.log(response);
       setIsSignIn(true);
@@ -54,6 +54,7 @@ const SignUpForm = () => {
 
   return (
       <>
+        <h2>Sign Up</h2>
         <legend className="flex" htmlFor="email">email</legend>
         <input
           type="email"

@@ -30,7 +30,7 @@ const MenuMarquee = () => {
         <Marquee>
         {popularMenuList.map((popularMenu, idx) => {
           return (
-            <a className="flex w-[200px] h-[170px]">
+            <a key={idx} className="flex w-[200px] h-[170px]">
               <img className="object-cover" src={popularMenu}></img>
             </a>
           );

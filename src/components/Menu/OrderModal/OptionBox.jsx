@@ -8,7 +8,7 @@ const OptionBox = ({customRule, customRuleIdx, option, optionIdx}) => {
 
   const {
     optionState,
-    dispatchOption
+    dispatchRoot
   } = useContext(OrderContext);
 
   return (
@@ -18,7 +18,7 @@ const OptionBox = ({customRule, customRuleIdx, option, optionIdx}) => {
       option: option,
       optionIdx: optionIdx,
       optionState: optionState,
-      dispatchOption: dispatchOption
+      dispatchRoot: dispatchRoot
     }}
     >
       <div className="flex justify-center p-5">

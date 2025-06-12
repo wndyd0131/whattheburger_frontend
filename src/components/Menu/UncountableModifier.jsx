@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { OptionContext } from "./OrderModal/contexts/OptionContext";
 import { Slider, ThemeProvider } from "@mui/material";
 import  { createTheme } from "@mui/material";
-import { ACTIONS } from "../../reducers/Menu/actions";
+import { ACTIONS } from "../../reducers/Option/actions";
 
 const UncountableModifier = () => {
 
@@ -18,16 +18,16 @@ const UncountableModifier = () => {
   const {
     customRuleIdx,
     option,
-    dispatchOption
+    dispatchRoot
   } = useContext(OptionContext);
 
   const handleClickSlider = (value, customRuleIdx, option) => {
     const modifyType = "DISCRETE";
-    dispatchOption({
+    dispatchRoot({
       type: ACTIONS.MODIFY_QUANTITY,
       payload: {
         customRuleIdx: customRuleIdx,
-        optionId: option.optionId,
+        productOptionId: option.productOptionId,
         modifyType: modifyType,
         value: value
       }

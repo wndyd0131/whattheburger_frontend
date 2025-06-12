@@ -5,7 +5,7 @@ const Modal = ({height, width, flexDirection, position, children}) => {
     <motion.div
       initial={{opacity: 0}}
       animate={{opacity: 1}}
-      className="flex fixed justify-center items-center w-full h-full top-0 left-0 bg-[rgba(0,0,0,0.5)] z-10">
+      className="flex fixed justify-center items-center w-full h-full top-0 left-0 bg-[rgba(0,0,0,0.5)] z-40">
       <motion.div 
         initial={{y: 250}}
         animate={{y: 0}}

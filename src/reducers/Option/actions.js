@@ -1,4 +1,5 @@
 export const ACTIONS = {
+  HYDRATE: 'hydrate',
   LOAD_OPTIONS: 'loadOptions',
   LOAD_DEFAULT: 'loadDefault',
   MODIFY_SELECTION: 'modifySelection',

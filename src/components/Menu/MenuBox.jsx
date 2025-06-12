@@ -2,14 +2,14 @@ import { useContext } from "react";
 import MenuImageContainer from "../MenuImageContainer";
 import { MenuContext } from "../../contexts/MenuContext";
 import axios from "axios";
-import { ACTIONS } from "../../reducers/Menu/actions";
+import { ACTIONS } from "../../reducers/Option/actions";
 import { motion } from "framer-motion";
 
 const MenuBox = ({product, imgSrc, calories}) => {
 
   const {
     setSelectedProduct,
-    dispatchOption,
+    dispatchRoot,
     setIsLoading
   } = useContext(MenuContext);
 
@@ -20,7 +20,7 @@ const MenuBox = ({product, imgSrc, calories}) => {
     .then(response => {
       console.log("RESPONSE: ", response.data);
       const optionResponse = response.data.optionResponses;
-      dispatchOption({
+      dispatchRoot({
         type: ACTIONS.LOAD_OPTIONS,
         payload: {
           optionResponse: optionResponse

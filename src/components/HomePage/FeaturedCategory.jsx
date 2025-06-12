@@ -15,6 +15,7 @@ const FeaturedCategory = () => {
       {featuredCategory.map((category, idx) => {
         return (
           <motion.div
+            key={idx}
             whileHover={{scale: 1.1}}
             whileTap={{scale: 0.9}}
             className="flex flex-col h-[300px] w-[250px] max-w-xs bg-white shadow-md rounded-2xl overflow-hidden cursor-pointer">

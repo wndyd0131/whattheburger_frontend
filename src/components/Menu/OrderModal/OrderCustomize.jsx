@@ -1,14 +1,14 @@
 import { useState, useContext } from "react";
 import OptionBox from "./OptionBox";
 import { OrderContext } from "./contexts/OrderContext";
-import { ACTIONS } from "../../../reducers/Menu/actions";
+import { ACTIONS } from "../../../reducers/Option/actions";
 import ConfirmModal from "./ConfirmModal";
 
 const OrderCustomize = () => {
 
   const {
     optionState,
-    dispatchOption
+    dispatchRoot
   } = useContext(OrderContext);
 
   const confirmModalMessage = "Return to default setting?";
@@ -20,7 +20,7 @@ const OrderCustomize = () => {
   }
 
   const handleConfirmDefaultButton = () => {
-    dispatchOption({
+    dispatchRoot({
       type: ACTIONS.LOAD_DEFAULT
     })
     setConfirmModalOpened(false);

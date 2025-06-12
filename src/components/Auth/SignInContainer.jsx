@@ -28,7 +28,6 @@ const SignInContainer = () => {
       handleClickSignUp
     }}>
       <div className="flex flex-col items-center justify-self-center self-center h-[700px] w-[500px] rounded-2xl border-1 border-gray-200 shadow-md m-[70px] p-[40px]">
-        <h2>Sign In</h2>
         {isSignIn &&
           <SignInForm/>
         }

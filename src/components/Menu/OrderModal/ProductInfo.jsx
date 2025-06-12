@@ -1,14 +1,17 @@
 import { useState, useContext } from "react";
 import MenuImageContainer from "../../MenuImageContainer";
 import { MenuContext } from "../../../contexts/MenuContext";
+import { OrderContext } from "./contexts/OrderContext";
 
 const ProductInfo = () => {
 
   const {
-    selectedProduct,
-    optionState
-  } = useContext(MenuContext)
+    selectedProduct
+  } = useContext(MenuContext);
 
+  const {
+    optionState
+  } = useContext(OrderContext);
   const [selectedButton, setSelectedButton] = useState("");
 
   return (

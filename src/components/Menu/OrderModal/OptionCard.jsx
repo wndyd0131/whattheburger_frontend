@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { OptionContext } from "./contexts/OptionContext";
-import { ACTIONS } from "../../../reducers/Menu/actions";
+import { ACTIONS } from "../../../reducers/Option/actions";
 import { motion } from "framer-motion";
 
 const OptionCard = () => {
@@ -9,7 +9,7 @@ const OptionCard = () => {
     customRule,
     customRuleIdx,
     option,
-    dispatchOption
+    dispatchRoot
   } = useContext(OptionContext);
 
   const extraPrice = option ? option.extraPrice * option.optionQuantity : option.extraPrice;
@@ -18,12 +18,12 @@ const OptionCard = () => {
 
   const handleClickOptionCard = () => {
     const customRuleType = customRule.customRuleType;
-    dispatchOption({
+    dispatchRoot({
       type: ACTIONS.MODIFY_SELECTION,
       payload: {
         customRuleIdx: customRuleIdx,
         customRuleType: customRuleType,
-        optionId: option.optionId
+        productOptionId: option.productOptionId
       }
     });
   }

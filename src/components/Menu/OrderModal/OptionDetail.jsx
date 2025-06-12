@@ -7,7 +7,6 @@ const OptionDetail = () => {
 
   const {
     option,
-    dispatchOption
   } = useContext(OptionContext);
 
   return (

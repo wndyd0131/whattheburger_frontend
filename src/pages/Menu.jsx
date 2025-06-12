@@ -5,18 +5,23 @@ import CategoryNav from "../components/Menu/CategoryNav";
 import MenuContainer from "../components/Menu/MenuContainer";
 import OrderModal from "../components/Menu/OrderModal/OrderModal";
 import { MenuContext } from "../contexts/MenuContext";
-import { optionReducer } from "../reducers/Menu/optionReducer";
+import { optionReducer } from "../reducers/Option/optionReducer";
 import ImageSlider from "../components/ImageSlider";
 import { motion } from "motion/react";
 import { BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from "../svg/categoryNav";
+import { orderReducer } from "../reducers/Order/orderReducer";
+import { LayoutContext } from "../contexts/LayoutContext";
 
 const Menu = (props) => {
   
   const [selectedCategory, setSelectedCategory] = useState(1);
   const [products, setProducts] = useState([]);
-  const [customRules, setCustomRules] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    reducer
+  } = useContext(LayoutContext);
 
   const categoryList = [
     { id: 1, name: "Burgers", icon: <BurgerIcon color={selectedCategory === 1 ? "#FE7800" : "#555555"}/>},
@@ -31,21 +36,26 @@ const Menu = (props) => {
     { id: 10, name: "Large Order", icon: <GroupIcon color={selectedCategory === 10 ? "#FE7800" : "#555555"}/>},
   ]
 
-  const [optionState, dispatchOption] = useReducer(
-    optionReducer,
-    {
-      currentSelections: {
-        totalExtraPrice: 0,
-        totalCalories: 0,
-        items: []
-      },
-      defaultSelections: {
-        totalExtraPrice: 0,
-        totalCalories: 0,
-        items: []
-      }
-    }
-  );
+  // const [optionState, dispatchOption] = useReducer(
+  //   optionReducer,
+  //   {
+  //     currentSelections: {
+  //       totalExtraPrice: 0,
+  //       totalCalories: 0,
+  //       items: []
+  //     },
+  //     defaultSelections: {
+  //       totalExtraPrice: 0,
+  //       totalCalories: 0,
+  //       items: []
+  //     }
+  //   }
+  // );
+
+  // const [orderState, dispatchOrder] = useReducer(
+  //   orderReducer,
+  //   {}
+  // );
 
   useEffect(() => { /* Get Product By Category */
     axios.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
@@ -54,22 +64,21 @@ const Menu = (props) => {
   }, []);
 
   {
-    console.log("OS: ", optionState);
+    console.log("RS: ", reducer.rootState);
   }
 
   return (
     <MenuContext.Provider value={{
       categoryList: categoryList,
       products: products,
-      customRules: customRules,
-      setCustomRules: setCustomRules,
       setProducts: setProducts,
       selectedCategory: selectedCategory,
       setSelectedCategory: setSelectedCategory,
       selectedProduct: selectedProduct,
       setSelectedProduct: setSelectedProduct,
-      optionState: optionState,
-      dispatchOption: dispatchOption,
+      optionState: reducer.rootState.optionState,
+      orderState: reducer.rootState.orderState,
+      dispatchRoot: reducer.dispatchRoot,
       isLoading: isLoading,
       setIsLoading: setIsLoading,
     }}>
