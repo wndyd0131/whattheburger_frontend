@@ -2,6 +2,10 @@ import { useState, useContext, useRef, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import Cookie from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import api from "../utils/api";
+import { ACTIONS } from "../reducers/Cart/actions";
+import { LayoutContext } from "../contexts/LayoutContext";
+import { toast } from "react-toastify";
 
 const AuthSection = () => {
 
@@ -9,6 +13,12 @@ const AuthSection = () => {
     userDetails,
     setUserDetails
   } = useContext(UserContext);
+
+  const {
+    reducer: {
+      dispatchRoot
+    }
+  } = useContext(LayoutContext);
 
   const [isOpened, setIsOpened] = useState(false);
 
@@ -29,6 +39,22 @@ const AuthSection = () => {
     Cookie.remove("accessToken");
     Cookie.remove("refreshToken");
     setUserDetails({});
+    api.get('/cart')
+    .then(response => {
+      console.log("RESPONSE", response);
+      const cartData = response.data;
+      dispatchRoot({
+        type: ACTIONS.HYDRATE,
+        payload: {
+          cartData: cartData
+        }
+      });
+      toast.success('Successfully signed out');
+    })
+    .catch(err => {
+      toast.error('Failed to sign out');
+      console.error(err);
+    });
     navigate("/");
   }
 

@@ -7,10 +7,11 @@ import OrderModal from "../components/Menu/OrderModal/OrderModal";
 import { MenuContext } from "../contexts/MenuContext";
 import { optionReducer } from "../reducers/Option/optionReducer";
 import ImageSlider from "../components/ImageSlider";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from "../svg/categoryNav";
 import { orderReducer } from "../reducers/Order/orderReducer";
 import { LayoutContext } from "../contexts/LayoutContext";
+import { ToastContainer } from "react-toastify";
 
 const Menu = (props) => {
   
@@ -93,11 +94,10 @@ const Menu = (props) => {
             <CategoryNav/>
             <MenuContainer/>
           </div>
-          {selectedProduct !== null && (
-            <OrderModal/>
-          )}
-        </div>
+          {selectedProduct !== null && <OrderModal key={selectedProduct.productId} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct}/>}
 
+
+        </div>
       </div>
     </MenuContext.Provider>
   );

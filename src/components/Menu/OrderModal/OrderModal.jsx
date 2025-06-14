@@ -8,7 +8,7 @@ import { ACTIONS } from "../../../reducers/Option/actions";
 import { OrderContext } from "./contexts/OrderContext";
 import { CloseButton } from "../../../svg/Utils";
 
-const OrderModal = () => {
+const OrderModal = ({selectedProduct, setSelectedProduct}) => {
 
   const modalStyle = {
     flexDirection: "row",
@@ -16,7 +16,6 @@ const OrderModal = () => {
   }
 
   const {
-    setSelectedProduct,
     dispatchRoot,
     optionState,
     orderState
@@ -41,6 +40,7 @@ const OrderModal = () => {
   return (
     <OrderContext.Provider
       value={{
+        selectedProduct: selectedProduct,
         setSelectedProduct: setSelectedProduct,
         dispatchRoot: dispatchRoot,
         optionState: optionState,

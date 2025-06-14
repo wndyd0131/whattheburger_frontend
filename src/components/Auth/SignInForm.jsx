@@ -6,6 +6,9 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { ACCESS_TOKEN_EXPIRATION_TIME, REFRESH_TOKEN_EXPIRATION_TIME } from "../../utils/jwtExpirationTime";
+import api from "../../utils/api";
+import { ACTIONS } from "../../reducers/Cart/actions";
+import { LayoutContext } from "../../contexts/LayoutContext";
 
 const SignInForm = () => {
   const {
@@ -20,6 +23,12 @@ const SignInForm = () => {
   const {
     setUserDetails
   } = useContext(UserContext);
+
+  const {
+    reducer: {
+      dispatchRoot
+    }
+  } = useContext(LayoutContext);
 
   const navigate = useNavigate();
 
@@ -36,7 +45,7 @@ const SignInForm = () => {
     // Validation
     // API call
     const requestObject = fromFormToRequest(signInForm);
-    axios.post('http://localhost:8080/api/v1/login', requestObject)
+    api.post('/login', requestObject)
     .then(response => {
       console.log(response);
       const accessToken = response.data.accessToken;
@@ -49,9 +58,8 @@ const SignInForm = () => {
           password: ''
         })
       );
-      axios.get('http://localhost:8080/api/v1/users', {
-        headers: {Authorization: `Bearer ${accessToken}`}
-      }).then(
+      api.get('/users')
+        .then(
         response => {
           setUserDetails((prev) => ({
             ...prev,
@@ -63,8 +71,24 @@ const SignInForm = () => {
             isAuthenticated: true
           }));
         }
-      )
-      .catch(err => console.error(err));
+        )
+        .catch(
+          err => console.error(err)
+        );
+      api.get('/cart')
+        .then(response => {
+          console.log("RESPONSE", response);
+          const cartData = response.data;
+          dispatchRoot({
+            type: ACTIONS.HYDRATE,
+            payload: {
+              cartData: cartData
+            }
+          });
+        })
+        .catch(
+          err => console.error(err)
+        );
       navigate('/');
     })
     .catch(err => console.error(err));

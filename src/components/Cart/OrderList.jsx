@@ -1,18 +1,25 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { LayoutContext } from "../../contexts/LayoutContext";
 import { CloseButton } from "../../svg/Utils";
+import api from "../../utils/api";
+import { ACTIONS } from "../../reducers/Cart/actions";
+import { toast } from "react-toastify";
 
 const OrderList = () => {
 
   const { 
-    reducer,
-    dispatchRoot
+    reducer: {
+      rootState,
+      dispatchRoot
+    }
   } = useContext(LayoutContext);
 
-  const cartState = reducer.rootState.cartState;
+  const cartState = rootState.cartState;
   console.log("CART_STATE", cartState);
 
+  const [closeButtonHovered, setCloseButtonHovered] = useState(false);
+  
   const handleClickModifyButton = (cartIdx) => {
   }
   const handleClickMinusButton = () => {
@@ -21,13 +28,33 @@ const OrderList = () => {
   const handleClickPlusButton = () => {
 
   }
+  const handleClickCloseButton = (cartIdx) => {
+    api.delete(`/cart/${cartIdx}`)
+      .then(response => {
+        console.log("RESPONSE", response);
+        const cartData = response.data;
+        dispatchRoot({
+          type: ACTIONS.HYDRATE,
+          payload: {
+            cartData: cartData
+          }
+        });
+        toast.success('Successfully deleted from cart');
+      })
+      .catch(
+        err => {
+          toast.error('Failed to delete from cart');
+          console.error(err);
+        }
+      );
+  }
   return (
-    <div className="flex flex-col basis-10/12">
-      {cartState.cartList.map((cart, idx) => {
+    <div className="flex flex-col basis-10/12 overflow-auto">
+      {cartState.cartList.map((cart, cartIdx) => {
         const cartQuantity = cart.quantity;
         const cartPrice = cart.product.productPrice * cartQuantity;
         return (
-          <div className="flex min-h-50 max-h-100 w-full border-1">
+          <div className="flex h-full w-full outline-1 outline-gray-200"> 
             <div className="flex justify-center items-center min-w-[200px]">
               <img className="w-[200px] h-[200px]" src="src\assets\private\menu\Whattheburger31.png">
               
@@ -40,7 +67,7 @@ const OrderList = () => {
                   only
                 </div>
               </div>
-              <div className="flex flex-col overflow-auto">
+              <div className="flex flex-col">
                 {cart.customRules.map((customRule, customRuleIdx) => {
                   const optionString = customRule.productOptions
                     .filter(productOption => productOption.isSelected)
@@ -65,8 +92,13 @@ const OrderList = () => {
             </div>
             <div className="flex flex-col relative w-full">
               <div className="flex relative basis-1/5">
-                <button className="absolute right-2 top-2">
-                  <CloseButton/>
+                <button
+                  className="absolute right-2 top-2 cursor-pointer"
+                  onClick={() => handleClickCloseButton(cartIdx)}
+                  onMouseEnter={() => setCloseButtonHovered(true)}
+                  onMouseLeave={() => setCloseButtonHovered(false)}
+                >
+                  <CloseButton color={closeButtonHovered ? "#FE7800" : "#000000"}/>
                 </button>
               </div>
               <div className="flex basis-3/5 justify-end items-center mr-5">
@@ -80,18 +112,18 @@ const OrderList = () => {
               <div className="flex basis-1/5 justify-end items-end">
                 <div className="flex flex-col justify-center items-center">
                 <h2>${cartPrice}</h2>
-                <div className="flex justify-between items-center w-[160px] m-2">
+                <div className="flex justify-between items-center border-1 border-gray-200 shadow-xs rounded-md overflow-hidden h-[35px] w-[160px] m-2">
                   <button
-                    className={`flex justify-center border-1 border-[#FE7800] rounded-[5px] h-[30px] w-[50px] text-[#FE7800] cursor-pointer`}
+                    className={`flex justify-center items-center bg-gray-100 h-full w-[50px] cursor-pointer`}
                     onClick={() => handleClickMinusButton(cart)}
                   >
                     <strong>-</strong>
                   </button>
-                    <h3>
+                    <h3 className="flex justify-center cursor-default">
                       {cartQuantity}
                     </h3>
                   <button
-                    className={`flex justify-center border-1 border-[#FE7800] rounded-[5px] h-[30px] w-[50px] text-[#FE7800] cursor-pointer`}
+                    className={`flex justify-center items-center bg-gray-100 h-full w-[50px] cursor-pointer`}
                     onClick={() => handleClickPlusButton(cart)}
                   >
                     <strong>+</strong>

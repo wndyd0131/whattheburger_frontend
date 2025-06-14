@@ -1,11 +1,11 @@
 import { motion } from "motion/react";
 import { useState } from "react";
 
-export const CloseButton = () => {
+export const CloseButton = ({color="#000000"}) => {
   return (
   <svg width="18px" height="18px" viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 21.32L21 3.32001" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M3 3.32001L21 21.32" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M3 21.32L21 3.32001" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M3 3.32001L21 21.32" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
   );
 }
@@ -45,6 +45,14 @@ export const ChatbotIcon = () => {
       <path d="M15 12C14.2005 12.6224 13.1502 13 12 13C10.8498 13 9.79952 12.6224 9 12" stroke="#FE7800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M9 8.01953V8" stroke="#FE7800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M15 8.01953V8" stroke="#FE7800" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+export const RightArrowIcon = ({width="50px", height="50px", color="#000000"}) => {
+  return (
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 7L15 12L10 17" stroke={color} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   );
 }

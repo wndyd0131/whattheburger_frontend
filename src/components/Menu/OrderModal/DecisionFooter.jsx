@@ -4,17 +4,28 @@ import { OrderContext } from "./contexts/OrderContext";
 import { MenuContext } from "../../../contexts/MenuContext";
 import { ACTIONS } from "../../../reducers/Option/actions";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { LayoutContext } from "../../../contexts/LayoutContext";
+import api from "../../../utils/api";
 
 const DecisionFooter = () => {
   
   const {
     selectedProduct,
+    setSelectedProduct
   } = useContext(MenuContext);
 
   const {
     optionState,
     setIsCustomizeDone
   } = useContext(OrderContext);
+
+  const {
+    reducer: {
+      rootState,
+      dispatchRoot
+    }
+  } = useContext(LayoutContext);
 
   const handleClickAddToBag = () => {
 
@@ -48,12 +59,26 @@ const DecisionFooter = () => {
       quantity: 1,
       customRuleRequests: customRuleRequests
     }
-    axios.post("http://localhost:8080/api/v1/cart", cartObject, {
-      withCredentials: true
-    }
-    )
-    .then(response => console.log("RESPONSE", response));
+    
     console.log(cartObject);
+
+    api.post("/cart", cartObject)
+    .then(response => {
+      console.log("RESPONSE", response);
+      const cartData = response.data;
+      setSelectedProduct(null);
+      dispatchRoot({
+        type: ACTIONS.HYDRATE,
+        payload: {
+          cartData: cartData
+        }
+      });
+      toast.success('Added to bag');
+    })
+    .catch(err => {
+      toast.error('Failed to add to bag');
+      console.error(err);
+    });
   }
 
   return (
@@ -61,7 +86,6 @@ const DecisionFooter = () => {
       <motion.div
         whileHover={{scale: 1.1}}
         whileTap={{scale: 0.9}}
-        onClick={() => setIsCustomizeDone(true)}
         className="flex justify-center items-center border-1 bg-white text-[#FE7800] border-[#FE7800] font-['Whatthefont'] rounded-[5px] w-[170px] h-[50px] text-[21px] whitespace-nowrap cursor-pointer hover:bg-[#FE7800] hover:text-white hover:border-white"
       >
         Order
