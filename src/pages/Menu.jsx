@@ -12,16 +12,21 @@ import { BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, K
 import { orderReducer } from "../reducers/Order/orderReducer";
 import { LayoutContext } from "../contexts/LayoutContext";
 import { ToastContainer } from "react-toastify";
+import { useLocation } from "react-router-dom";
 
 const Menu = (props) => {
   
-  const [selectedCategory, setSelectedCategory] = useState(1);
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
-    reducer
+    selectedCategory,
+    setSelectedCategory,
+    reducer: {
+      rootState,
+      dispatchRoot
+    }
   } = useContext(LayoutContext);
 
   const categoryList = [
@@ -34,29 +39,10 @@ const Menu = (props) => {
     { id: 7, name: "Salad", icon: <SaladIcon color={selectedCategory === 7 ? "#FE7800" : "#555555"}/>},
     { id: 8, name: "Dessert", icon: <DessertIcon color={selectedCategory === 8 ? "#FE7800" : "#555555"}/>},
     { id: 9, name: "Drink", icon: <DrinkIcon color={selectedCategory === 9 ? "#FE7800" : "#555555"}/>},
-    { id: 10, name: "Large Order", icon: <GroupIcon color={selectedCategory === 10 ? "#FE7800" : "#555555"}/>},
+    { id: 10, name: "Group Order", icon: <GroupIcon color={selectedCategory === 10 ? "#FE7800" : "#555555"}/>},
   ]
 
-  // const [optionState, dispatchOption] = useReducer(
-  //   optionReducer,
-  //   {
-  //     currentSelections: {
-  //       totalExtraPrice: 0,
-  //       totalCalories: 0,
-  //       items: []
-  //     },
-  //     defaultSelections: {
-  //       totalExtraPrice: 0,
-  //       totalCalories: 0,
-  //       items: []
-  //     }
-  //   }
-  // );
-
-  // const [orderState, dispatchOrder] = useReducer(
-  //   orderReducer,
-  //   {}
-  // );
+  const { hash } = useLocation();
 
   useEffect(() => { /* Get Product By Category */
     axios.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
@@ -64,9 +50,18 @@ const Menu = (props) => {
     .catch(error => console.error("Error: ", error));
   }, []);
 
-  {
-    console.log("RS: ", reducer.rootState);
-  }
+  useEffect(() => {
+    if (hash) {
+      const id = hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        console.log("ELEMENT", element);
+        element.scrollIntoView({ block: 'start', behavior: 'smooth'});
+      }
+    }
+  }, [hash]);
+
+  console.log("RS: ", rootState);
 
   return (
     <MenuContext.Provider value={{
@@ -77,15 +72,15 @@ const Menu = (props) => {
       setSelectedCategory: setSelectedCategory,
       selectedProduct: selectedProduct,
       setSelectedProduct: setSelectedProduct,
-      optionState: reducer.rootState.optionState,
-      orderState: reducer.rootState.orderState,
-      dispatchRoot: reducer.dispatchRoot,
+      optionState: rootState.optionState,
+      orderState: rootState.orderState,
+      dispatchRoot: dispatchRoot,
       isLoading: isLoading,
       setIsLoading: setIsLoading,
     }}>
       <div className="flex flex-col bg-amber-600">
         <ImageSlider/>
-        <div className="rounded-t-[60px] bg-white">
+        <div id="category-section" className="rounded-t-[60px] bg-white scroll-mt-[60px]">
           <div className="flex flex-col justify-center items-center pt-10">
             <h1 className="text-[#FE7800] font-['Whatthefont']">MENU</h1>
             <h2>{categoryList[selectedCategory - 1].name}</h2>

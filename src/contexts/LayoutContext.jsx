@@ -6,6 +6,7 @@ export const LayoutContext = createContext();
 export const LayoutProvider = ({children}) => {
   const [cartOpened, setCartOpened] = useState(false);
   const [rootState, dispatchRoot] = useReducer(rootReducer, initialState);
+  const [selectedCategory, setSelectedCategory] = useState(1);
   const reducer = useMemo(() => ({
     rootState,
     dispatchRoot
@@ -15,6 +16,8 @@ export const LayoutProvider = ({children}) => {
     <LayoutContext.Provider value={{
       cartOpened,
       setCartOpened,
+      selectedCategory,
+      setSelectedCategory,
       reducer
     }}>
       {children}

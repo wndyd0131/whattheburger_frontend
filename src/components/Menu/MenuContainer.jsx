@@ -10,7 +10,7 @@ const MenuContainer = () => {
 
   return (
     <div className="flex flex-col w-[1000px]">
-      <div className="grid gap-y-[50px] mt-[50px] xl:grid-cols-2">
+      <div className="grid gap-y-[50px] mt-[50px] md:grid-cols-2">
         {products.map((product, productIdx) => 
             <MenuBox
               key={productIdx}

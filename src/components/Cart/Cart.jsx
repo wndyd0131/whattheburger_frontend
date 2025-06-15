@@ -12,16 +12,16 @@ const Cart = () => {
 
   const ref = useRef();
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      console.log(ref.current);
-      console.log(e.target);
-      if (!ref.current?.contains(e.target)) { // if current element does not contain target element
-        setCartOpened(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-  }, []);
+  // useEffect(() => {
+  //   const handleClickOutside = (e) => {
+  //     console.log(ref.current);
+  //     console.log(e.target);
+  //     if (!ref.current?.contains(e.target)) { // if current element does not contain target element
+  //       setCartOpened(false);
+  //     }
+  //   }
+  //   document.addEventListener('mousedown', handleClickOutside);
+  // }, []);
 
   return (
       <motion.div
