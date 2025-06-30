@@ -2,34 +2,39 @@ import { useContext } from "react";
 import MenuImageContainer from "../MenuImageContainer";
 import { MenuContext } from "../../contexts/MenuContext";
 import axios from "axios";
-import { ACTIONS } from "../../reducers/Option/actions";
+import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import { motion } from "framer-motion";
+import { LayoutContext } from "../../contexts/LayoutContext";
+import api from "../../utils/api";
 
 const MenuBox = ({product, imgSrc, calories}) => {
 
   const {
+    reducer: {
+      dispatchRoot
+    }
+  } = useContext(LayoutContext);
+  const {
     setSelectedProduct,
-    dispatchRoot,
-    setIsLoading
   } = useContext(MenuContext);
 
   const handleClickStartOrderButton = () => {
-    setIsLoading(true);
+    // setIsLoading(true);
 
-    axios.get(`http://localhost:8080/api/v1/products/${product.productId}`)
+    api.get(`/products/${product.productId}`)
     .then(response => {
       console.log("RESPONSE: ", response.data);
       const optionResponse = response.data.optionResponses;
       dispatchRoot({
-        type: ACTIONS.LOAD_OPTIONS,
+        type: OPTION_ACTIONS.LOAD_OPTIONS,
         payload: {
           optionResponse: optionResponse
         }
-      })
+      });
+      setSelectedProduct(product);
     })
     .catch(error => console.error(error))
-    .finally(() => setIsLoading(false));
-    setSelectedProduct(product);
+    // .finally(() => setIsLoading(false));
   }
 
   return (

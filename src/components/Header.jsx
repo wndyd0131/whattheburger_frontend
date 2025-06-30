@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { LayoutContext } from "../contexts/LayoutContext";
 import axios from "axios";
-import { ACTIONS } from "../reducers/Option/actions";
 import Logo from "./Layout/Logo";
 import Hamburger from "./Header/Hamburger";
 import CartButton from "./Header/CartButton";

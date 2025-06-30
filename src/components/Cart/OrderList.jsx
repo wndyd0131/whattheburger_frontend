@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom"
 import { LayoutContext } from "../../contexts/LayoutContext";
 import { CloseButton } from "../../svg/Utils";
 import api from "../../utils/api";
-import { ACTIONS } from "../../reducers/Cart/actions";
+import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import { toast } from "react-toastify";
+import { OPTION_ACTIONS } from "../../reducers/Option/actions";
+import OrderModal from "../Menu/OrderModal/OrderModal";
+import { CartContext } from "./contexts/CartContext";
 
 const OrderList = () => {
 
@@ -15,12 +18,39 @@ const OrderList = () => {
     }
   } = useContext(LayoutContext);
 
+  const {
+    selectedProduct,
+    setSelectedProduct,
+    selectedCartIdx,
+    setSelectedCartIdx
+  } = useContext(CartContext);
+  
+
   const cartState = rootState.cartState;
-  console.log("CART_STATE", cartState);
 
   const [closeButtonHovered, setCloseButtonHovered] = useState(false);
-  
-  const handleClickModifyButton = (cartIdx) => {
+
+  const handleClickModifyButton = (productId, cartIdx) => {
+    api.get(`/products/${productId}`)
+      .then(response => {
+        console.log("PRODUCT_RESPONSE", response.data);
+        const optionResponse = response.data.optionResponses;
+        dispatchRoot({
+          type: OPTION_ACTIONS.LOAD_OPTIONS,
+          payload: {
+            optionResponse: optionResponse
+          }
+        });
+        dispatchRoot({
+          type: OPTION_ACTIONS.LOAD_FROM_CART,
+          payload: {
+            cartIdx: cartIdx
+          }
+        });
+        setSelectedProduct(response.data);
+        setSelectedCartIdx(cartIdx);
+      })
+      .catch(err => console.error(err));
   }
   const handleClickMinusButton = () => {
 
@@ -34,7 +64,7 @@ const OrderList = () => {
         console.log("RESPONSE", response);
         const cartData = response.data;
         dispatchRoot({
-          type: ACTIONS.HYDRATE,
+          type: CART_ACTIONS.HYDRATE,
           payload: {
             cartData: cartData
           }
@@ -48,13 +78,15 @@ const OrderList = () => {
         }
       );
   }
+
   return (
     <div className="flex flex-col basis-10/12 overflow-auto">
       {cartState.cartList.map((cart, cartIdx) => {
         const cartQuantity = cart.quantity;
         const cartPrice = cart.product.productPrice * cartQuantity;
+        const productId = cart.product.productId;
         return (
-          <div className="flex h-full w-full outline-1 outline-gray-200"> 
+          <div key={cartIdx} className="flex h-full w-full outline-1 outline-gray-200"> 
             <div className="flex justify-center items-center min-w-[200px]">
               <img className="w-[200px] h-[200px]" src="src\assets\private\menu\Whattheburger31.png">
               
@@ -102,14 +134,14 @@ const OrderList = () => {
 
                       const optionCountString = option.countType === "COUNTABLE" ? 'x' + option.optionQuantity : measureString;
                       const optionTraitString = option.productOptionTraits
-                        .filter(trait => trait.optionTraitType === "BINARY" && trait.currentValue === 0)
+                        .filter(trait => trait.optionTraitType === "BINARY" && trait.currentValue === 1)
                         .map(trait => '(' + trait.labelCode + ')')
                         .join('');
                       return option.optionName + ' ' + '(' + optionCountString + ')' + (optionTraitString.length > 0 ? ' ' + optionTraitString : '');
                     }
                   ).join(', ');
                   return (
-                    <span className="flex flex-col">
+                    <span key={customRuleIdx} className="flex flex-col">
                     <strong>{customRule.customRuleName}: </strong>
                     <span className="text-gray-500 text-sm italic">{optionString.length < 1 ? "N/A" : optionString}</span>
                     </span>
@@ -133,7 +165,7 @@ const OrderList = () => {
               <div className="flex basis-3/5 justify-end items-center mr-5">
                 <button
                   className="flex w-[100px] h-[40px] bg-white border-1 border-[#FE7800] rounded-full justify-center items-center font-bold cursor-pointer hover:bg-[#FE7800] hover:text-white duration-200"
-                  onClick={() => handleClickModifyButton(cart)}
+                  onClick={() => handleClickModifyButton(productId, cartIdx)}
                 >
                   Modify
                 </button>
@@ -160,11 +192,10 @@ const OrderList = () => {
                 </div>
                 </div>
               </div>
-              </div>
+            </div>
           </div>
         );
       })}
-      
     </div>
   )
 }

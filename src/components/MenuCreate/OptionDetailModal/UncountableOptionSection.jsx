@@ -11,7 +11,6 @@ const UncountableOptionSection = () => {
   } = useContext(SelectedOptionContext);
 
   const isDefault = formData.isDefault;
-  const measureType = formData.measureType;
   const measureValue = formData.measureValue;
   const extraPrice = formData.extraPrice;
   const orderIndex = formData.orderIndex;
@@ -32,32 +31,13 @@ const UncountableOptionSection = () => {
           (e) => setFormData(prev => ({...prev, isDefault: e.target.checked}))
         }
       />
-      <label htmlFor="measureTypeInput">measure type:</label>
-      <select
-        id="measureTypeInput"
-        className="border border-gray-300 rounded px-4 py-2"
-        value={formData.measureType}
-        onChange={
-          (e) => handleChangeMeasureType(e)
-        }
-      >
-        <option value="">
-          {DEFAULT_OPTION_STRING}
-        </option>
-        <option value="SIZE">
-          Size
-        </option>
-        <option value="DEGREE">
-          Degree
-        </option>
-      </select>
 
       <label htmlFor="measureValueInput">default unit:</label>
       <select
         id="defaultMeasureValueInput"
         className="border border-gray-300 rounded px-4 py-2"
         value={measureValue}
-        disabled={measureType === ""}
+        disabled
         onChange={
           (e) => setFormData(prev => ({...prev, measureValue: e.target.value}))
         }
@@ -65,8 +45,6 @@ const UncountableOptionSection = () => {
         <option value="">
           {DEFAULT_OPTION_STRING}
         </option>
-        {
-          measureType === "SIZE" &&
           <>
             <option value="KIDS">
               Kids
@@ -81,9 +59,7 @@ const UncountableOptionSection = () => {
               Large
             </option>
           </>
-        }
-        {
-          measureType === "DEGREE" &&
+
           <>
             <option value="EASY">
               Easy
@@ -95,7 +71,6 @@ const UncountableOptionSection = () => {
               Extra
             </option>
           </>
-        }
       </select>
       <label htmlFor="extraPriceInput">extra price:</label>
       <input

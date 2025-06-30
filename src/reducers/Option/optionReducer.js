@@ -1,4 +1,4 @@
-import { ACTIONS } from "./actions";
+import { OPTION_ACTIONS as ACTIONS } from "./actions";
 
 export const initialOptionState = {
       currentSelections: {
@@ -12,7 +12,7 @@ export const initialOptionState = {
         items: []
       }
     };
-export const optionReducer = (state=initialOptionState, action) => {
+export const optionReducer = (state=initialOptionState, action, cartState) => {
   switch(action.type) {
     case ACTIONS.INIT_SELECTION: {
       const updatedState = {
@@ -38,8 +38,6 @@ export const optionReducer = (state=initialOptionState, action) => {
       const updatedState = structuredClone(state);
       switch (modifyType) {
         case 'PLUS': {
-          console.log(updatedState);
-          console.log("PID", productOptionId);
           updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
             if (optionDetail.productOptionId === productOptionId && optionDetail.optionQuantity < optionDetail.maxQuantity) {
               let extraPrice = optionDetail.extraPrice;
@@ -48,9 +46,9 @@ export const optionReducer = (state=initialOptionState, action) => {
               let defaultQuantity = optionDetail.defaultQuantity;
               optionDetail.optionQuantity++;
               if (currentQuantity >= defaultQuantity) {
-                updatedState.totalExtraPrice += extraPrice;
+                updatedState.currentSelections.totalExtraPrice += extraPrice;
               }
-              updatedState.totalCalories += calories;
+              updatedState.currentSelections.totalCalories += calories;
             }
           });
           return updatedState;
@@ -65,20 +63,30 @@ export const optionReducer = (state=initialOptionState, action) => {
               let defaultQuantity = optionDetail.defaultQuantity;
               optionDetail.optionQuantity--;
               if (currentQuantity > defaultQuantity) {
-                updatedState.totalExtraPrice -= extraPrice;
+                updatedState.currentSelections.totalExtraPrice -= extraPrice;
               }
-              updatedState.totalCalories -= calories;
+              updatedState.currentSelections.totalCalories -= calories;
             }
           });
           return updatedState;
         }
         case 'DISCRETE': {
           const {
-            value
+            index
           } = action.payload;
+          console.log("INDEX", index);
           updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
-            if (optionDetail.productOptionId === productOptionId)
-              optionDetail.optionQuantity = value;
+            if (optionDetail.productOptionId === productOptionId) {
+              const quantityList = optionDetail.quantityDetail.quantityList;
+              if (index >= 0 && index < quantityList.length) {
+                const curIndex = optionDetail.quantityDetail.isSelected;
+                const oldPrice = quantityList[curIndex].extraPrice;
+                optionDetail.quantityDetail.isSelected = index;
+                const newPrice = quantityList[index].extraPrice;
+                updatedState.currentSelections.totalExtraPrice -= oldPrice;
+                updatedState.currentSelections.totalExtraPrice += newPrice;
+              }
+            }
           });
           return updatedState;
         }
@@ -100,21 +108,31 @@ export const optionReducer = (state=initialOptionState, action) => {
           let newExtraPrice = 0;
           let newCalories = 0;
           console.log("US", updatedState);
-          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail, optionDetailIdx) => {
             if (optionDetail.isSelected) {
-              oldExtraPrice = optionDetail.extraPrice;
-              oldCalories = optionDetail.calories;
+              if (optionDetail.countType === "COUNTABLE") {
+                oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
+                oldCalories = optionDetail.calories * optionDetail.optionQuantity;
+              } else if (optionDetail.countType === "UNCOUNTABLE") {
+                  const quantityList = optionDetail.quantityDetail.quantityList;
+                  const curIndex = optionDetail.quantityDetail.isSelected;
+                  if (curIndex >= 0 && curIndex < quantityList.length) {
+                    oldExtraPrice = optionDetail.extraPrice + quantityList[curIndex].extraPrice;
+                    oldCalories = optionDetail.extraCalories + quantityList[curIndex].extraCalories;
+                  }
+                  // else throw exception
+              }
             }
             if (optionDetail.productOptionId === productOptionId) {
-              console.log(productOptionId);
-
               optionDetail.isSelected = true;
               newExtraPrice = optionDetail.extraPrice;
               newCalories = optionDetail.calories;
             } else { // initialize to default setting
-              console.log(productOptionId);
               optionDetail.isSelected = false;
               optionDetail.optionQuantity = optionDetail.defaultQuantity;
+              optionDetail.quantityDetail.isSelected = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.isSelected;
+
+
               if (optionDetail.optionTraitResponses[0])
                 optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
             }
@@ -131,12 +149,26 @@ export const optionReducer = (state=initialOptionState, action) => {
             minSelection,
             selectedCount
           } = updatedState.currentSelections.items[customRuleIdx];
-          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+          let oldExtraPrice = 0;
+          let oldCalories = 0;
+          let newExtraPrice = 0;
+          let newCalories = 0;
+          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail, optionDetailIdx) => {
             if (optionDetail.productOptionId === productOptionId) {
               if (optionDetail.isSelected && selectedCount > minSelection) {
                 // remove
-                let oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
-                let oldCalories = optionDetail.calories * optionDetail.optionQuantity;
+                if (optionDetail.countType === "COUNTABLE") {
+                  oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
+                  oldCalories = optionDetail.calories * optionDetail.optionQuantity;
+                } else if (optionDetail.countType === "UNCOUNTABLE") {
+                    const quantityList = optionDetail.quantityDetail.quantityList;
+                    const curIndex = optionDetail.quantityDetail.isSelected;
+                    if (curIndex >= 0 && curIndex < quantityList.length) {
+                      oldExtraPrice = optionDetail.extraPrice + quantityList[curIndex].extraPrice;
+                      oldCalories = optionDetail.extraCalories + quantityList[curIndex].extraCalories;
+                    }
+                    // else throw exception
+                }
                 updatedState.currentSelections.totalExtraPrice -= oldExtraPrice;
                 updatedState.currentSelections.totalCalories -= oldCalories;
                 updatedState.currentSelections.items[customRuleIdx].selectedCount--;
@@ -144,6 +176,7 @@ export const optionReducer = (state=initialOptionState, action) => {
                 if (optionDetail.optionTraitResponses[0])
                   optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
                 optionDetail.optionQuantity = optionDetail.defaultQuantity;
+                optionDetail.quantityDetail.isSelected = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.isSelected;
                 optionDetail.isSelected = false;
               }
               else if (!optionDetail.isSelected && selectedCount < maxSelection){
@@ -162,12 +195,26 @@ export const optionReducer = (state=initialOptionState, action) => {
         case "FREE": {
           const updatedState = structuredClone(state);
           if (updatedState)
-          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail) => {
+          updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail, optionDetailIdx) => {
             if (optionDetail.productOptionId === productOptionId) {
               if (optionDetail.isSelected) {
                 // remove
-                let oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
-                let oldCalories = optionDetail.calories * optionDetail.optionQuantity;
+                let oldExtraPrice = 0;
+                let oldCalories = 0;
+                if (optionDetail.countType === "COUNTABLE") {
+                  oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
+                  oldCalories = optionDetail.calories * optionDetail.optionQuantity;
+                } else if (optionDetail.countType === "UNCOUNTABLE") {
+                  console.log("UNCOUNTABLE!");
+                  const quantityList = optionDetail.quantityDetail.quantityList;
+                  const curIndex = optionDetail.quantityDetail.isSelected;
+                  if (curIndex >= 0 && curIndex < quantityList.length) {
+                    oldExtraPrice = optionDetail.extraPrice + quantityList[curIndex].extraPrice;
+                    oldCalories = optionDetail.extraCalories + quantityList[curIndex].extraCalories;
+                  }
+                  // else throw exception
+                }
+
                 updatedState.currentSelections.totalExtraPrice -= oldExtraPrice;
                 updatedState.currentSelections.totalCalories -= oldCalories;
                 updatedState.currentSelections.items[customRuleIdx].selectedCount--;
@@ -175,6 +222,7 @@ export const optionReducer = (state=initialOptionState, action) => {
                 if (optionDetail.optionTraitResponses[0])
                   optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
                 optionDetail.optionQuantity = optionDetail.defaultQuantity;
+                optionDetail.quantityDetail.isSelected = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.isSelected;
                 optionDetail.isSelected = false;
               }
               else {
@@ -218,10 +266,16 @@ export const optionReducer = (state=initialOptionState, action) => {
       
       optionResponse.forEach((option) => {
         const customRuleIdx = option.customRuleResponse.orderIndex;
-        
+        const selectedIdx = option.quantityDetailResponses.findIndex(quantityDetail => quantityDetail.isDefault === true);
+        const quantityDetail = {
+          quantityList: option.quantityDetailResponses,
+          isSelected: selectedIdx !== -1 ? selectedIdx : null
+        }
+
         const optionDetailObject = {
           ...option,
           optionQuantity: option.defaultQuantity,
+          quantityDetail: quantityDetail,
           isSelected: false
         };
         if (!customRules[customRuleIdx]) {
@@ -256,6 +310,74 @@ export const optionReducer = (state=initialOptionState, action) => {
       updatedState.currentSelections.totalCalories = totalCalories;
       updatedState.defaultSelections.totalCalories = totalCalories;
       console.log("UUSS", updatedState);
+      return updatedState;
+    }
+    case ACTIONS.LOAD_FROM_CART: {
+      const updatedState = structuredClone(state);
+      
+      // make productOptionMap from option {productOptionId: customRuleIdx, productOptionIdx, isSelected, optionQuantity}
+      // make productOptionTraitMap from option {productOptionTraitId: customRuleIdx, productOptionIdx, productOptionTraitIdx, currentValue}
+      // loop through cart and update option
+        // if option does not exist -> exception
+        // if option exists -> update
+      const productOptionMap = {};
+      const productOptionTraitMap = {};
+
+      const cartIdx = action.payload.cartIdx;
+      const cartItem = cartState.cartList[cartIdx]
+      
+      updatedState.currentSelections.items.forEach((customRule, customRuleIdx) => {
+        customRule.selectedCount = 0;
+        customRule.optionDetails.forEach((option, optionIdx) => {
+          const productOptionId = option.productOptionId;
+          productOptionMap[productOptionId] = {
+            customRuleIdx: customRuleIdx,
+            optionIdx: optionIdx,
+          }
+          option.optionTraitResponses.forEach((optionTrait, optionTraitIdx) => {
+            const productOptionTraitId = optionTrait.productOptionTraitId;
+            productOptionTraitMap[productOptionTraitId] = {
+              customRuleIdx: customRuleIdx,
+              optionIdx: optionIdx,
+              optionTraitIdx: optionTraitIdx,
+            }
+          });
+        });
+      })
+
+      cartItem.customRules.forEach((customRule) => {
+        customRule.productOptions.forEach(option => {
+          const productOptionId = option.productOptionId;
+          if (productOptionMap[productOptionId]) {
+            const {
+              customRuleIdx,
+              optionIdx
+            } = productOptionMap[productOptionId];
+            const isSelected = option.isSelected;
+            const optionQuantity = option.optionQuantity;
+            updatedState.currentSelections.items[customRuleIdx].optionDetails[optionIdx].isSelected = isSelected;
+            updatedState.currentSelections.items[customRuleIdx].optionDetails[optionIdx].optionQuantity = optionQuantity;
+            if (isSelected)
+              updatedState.currentSelections.items[customRuleIdx].selectedCount++;
+          } else {
+            console.error("ProductOption does not exist");
+          }
+          option.productOptionTraits.forEach(optionTrait => {
+            const productOptionTraitId = optionTrait.productOptionTraitId;
+            if (productOptionTraitMap[productOptionTraitId]) {
+              const {
+                customRuleIdx,
+                optionIdx,
+                optionTraitIdx
+              } = productOptionTraitMap[productOptionTraitId];
+              const currentValue = optionTrait.currentValue;
+              updatedState.currentSelections.items[customRuleIdx].optionDetails[optionIdx].optionTraitResponses[optionTraitIdx].currentSelection = currentValue;
+            } else {
+              console.error("OptionTrait does not exist")
+            }
+          });
+        });
+      });
       return updatedState;
     }
     case ACTIONS.LOAD_DEFAULT: {

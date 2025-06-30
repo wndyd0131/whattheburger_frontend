@@ -72,11 +72,6 @@ const Menu = (props) => {
       setSelectedCategory: setSelectedCategory,
       selectedProduct: selectedProduct,
       setSelectedProduct: setSelectedProduct,
-      optionState: rootState.optionState,
-      orderState: rootState.orderState,
-      dispatchRoot: dispatchRoot,
-      isLoading: isLoading,
-      setIsLoading: setIsLoading,
     }}>
       <div className="flex flex-col bg-amber-600">
         <ImageSlider/>
@@ -89,9 +84,9 @@ const Menu = (props) => {
             <CategoryNav/>
             <MenuContainer/>
           </div>
-          {selectedProduct !== null && <OrderModal key={selectedProduct.productId} selectedProduct={selectedProduct} setSelectedProduct={setSelectedProduct}/>}
-
-
+          {selectedProduct !== null &&
+            <OrderModal mode="menu"/>
+          }
         </div>
       </div>
     </MenuContext.Provider>

@@ -1,25 +1,31 @@
 import { useContext } from "react";
 import { OptionContext } from "./contexts/OptionContext";
-import { ACTIONS } from "../../../reducers/Option/actions";
+import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
 import { motion } from "framer-motion";
+import { LayoutContext } from "../../../contexts/LayoutContext";
 
 const OptionCard = () => {
   
   const {
+    reducer: {
+      dispatchRoot
+    }
+  } = useContext(LayoutContext);
+
+  const {
     customRule,
     customRuleIdx,
     option,
-    dispatchRoot
   } = useContext(OptionContext);
 
-  const extraPrice = option ? option.extraPrice * option.optionQuantity : option.extraPrice;
+  const extraPrice = option.extraPrice * option.optionQuantity;
   const calories = option ? option.calories * option.optionQuantity : option.calories;
   const extraPriceText = extraPrice > 0 ? `$${extraPrice.toFixed(2)}` : "No Extra Charge";
 
   const handleClickOptionCard = () => {
     const customRuleType = customRule.customRuleType;
     dispatchRoot({
-      type: ACTIONS.MODIFY_SELECTION,
+      type: OPTION_ACTIONS.MODIFY_SELECTION,
       payload: {
         customRuleIdx: customRuleIdx,
         customRuleType: customRuleType,

@@ -62,7 +62,9 @@ const MenuCreate = () => {
           maxQuantity: option.maxQuantity,
           extraPrice: option.extraPrice,
           orderIndex: option.orderIndex,
-          optionTraitRequests: optionTraitRequests
+          optionTraitRequests: optionTraitRequests,
+          quantityDetails: option.quantityDetails
+            .filter(quantity => quantity.isSelected === true)
         }
         );
       });
@@ -108,6 +110,7 @@ const MenuCreate = () => {
 
     axios.get("http://localhost:8080/api/v1/options")
     .then(response => {
+      console.log("OPTION_RESPONSE", response.data);
       setOptions(response.data);
     })
     .catch(error => console.error(error));

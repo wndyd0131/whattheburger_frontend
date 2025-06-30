@@ -1,19 +1,25 @@
 import { useContext } from "react";
 import { OptionContext } from "./OrderModal/contexts/OptionContext";
-import { ACTIONS } from "../../reducers/Option/actions";
+import { OPTION_ACTIONS } from "../../reducers/Option/actions";
+import { LayoutContext } from "../../contexts/LayoutContext";
 
 const TraitModifier = ({optionTrait, optionTraitIdx}) => {
 
   const {
+    reducer: {
+      dispatchRoot
+    }
+  } = useContext(LayoutContext);
+
+  const {
     customRuleIdx,
     option,
-    dispatchRoot
   } = useContext(OptionContext);
 
   const handleClickToggleButton = (customRuleIdx, productOptionId, optionTrait) => {
     dispatchRoot
     ({
-      type: ACTIONS.MODIFY_TRAIT,
+      type: OPTION_ACTIONS.MODIFY_TRAIT,
       payload: {
         customRuleIdx,
         productOptionId,

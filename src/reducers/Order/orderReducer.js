@@ -1,4 +1,4 @@
-import { ACTIONS } from "./actions";
+import { ORDER_ACTIONS as ACTIONS } from "./actions";
 
 export const initialOrderState = {};
 export const orderReducer = (state=initialOrderState, action, optionState) => {

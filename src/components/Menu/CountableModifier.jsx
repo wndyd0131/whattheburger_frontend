@@ -1,19 +1,25 @@
 import { useContext } from "react";
 import { OptionContext } from "./OrderModal/contexts/OptionContext";
-import { ACTIONS } from "../../reducers/Option/actions";
+import { OPTION_ACTIONS } from "../../reducers/Option/actions";
+import { LayoutContext } from "../../contexts/LayoutContext";
 
 const CountableModifier = () => {
   const {
+    reducer: {
+      dispatchRoot
+    }
+  } = useContext(LayoutContext);
+
+  const {
     customRuleIdx,
-    option,
-    dispatchRoot
+    option
   } = useContext(OptionContext);
 
   const handleClickPlusButton = (customRuleIdx, option) => {
     const modifyType = "PLUS";
     console.log("OPTION", option);
     dispatchRoot({
-      type: ACTIONS.MODIFY_QUANTITY,
+      type: OPTION_ACTIONS.MODIFY_QUANTITY,
       payload: {
         customRuleIdx: customRuleIdx,
         productOptionId: option.productOptionId,
@@ -25,7 +31,7 @@ const CountableModifier = () => {
   const handleClickMinusButton = (customRuleIdx, option) => {
     const modifyType = "MINUS";
     dispatchRoot({
-      type: ACTIONS.MODIFY_QUANTITY,
+      type: OPTION_ACTIONS.MODIFY_QUANTITY,
       payload: {
         customRuleIdx: customRuleIdx,
         productOptionId: option.productOptionId,

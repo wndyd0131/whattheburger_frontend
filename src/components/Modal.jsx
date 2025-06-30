@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 
-const Modal = ({height, width, flexDirection, position, children}) => {
+const Modal = ({height, width, flexDirection, position, justifyContent, alignItems, children}) => {
   return (
       <motion.div
         initial={{opacity: 0}}
@@ -11,7 +11,7 @@ const Modal = ({height, width, flexDirection, position, children}) => {
           animate={{y: 0}}
           exit={{y:250}}
           className="flex relative w-full h-full max-w-[90%] max-h-[80%] rounded-2xl bg-white overflow-auto"
-          style={{height, width, flexDirection, position}}
+          style={{height, width, flexDirection, position, justifyContent, alignItems}}
         >
           {children}
         </motion.div>

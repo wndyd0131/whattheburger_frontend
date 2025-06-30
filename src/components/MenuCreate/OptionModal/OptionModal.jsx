@@ -13,11 +13,13 @@ export const SelectedOptionContext = createContext();
 const OptionModal = () => {
   
   const {
+    options,
     selectedOptionState,
     selectedOptionDispatch,
   } = useContext(MenuCreateContext);
 
   const [selectedOptionIdx, setSelectedOptionIdx] = useState(null);
+  const [selectedQuantityIds, setSelectedQuantityIds] = useState([]);
   const [selectedOptionTraitIdx, setSelectedOptionTraitIdx] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -32,7 +34,8 @@ const OptionModal = () => {
     defaultSelection: 0,
     optionTraitId: null,
     optionTraitExtraPrice: 0,
-    optionTraitExtraCalories: 0
+    optionTraitExtraCalories: 0,
+    quantityIds: []
   });
 
   const optionModalStyle = {
@@ -43,10 +46,13 @@ const OptionModal = () => {
 
   return (
     <SelectedOptionContext.Provider value={{
+      options: options,
       selectedOptionState: selectedOptionState,
       selectedOptionDispatch: selectedOptionDispatch,
       selectedOptionIdx: selectedOptionIdx,
       selectedOptionTraitIdx: selectedOptionTraitIdx,
+      selectedQuantityIds,
+      setSelectedQuantityIds,
       setSelectedOptionIdx: setSelectedOptionIdx,
       setSelectedOptionTraitIdx: setSelectedOptionTraitIdx,
       formData: formData,
@@ -57,9 +63,6 @@ const OptionModal = () => {
         width={optionModalStyle.width}
         flexDirection={optionModalStyle.flexDirection}
       >
-      {selectedOptionIdx !== null && 
-        <OptionDetailModal/>
-      }
       <div className="flex flex-col flex-grow">
         <SearchBar/>
         <SortSection/>

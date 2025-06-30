@@ -1,18 +1,25 @@
 import { useState, useContext } from "react";
 import MenuImageContainer from "../../MenuImageContainer";
-import { MenuContext } from "../../../contexts/MenuContext";
-import { OrderContext } from "./contexts/OrderContext";
+import { LayoutContext } from "../../../contexts/LayoutContext";
+import { ModalContext } from "./contexts/ModalContext";
 
 const ProductInfo = () => {
 
   const {
-    selectedProduct
-  } = useContext(MenuContext);
-
-  const {
-    optionState
-  } = useContext(OrderContext);
+    reducer: {
+      rootState: {
+        optionState,
+      }
+    }
+  } = useContext(LayoutContext);
   
+  const {
+    modalData: {
+      selectedProduct
+    },
+    mode
+  } = useContext(ModalContext);
+
   const [selectedButton, setSelectedButton] = useState("ONLY");
 
   return (

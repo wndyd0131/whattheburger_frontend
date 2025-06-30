@@ -9,7 +9,7 @@ import { UserContext } from "./contexts/UserContext";
 import { LayoutContext } from "./contexts/LayoutContext";
 import { ToastContainer } from "react-toastify";
 import axios from "axios";
-import { ACTIONS } from "./reducers/Cart/actions";
+import { CART_ACTIONS } from "./reducers/Cart/actions";
 import api from "./utils/api";
 
 const Layout = ({ children }) => { {/* nested components */}
@@ -32,7 +32,7 @@ const Layout = ({ children }) => { {/* nested components */}
       console.log("CART_RESPONSE", response.data);
       const cartData = response.data;
       dispatchRoot({
-        type: ACTIONS.HYDRATE,
+        type: CART_ACTIONS.HYDRATE,
         payload: {
           cartData: cartData
         }

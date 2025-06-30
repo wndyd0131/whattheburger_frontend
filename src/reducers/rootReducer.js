@@ -9,8 +9,8 @@ export const initialState = {
 };
 
 export const rootReducer = (state=initialState, action) => {
-  const optionState = optionReducer(state.optionState, action);
   const cartState = cartReducer(state.cartState, action);
+  const optionState = optionReducer(state.optionState, action, cartState);
   const orderState = orderReducer(state.orderState, action, optionState);
   return {
     optionState: optionState,

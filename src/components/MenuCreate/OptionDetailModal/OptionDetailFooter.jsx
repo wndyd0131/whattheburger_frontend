@@ -47,7 +47,9 @@ const OptionDetailFooter = () => {
       countType: formData.countType,
       measureType: formData.measureType,
       measureValue: formData.measureValue,
+      quantityDetails: formData.quantityDetails
     }
+    console.log("OD", optionDetail);
 
     selectedOptionDispatch({
       type: ACTIONS.SAVE_OPTION,

@@ -3,8 +3,6 @@ import ConfirmModal from "./ConfirmModal";
 import ProductInfo from "./ProductInfo";
 import OrderSummaryDetail from "./OrderSummaryDetail";
 import DecisionFooter from "./DecisionFooter";
-import { ACTIONS } from "../../../reducers/Option/actions";
-import { OrderContext } from "./contexts/OrderContext";
 
 const OrderSummary = () => {
   return (

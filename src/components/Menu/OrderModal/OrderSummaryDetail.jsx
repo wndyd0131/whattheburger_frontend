@@ -1,12 +1,16 @@
 import { useContext } from "react";
-import { OrderContext } from "./contexts/OrderContext";
 import CountLabel from "../CountLabel";
 import TraitLabel from "../TraitLabel";
+import { LayoutContext } from "../../../contexts/LayoutContext";
 
 const OrderSummaryDetail = () => {
   const {
-    optionState
-  } = useContext(OrderContext);
+    reducer: {
+      rootState: {
+        optionState,
+      }
+    }
+  } = useContext(LayoutContext);
 
   return (
     <div className="flex flex-col basis-3/6 relative p-[30px] overflow-y-auto border-t-1 border-gray-300">
@@ -14,6 +18,7 @@ const OrderSummaryDetail = () => {
       <div className="flex flex-col flex-grow pt-[10px] pl-[30px]">
         <ul>
           {optionState.currentSelections.items.map((customRule, customRuleIdx) => {
+            console.log("OrderSummaryDetail", optionState);
             if (customRule.selectedCount > 0) {
               return (
                 <div className="flex flex-col gap-[5px] mb-[15px]" key={customRuleIdx}>

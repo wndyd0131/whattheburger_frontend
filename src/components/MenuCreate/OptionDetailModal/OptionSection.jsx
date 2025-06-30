@@ -69,21 +69,18 @@ const OptionSection = () => {
     const optionIdx = selectedOptionIdx;
 
     const isDefault = selectedOptionState[optionIdx].isDefault;
-    const measureType = selectedOptionState[optionIdx].measureType;
     const measureValue = selectedOptionState[optionIdx].measureValue;
     const extraPrice = selectedOptionState[optionIdx].extraPrice;
     const orderIndex = selectedOptionState[optionIdx].orderIndex;
     
     if (selectedOptionState[optionIdx].countType === e.target.value) {
       setFormData(prev => ({...prev, isDefault: isDefault}));
-      setFormData(prev => ({...prev, measureType: measureType}));
       setFormData(prev => ({...prev, measureValue: measureValue}));
       setFormData(prev => ({...prev, extraPrice: extraPrice}));
       setFormData(prev => ({...prev, orderIndex: orderIndex}));
     }
     else {
       setFormData(prev => ({...prev, isDefault: false}));
-      setFormData(prev => ({...prev, measureType: ""}));
       setFormData(prev => ({...prev, measureValue: ""}));
       setFormData(prev => ({...prev, extraPrice: 0}));
     }

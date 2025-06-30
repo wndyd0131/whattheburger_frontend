@@ -1,4 +1,4 @@
-import { ACTIONS } from "./actions";
+import { CART_ACTIONS as ACTIONS } from "./actions";
 
 export const initialCartState = {
   cartList: []

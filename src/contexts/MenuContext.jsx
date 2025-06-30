@@ -1,3 +1,4 @@
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 
-export const MenuContext = createContext();
+export const MenuContext = createContext(null);
+export const useMenuContext = () => useContext(MenuContext);

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import { ACTIONS } from "../../reducers/Cart/actions";
+import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import api from "../../utils/api";
 import Cookie from "js-cookie";
 import { UserContext } from "../../contexts/UserContext";
@@ -37,7 +37,7 @@ const ProfileDropdown = ({props}) => {
       console.log("RESPONSE", response);
       const cartData = response.data;
       dispatchRoot({
-        type: ACTIONS.HYDRATE,
+        type: CART_ACTIONS.HYDRATE,
         payload: {
           cartData: cartData
         }

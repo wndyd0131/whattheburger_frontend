@@ -3,27 +3,63 @@ import Modal from "../../Modal";
 import ConfirmModal from "./ConfirmModal";
 import OrderSummary from "./OrderSummary";
 import OrderCustomize from "./OrderCustomize";
-import { MenuContext } from "../../../contexts/MenuContext";
-import { ACTIONS } from "../../../reducers/Option/actions";
-import { OrderContext } from "./contexts/OrderContext";
+import { MenuContext, useMenuContext } from "../../../contexts/MenuContext";
+import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
 import { CloseButton } from "../../../svg/Utils";
+import { LayoutContext } from "../../../contexts/LayoutContext";
+import { CartContext } from "../../Cart/contexts/CartContext";
+import { ModalContext } from "./contexts/ModalContext";
 
-const OrderModal = ({selectedProduct, setSelectedProduct}) => {
+const OrderModal = ({mode}) => {
 
   const modalStyle = {
     flexDirection: "row",
     position: "relative"
   }
 
-  const {
-    dispatchRoot,
-    optionState,
-    orderState
-  } = useContext(MenuContext);
+  const menuContext = useContext(MenuContext);
+  const cartContext = useContext(CartContext);
+  
+  const getModalDataByMode = (mode) => {
+    switch(mode) {
+      case "menu":
+        return {
+          selectedProduct: menuContext.selectedProduct,
+          setSelectedProduct: menuContext.setSelectedProduct
+        };
+      case "cart":
+        return {
+          selectedProduct: cartContext.selectedProduct,
+          setSelectedProduct: cartContext.setSelectedProduct,
+          selectedCartIdx: cartContext.selectedCartIdx,
+          setSelectedCartIdx: cartContext.setSelectedCartIdx
+        };
+      default:
+        return {};
+    }
+  }
 
-  const [isCustomizeDone, setIsCustomizeDone] = useState(false);
+  const modalData = getModalDataByMode(mode);
+
+  const {
+    selectedProduct,
+    setSelectedProduct,
+    selectedCartIdx,
+    setSelectedCartIdx
+  } = modalData;
+  
+  const {
+    reducer: {
+      dispatchRoot,
+      rootState: {
+        optionState,
+        orderState
+      }
+    }
+  } = useContext(LayoutContext);
+
   const [confirmModalOpened, setConfirmModalOpened] = useState(false);
-  const confirmModalMessage = "Are you sure you want to cancel order?";
+  const confirmModalMessage = mode === "menu" ? "Are you sure you want to cancel order?" : "Are you sure you want to cancel modification?";
 
   const handleClickCloseButton = () => {
     setConfirmModalOpened(true);
@@ -32,40 +68,38 @@ const OrderModal = ({selectedProduct, setSelectedProduct}) => {
   const handleConfirmCloseButton = () => {
     setConfirmModalOpened(false);
     setSelectedProduct(null);
+    console.log("MODE!", mode);
+    if (mode === "cart") {
+      setSelectedCartIdx(null);
+    }
     dispatchRoot({
-      type: ACTIONS.INIT_SELECTION
+      type: OPTION_ACTIONS.INIT_SELECTION
     })
   }
 
-  return (
-    <OrderContext.Provider
-      value={{
-        selectedProduct: selectedProduct,
-        setSelectedProduct: setSelectedProduct,
-        dispatchRoot: dispatchRoot,
-        optionState: optionState,
-        orderState: orderState
-      }}
-    >
-    <Modal
-      height={modalStyle.height}
-      width={modalStyle.width}
-      flexDirection={modalStyle.flexDirection}
-      position={modalStyle.position}
-    >
-      <div className="flex absolute justify-center items-center rounded-full top-2 right-2 w-[30px] h-[30px] bg-gray-300 cursor-pointer" onClick={() => handleClickCloseButton()}>
-        <CloseButton/>
-      </div>
-      <OrderSummary/>
-      {!isCustomizeDone && (
+  console.log("OPTION_STATE", optionState);
+    return (
+      <ModalContext.Provider value={{
+        modalData: modalData,
+        mode: mode
+      }}>
+      <Modal
+        height={modalStyle.height}
+        width={modalStyle.width}
+        flexDirection={modalStyle.flexDirection}
+        position={modalStyle.position}
+      >
+        <div className="flex absolute justify-center items-center rounded-full top-2 right-2 w-[30px] h-[30px] bg-gray-300 cursor-pointer" onClick={() => handleClickCloseButton()}>
+          <CloseButton/>
+        </div>
+        <OrderSummary/>
         <OrderCustomize/>
+      </Modal>
+      {confirmModalOpened && (
+        <ConfirmModal setConfirmModalOpened={setConfirmModalOpened} message={confirmModalMessage} handlerFunction={handleConfirmCloseButton}/>
       )}
-    </Modal>
-    {confirmModalOpened && (
-      <ConfirmModal setConfirmModalOpened={setConfirmModalOpened} message={confirmModalMessage} handlerFunction={handleConfirmCloseButton}/>
-    )}
-    </OrderContext.Provider>
-  );
+      </ModalContext.Provider>
+    );
 }
 
 export default OrderModal;
