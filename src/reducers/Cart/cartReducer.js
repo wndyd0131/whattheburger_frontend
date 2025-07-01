@@ -23,6 +23,7 @@ export const cartReducer = (state=initialCartState, action) => {
                 currentValue: productOptionTrait.currentValue
               }
             });
+
             return {
               productOptionId: productOption.productOptionId,
               optionName: productOption.optionName,
@@ -31,7 +32,8 @@ export const cartReducer = (state=initialCartState, action) => {
               orderIndex: productOption.orderIndex,
               optionQuantity: productOption.optionQuantity,
               isSelected: productOption.isSelected,
-              productOptionTraits: optionTraitList
+              productOptionTraits: optionTraitList,
+              quantityDetail: productOption.quantityDetailResponse
             }
           });
           return {

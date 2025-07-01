@@ -41,12 +41,29 @@ const DecisionFooter = () => {
             currentValue: optionTraitDetail.currentSelection
           }
         ));
+        const selectedIdx = optionDetail.quantityDetail.isSelected;
+        const quantityList = optionDetail.quantityDetail.quantityList;
+        let quantityId = null;
+        if (selectedIdx >= 0 && selectedIdx < quantityList.length) {
+          quantityId = quantityList[selectedIdx].id;
+        } // else throw exception
+        
+        const quantityDetailRequest = quantityId !== null
+        ?
+          {
+            id: quantityId
+          }
+        :
+          null;
+
+
         
         return {
           productOptionId: optionDetail.productOptionId,
           isSelected: optionDetail.isSelected,
           optionQuantity: optionDetail.optionQuantity,
-          optionTraitRequests: optionTraitRequests
+          optionTraitRequests: optionTraitRequests,
+          quantityDetailRequest: quantityDetailRequest
         }
       });
       return {
@@ -61,7 +78,7 @@ const DecisionFooter = () => {
       customRuleRequests: customRuleRequests
     }
     
-    console.log(cartObject);
+    console.log("CART OBJECT", cartObject);
 
     api.post("/cart", cartObject)
     .then(response => {
@@ -95,12 +112,20 @@ const DecisionFooter = () => {
             currentValue: optionTraitDetail.currentSelection
           }
         ));
+        const quantityList = optionDetail.quantityDetail.quantityList;
+        const selectedIdx = optionDetail.quantityDetail.isSelected;
+        let quantityId = null;
+        if (selectedIdx >= 0 && selectedIdx < quantityList.length) {
+          quantityId = quantityList[selectedIdx].id;
+        }
+        const quantityDetailRequest = quantityId !== null ? { id: quantityId } : null;
         
         return {
           productOptionId: optionDetail.productOptionId,
           isSelected: optionDetail.isSelected,
           optionQuantity: optionDetail.optionQuantity,
-          optionTraitRequests: optionTraitRequests
+          optionTraitRequests: optionTraitRequests,
+          quantityDetailRequest: quantityDetailRequest
         }
       });
       return {

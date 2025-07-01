@@ -181,8 +181,8 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
               }
               else if (!optionDetail.isSelected && selectedCount < maxSelection){
                 // add
-                let newExtraPrice = optionDetail.extraPrice;
-                let newCalories = optionDetail.calories;
+                newExtraPrice = optionDetail.extraPrice;
+                newCalories = optionDetail.calories;
                 updatedState.currentSelections.totalExtraPrice += newExtraPrice;
                 updatedState.currentSelections.totalCalories += newCalories;
                 updatedState.currentSelections.items[customRuleIdx].selectedCount++;
@@ -205,7 +205,6 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
                   oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
                   oldCalories = optionDetail.calories * optionDetail.optionQuantity;
                 } else if (optionDetail.countType === "UNCOUNTABLE") {
-                  console.log("UNCOUNTABLE!");
                   const quantityList = optionDetail.quantityDetail.quantityList;
                   const curIndex = optionDetail.quantityDetail.isSelected;
                   if (curIndex >= 0 && curIndex < quantityList.length) {
@@ -357,6 +356,13 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
             const optionQuantity = option.optionQuantity;
             updatedState.currentSelections.items[customRuleIdx].optionDetails[optionIdx].isSelected = isSelected;
             updatedState.currentSelections.items[customRuleIdx].optionDetails[optionIdx].optionQuantity = optionQuantity;
+            if (option.quantityDetail !== null) {
+              const { id : quantityId } = option.quantityDetail;
+              const quantityDetail = updatedState.currentSelections.items[customRuleIdx].optionDetails[optionIdx].quantityDetail;
+              const quantityList = quantityDetail.quantityList;
+              const selectedIdx = quantityList.findIndex(quantity => quantity.id === quantityId);
+              quantityDetail.isSelected = selectedIdx !== -1 ? selectedIdx : null;
+            }
             if (isSelected)
               updatedState.currentSelections.items[customRuleIdx].selectedCount++;
           } else {

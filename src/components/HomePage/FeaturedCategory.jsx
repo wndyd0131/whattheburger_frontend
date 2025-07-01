@@ -19,7 +19,7 @@ const FeaturedCategory = () => {
   ];
 
   return (
-    <div className="flex justify-around px-[80px] pt-[70px] h-full w-full">
+    <div className="flex justify-around px-[80px] pt-[50px] pb-[50px] h-full w-full">
       {featuredCategory.map((category, categoryIdx) => {
         const categoryId = category.categoryId;
         return (
@@ -28,7 +28,7 @@ const FeaturedCategory = () => {
               onClick={() => setSelectedCategory(categoryId)}
               whileHover={{scale: 1.1}}
               whileTap={{scale: 0.9}}
-              className="flex flex-col h-[300px] w-[250px] max-w-xs bg-white shadow-md rounded-2xl overflow-hidden cursor-pointer">
+              className="flex flex-col h-[300px] w-[250px] max-w-xs bg-white border-1 border-gray-100 shadow-md rounded-2xl overflow-hidden cursor-pointer">
               <img className="w-full h-auto object-cover" src={category.imgSrc} alt="Food" />
               <div className="p-4">
                 <p className="text-lg justify-self-center font-semibold mb-2">{category.name}</p>

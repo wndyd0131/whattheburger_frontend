@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 
-const HomePageSection = ({flexDirection, backgroundColor, padding, children}) => {
+const HomePageSection = ({flexDirection, height, justifyContent, alignItems, backgroundColor, padding, children}) => {
   return (
     <motion.div
       initial={{opacity: 0, y: 30}}
@@ -10,7 +10,10 @@ const HomePageSection = ({flexDirection, backgroundColor, padding, children}) =>
       style={{
         flexDirection,
         backgroundColor,
-        padding
+        justifyContent,
+        alignItems,
+        padding,
+        height
       }}
     >
       {children}
