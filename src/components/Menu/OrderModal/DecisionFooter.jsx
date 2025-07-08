@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useContext } from "react";
 import { MenuContext } from "../../../contexts/MenuContext";
 import axios from "axios";
@@ -7,6 +7,7 @@ import { LayoutContext } from "../../../contexts/LayoutContext";
 import api from "../../../utils/api";
 import { CART_ACTIONS } from "../../../reducers/Cart/actions";
 import { ModalContext } from "./contexts/ModalContext";
+import { patchCartItem, postCartItem } from "../../../api/cart";
 
 const DecisionFooter = () => {
   
@@ -28,10 +29,7 @@ const DecisionFooter = () => {
     }
   } = useContext(LayoutContext);
 
-  const handleClickAddToBag = () => {
-
-    console.log("SP", selectedProduct);
-    console.log("OS", optionState);
+  const createCartRequestBody = () => {
     const customRuleRequests = optionState.currentSelections.items.map((customRule) => {
       let customRuleId = customRule.customRuleId;
       let optionRequests = customRule.optionDetails.map((optionDetail) => {
@@ -41,23 +39,15 @@ const DecisionFooter = () => {
             currentValue: optionTraitDetail.currentSelection
           }
         ));
-        const selectedIdx = optionDetail.quantityDetail.isSelected;
         const quantityList = optionDetail.quantityDetail.quantityList;
+        const selectedIdx = optionDetail.quantityDetail.selectedIdx;
         let quantityId = null;
         if (selectedIdx >= 0 && selectedIdx < quantityList.length) {
           quantityId = quantityList[selectedIdx].id;
         } // else throw exception
         
-        const quantityDetailRequest = quantityId !== null
-        ?
-          {
-            id: quantityId
-          }
-        :
-          null;
+        const quantityDetailRequest = quantityId !== null ? { id: quantityId } : null;
 
-
-        
         return {
           productOptionId: optionDetail.productOptionId,
           isSelected: optionDetail.isSelected,
@@ -73,120 +63,95 @@ const DecisionFooter = () => {
     });
 
     const cartObject = {
-      productId: selectedProduct.productId,
-      quantity: 1,
+      productId: selectedProduct.id,
       customRuleRequests: customRuleRequests
     }
-    
-    console.log("CART OBJECT", cartObject);
 
-    api.post("/cart", cartObject)
-    .then(response => {
-      console.log("RESPONSE", response);
-      const cartData = response.data;
-      setSelectedProduct(null);
-      dispatchRoot({
-        type: CART_ACTIONS.HYDRATE,
-        payload: {
-          cartData: cartData
-        }
+    return cartObject;
+  }
+
+  const handleClickAddToBag = () => {
+    const cartObject = {
+      ...createCartRequestBody(),
+      quantity: 1
+    };
+    console.log("CART OBJECT", cartObject);
+    postCartItem(cartObject)
+      .then(data => 
+        {
+          setSelectedProduct(null);
+          dispatchRoot({
+            type: CART_ACTIONS.HYDRATE,
+            payload: {
+              cartData: data
+            }
+          });
+          toast.success('Added to bag');
+        })
+      .catch(err => {
+        toast.error('Failed to add to bag');
+        console.error(err);
       });
-      toast.success('Added to bag');
-    })
-    .catch(err => {
-      toast.error('Failed to add to bag');
-      console.error(err);
-    });
   }
 
   const handleClickSaveButton = (cartIdx) => {
+    const cartObject = createCartRequestBody();
 
-    console.log("SP", selectedProduct);
-    console.log("OS", optionState);
-    const customRuleRequests = optionState.currentSelections.items.map((customRule) => {
-      let customRuleId = customRule.customRuleId;
-      let optionRequests = customRule.optionDetails.map((optionDetail) => {
-        let optionTraitRequests = optionDetail.optionTraitResponses.map((optionTraitDetail) => (
-          {
-            productOptionTraitId: optionTraitDetail.productOptionTraitId,
-            currentValue: optionTraitDetail.currentSelection
+    patchCartItem(cartIdx, cartObject)
+      .then(data => {
+        console.log("RESPONSE", data);
+        setSelectedProduct(null);
+        dispatchRoot({
+          type: CART_ACTIONS.HYDRATE,
+          payload: {
+            cartData: data
           }
-        ));
-        const quantityList = optionDetail.quantityDetail.quantityList;
-        const selectedIdx = optionDetail.quantityDetail.isSelected;
-        let quantityId = null;
-        if (selectedIdx >= 0 && selectedIdx < quantityList.length) {
-          quantityId = quantityList[selectedIdx].id;
-        }
-        const quantityDetailRequest = quantityId !== null ? { id: quantityId } : null;
-        
-        return {
-          productOptionId: optionDetail.productOptionId,
-          isSelected: optionDetail.isSelected,
-          optionQuantity: optionDetail.optionQuantity,
-          optionTraitRequests: optionTraitRequests,
-          quantityDetailRequest: quantityDetailRequest
-        }
+        });
+        toast.success('Order successfully changed');
+      })
+      .catch(err => {
+        toast.error('Failed to save the modification');
+        console.error(err);
       });
-      return {
-        customRuleId,
-        optionRequests
-      }
-    });
-
-    const cartObject = {
-      productId: selectedProduct.productId,
-      customRuleRequests: customRuleRequests
-    }
-    
-    console.log(cartObject);
-
-    api.patch(`/cart/${cartIdx}`, cartObject)
-    .then(response => {
-      console.log("RESPONSE", response);
-      const cartData = response.data;
-      setSelectedProduct(null);
-      dispatchRoot({
-        type: CART_ACTIONS.HYDRATE,
-        payload: {
-          cartData: cartData
-        }
-      });
-      toast.success('Order successfully changed');
-    })
-    .catch(err => {
-      toast.error('Failed to save the modification');
-      console.error(err);
-    });
   }
 
   switch(mode) {
     case "menu": {
       return (
-      <div className="flex basis-1/6 justify-center items-center gap-[20px] border-t-1 border-gray-300">
-        <motion.div
-          whileHover={{scale: 1.1}}
-          whileTap={{scale: 0.9}}
-          className="flex justify-center items-center border-1 bg-white text-[#FE7800] border-[#FE7800] shadow-sm font-['Whatthefont'] rounded-[5px] w-[170px] h-[50px] text-[21px] whitespace-nowrap cursor-pointer hover:bg-[#FE7800] hover:text-white hover:border-white"
-          onClick={() => handleClickAddToBag()}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="flex justify-center items-center p-6 border-t border-gray-200 bg-gradient-to-r from-white to-gray-50"
         >
-          Add To Bag
+          <motion.button
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-12 py-4 bg-gradient-to-r from-[#FE7800] to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 font-['Whatthefont'] text-lg"
+            onClick={() => handleClickAddToBag()}
+          >
+            Add To Bag
+          </motion.button>
         </motion.div>
-      </div>
       );
     }
     case "cart": {
       return (
-        <div className="flex basis-1/6 justify-center items-center gap-[20px] border-t-1 border-gray-300">
-          <motion.div
-            whileHover={{scale: 1.1}}
-            whileTap={{scale: 0.9}}
-            className="flex justify-center items-center border-1 bg-white text-[#FE7800] border-[#FE7800] shadow-sm font-['Whatthefont'] rounded-[5px] w-[170px] h-[50px] text-[21px] whitespace-nowrap cursor-pointer hover:bg-[#FE7800] hover:text-white hover:border-white"
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="flex justify-center items-center p-6 border-t border-gray-200 bg-gradient-to-r from-white to-gray-50"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-12 py-4 bg-gradient-to-r from-[#FE7800] to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 font-['Whatthefont'] text-lg"
             onClick={() => handleClickSaveButton(selectedCartIdx)}
           >
-            SAVE
-          </motion.div>
-        </div>
+            Save Changes
+          </motion.button>
+        </motion.div>
       );
     }
     default:

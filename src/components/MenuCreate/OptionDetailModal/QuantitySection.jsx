@@ -30,7 +30,7 @@ const QuantitySection = () => {
           formData.quantityDetails.map((quantityDetail, quantityDetailIdx) => {
             const quantityId = quantityDetail.id;
             const quantityName = quantityDetail.quantityType;
-            const quantitySelected = quantityDetail.isSelected === true;
+            const quantitySelected = quantityDetail.selectedIdx === true;
             const regularClassName = "flex bg-amber-50 justify-center items-center h-[50px] cursor-pointer hover:bg-amber-100";
             const selectedClassName = "flex bg-amber-100 justify-center items-center h-[50px] cursor-pointer hover:bg-amber-200";
             return (

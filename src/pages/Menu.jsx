@@ -1,20 +1,14 @@
 import { useState, useEffect, useReducer, useContext, createContext } from "react";
 import "../styles/Menu.styles.css";
-import axios from "axios";
-import CategoryNav from "../components/Menu/CategoryNav";
-import MenuContainer from "../components/Menu/MenuContainer";
-import OrderModal from "../components/Menu/OrderModal/OrderModal";
 import { MenuContext } from "../contexts/MenuContext";
-import { optionReducer } from "../reducers/Option/optionReducer";
 import ImageSlider from "../components/ImageSlider";
-import { AnimatePresence, motion } from "motion/react";
 import { BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from "../svg/categoryNav";
-import { orderReducer } from "../reducers/Order/orderReducer";
 import { LayoutContext } from "../contexts/LayoutContext";
-import { ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
+import api from "../utils/api";
+import MenuSection from "../components/Menu/MenuSection";
 
-const Menu = (props) => {
+const Menu = () => {
   
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -45,9 +39,25 @@ const Menu = (props) => {
   const { hash } = useLocation();
 
   useEffect(() => { /* Get Product By Category */
-    axios.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
-    .then(response => setProducts(response.data))
-    .catch(error => console.error("Error: ", error));
+    setIsLoading(true);
+    api.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
+    .then(({data}) => 
+      {
+        if (Array.isArray(data)) {
+          const product = data.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            calories: item.calolries,
+            briefInfo: item.briefInfo,
+            imageSource: item.imageSource
+          }));
+          setProducts(product);
+        }
+        // exception
+      })
+    .catch(error => console.error("Error: ", error))
+    .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -55,7 +65,6 @@ const Menu = (props) => {
       const id = hash.replace('#', '');
       const element = document.getElementById(id);
       if (element) {
-        console.log("ELEMENT", element);
         element.scrollIntoView({ block: 'start', behavior: 'smooth'});
       }
     }
@@ -65,6 +74,8 @@ const Menu = (props) => {
 
   return (
     <MenuContext.Provider value={{
+      isLoading: isLoading,
+      setIsLoading: setIsLoading,
       categoryList: categoryList,
       products: products,
       setProducts: setProducts,
@@ -73,21 +84,9 @@ const Menu = (props) => {
       selectedProduct: selectedProduct,
       setSelectedProduct: setSelectedProduct,
     }}>
-      <div className="flex flex-col bg-amber-600">
+      <div className="flex flex-col bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 min-h-screen">
         <ImageSlider/>
-        <div id="category-section" className="rounded-t-[60px] bg-white scroll-mt-[60px]">
-          <div className="flex flex-col justify-center items-center pt-10">
-            <h1 className="text-[#FE7800] font-['Whatthefont']">MENU</h1>
-            <h2>{categoryList[selectedCategory - 1].name}</h2>
-          </div>
-          <div className="flex justify-center items-start pb-[50px]">
-            <CategoryNav/>
-            <MenuContainer/>
-          </div>
-          {selectedProduct !== null &&
-            <OrderModal mode="menu"/>
-          }
-        </div>
+        <MenuSection/>
       </div>
     </MenuContext.Provider>
   );

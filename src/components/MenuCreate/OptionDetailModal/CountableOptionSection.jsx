@@ -10,7 +10,6 @@ const CountableOptionSection = () => {
     setFormData
   } = useContext(SelectedOptionContext);
 
-  const isDefault = formData.isDefault;
   const defaultQuantity = formData.defaultQuantity;
   const maxQuantity = formData.maxQuantity;
   const extraPrice = formData.extraPrice;
@@ -18,15 +17,6 @@ const CountableOptionSection = () => {
 
   return (
     <div className="grid grid-cols-[150px_1fr] gap-y-[20px]">
-      <label htmlFor="isDefaultInput">is default:</label>
-      <input
-        id="isDefaultInput"
-        type="checkbox"
-        checked={isDefault}
-        onChange={
-          (e) => setFormData(prev => ({...prev, isDefault: e.target.checked}))
-        }
-      />
       <label htmlFor="defaultQuantityInput">default quantity:</label>
       <input
         id="defaultQuantityInput"

@@ -1,6 +1,7 @@
 import { useContext } from "react";
-import MenuBox from "./MenuBox";
+import MenuCard from "./MenuCard";
 import { MenuContext } from "../../contexts/MenuContext";
+import { motion } from "framer-motion";
 
 const MenuContainer = () => {
 
@@ -9,19 +10,30 @@ const MenuContainer = () => {
   } = useContext(MenuContext);
 
   return (
-    <div className="flex flex-col w-[1000px]">
-      <div className="grid gap-y-[50px] mt-[50px] md:grid-cols-2">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex basis-8/12 items-center flex-col w-full px-20"
+    >
+      <div className="grid gap-8 mt-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
         {products.map((product, productIdx) => 
-            <MenuBox
+            <motion.div
               key={productIdx}
-              product={product}
-              productIdx = {productIdx}
-              calories={700}
-              imgSrc="/src/assets/private/menu/whattheburger.png"
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: productIdx * 0.1 }}
+            >
+              <MenuCard
+                product={product}
+                productIdx={productIdx}
+                calories={product.calories}
+                imgSrc="/src/assets/private/menu/whattheburger.png"
+              />
+            </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -6,6 +6,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import OrderModal from "../Menu/OrderModal/OrderModal";
 import { CartContext } from "./contexts/CartContext";
+import PriceSummary from "./PriceSummary";
 const Cart = () => {
 
   const ref = useRef();
@@ -30,6 +31,7 @@ const Cart = () => {
       >
         <Header/>
         <OrderList/>
+        <PriceSummary/>
         <Footer/>
       </motion.div>
       {selectedCartIdx !== null && selectedProduct !== null &&

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styles from "../styles/HomePage.module.css";
 import { motion } from "motion/react";
 
 import Banner1 from "/src/assets/private/slideshow/whatheburger_banner_1.webp";
@@ -34,19 +33,19 @@ const ImageSlider = () => {
       initial={{opacity: 0, y: 30}}
       whileInView={{opacity: 1, y: 0}}
       transition={{ duration: 1.5, ease: "easeInOut"}}
-      className={styles.imageSliderContainer}>
-      <img className={styles.slideshowImage} src={images[index]}/>
-      <div className={styles.slideButton}>
-        <button className={styles.slideLeftButton} onClick={() => changeImage(0)}>
+      className="flex relative justify-center items-center overflow-hidden">
+      <img className="block w-[1000px] h-auto object-contain rounded-[10px]" src={images[index]}/>
+      <div>
+        <button className="flex absolute justify-center border-1 border-[rgba(0,0,0,0.05)] rounded-[30px] bg-[rgba(0,0,0,0.4)] w-[50px] h-[50px] translate-y-[-50%] top-[50%] left-0 ml-[20px] cursor-pointer" onClick={() => changeImage(0)}>
           <img src="icons/image-slider-left-button.svg"/>
         </button>
-        <button className={styles.slideRightButton} onClick={() => changeImage(1)}>
+        <button className="flex absolute justify-center border-1 border-[rgba(0,0,0,0.05)] rounded-[30px] bg-[rgba(0,0,0,0.4)] w-[50px] h-[50px] translate-y-[-50%] top-[50%] right-0 ml-[20px] cursor-pointer" onClick={() => changeImage(1)}>
           <img src="icons/image-slider-right-button.svg"/>
         </button>
       </div>
-      <div className={styles.indexSelector}>
+      <div className="flex absolute justify-center items-center px-[5px] py-[10px] max-w-[100px] translate-x-[-50%] h-[12px] border-1 border-[rgba(0,0,0,0.05)] bg-[rgba(0,0,0,0.4)] rounded-[30px] left-[50%] bottom-[30px] gap-[6px]">
         {images.map((_, index_) => 
-          <div key={index_} className={`${styles.indexButton} ${index_ === index ? styles.active : ""}`}></div>
+          <div key={index_} className={`w-[5px] h-[5px] rounded-full cursor-pointer ${index_ === index ? "bg-white" : "bg-gray-500"}`}></div>
         )}
       </div>
     </motion.div>

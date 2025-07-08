@@ -28,7 +28,7 @@ const OptionModal = () => {
     maxQuantity: 1,
     extraPrice: 0,
     orderIndex: 0,
-    countType: "SINGLE",
+    countType: "COUNTABLE",
     measureType: "",
     measureValue: "",
     defaultSelection: 0,

@@ -1,26 +1,18 @@
 import { useContext } from "react";
 import { OptionContext } from "./contexts/OptionContext";
-import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
 import { motion } from "framer-motion";
 import { LayoutContext } from "../../../contexts/LayoutContext";
+import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
+import ImageContainer from "./ImageContainer";
+import ContentContainer from "./ContentContainer";
 
-const OptionCard = () => {
-  
+const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
+
   const {
     reducer: {
       dispatchRoot
     }
   } = useContext(LayoutContext);
-
-  const {
-    customRule,
-    customRuleIdx,
-    option,
-  } = useContext(OptionContext);
-
-  const extraPrice = option.extraPrice * option.optionQuantity;
-  const calories = option ? option.calories * option.optionQuantity : option.calories;
-  const extraPriceText = extraPrice > 0 ? `$${extraPrice.toFixed(2)}` : "No Extra Charge";
 
   const handleClickOptionCard = () => {
     const customRuleType = customRule.customRuleType;
@@ -33,21 +25,67 @@ const OptionCard = () => {
       }
     });
   }
+
   return (
-    <motion.div
-      whileHover={{scale: 1.03}}
-      className={`border-1 border-gray-300 w-[200px] h-[270px] rounded-2xl cursor-pointer transition overflow-hidden ${option.isSelected ? "bg-[#FE7800] hover:bg-amber-600" : "hover:bg-gray-100"}`}
-      onClick={() => handleClickOptionCard()}  
+    <OptionContext.Provider value={{
+      customRule: customRule,
+      customRuleIdx: customRuleIdx,
+      option: option,
+      optionIdx: optionIdx
+    }}
     >
-      <div className="flex justify-center items-center min-h-[150px] w-full bg-white">
-        <img className="w-[130px] h-[130px]" src={option.imageSource} alt="Image"></img>
-      </div>
-      <div className="flex flex-col justify-center p-2">
-        <span className="text-[17px]"><strong>{option.name}</strong></span>
-        <p>{extraPriceText}</p>
-        <p>{calories}Cal</p>
-      </div>
-    </motion.div>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, delay: optionIdx * 0.05 }}
+        whileHover={{ y: -4, scale: 1.02 }}
+        className="flex justify-center p-2"
+      >
+        <motion.div
+          className={`relative flex flex-col w-full bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 ${
+            option.isSelected 
+              ? "border-[#FE7800]" 
+              : "border-gray-100 hover:border-orange-200 hover:bg-gray-50"
+          }`}
+          whileHover={{ 
+            boxShadow: option.isSelected 
+              ? "0 25px 50px -12px rgba(251, 146, 60, 0.25)" 
+              : "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+          }}
+        >
+          {/* Selection Indicator */}
+          {option.isSelected && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute top-3 right-3 z-10 w-6 h-6 bg-gradient-to-r from-[#FE7800] to-orange-500 rounded-full flex items-center justify-center shadow-lg"
+            >
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </motion.div>
+          )}
+          
+          {/* Hover Overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent pointer-events-none"
+          />
+          
+          <ImageContainer/>
+          <ContentContainer/>
+          <div className="flex justify-center p-2">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleClickOptionCard()}
+              className="flex justify-center items-center px-5 py-1 bg-gradient-to-r from-[#FE7800] to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 font-['Whatthefont'] text-md cursor-pointer">
+                Select
+            </motion.button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </OptionContext.Provider>
   );
 }
 

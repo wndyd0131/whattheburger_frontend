@@ -54,8 +54,8 @@ const UncountableModifier = () => {
     : quantity.extraPrice > 0 ? "text-red-700" : "text-green-700"
     ;
     const quantityValue = quantity.extraPrice === 0
-      ? "($0)"
-      : quantity.extraPrice > 0 ? "(+$" + quantity.extraPrice + ")" : "(-" + quantity.extraPrice.toString().replace("-", "$") + ")"
+      ? "$0"
+      : quantity.extraPrice > 0 ? "+$" + quantity.extraPrice : "-" + quantity.extraPrice.toString().replace("-", "$")
       ;
     return (
       {
@@ -82,7 +82,7 @@ const UncountableModifier = () => {
           max={quantityDetailList.length - 1}
           marks={marks}
           disabled={!option.isSelected}
-          value={quantityDetail.isSelected}
+          value={quantityDetail.selectedIdx}
           onChange={(_, value) => handleClickSlider(value, customRuleIdx, option)}
           color="orange"
         />

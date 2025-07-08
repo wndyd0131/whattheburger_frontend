@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { MenuContext } from "../../contexts/MenuContext";
 import { Link, useLocation } from "react-router-dom";
+import { fetchProductsByCategoryId } from "../../api/product";
 
 const CategoryNav = () => {
 
@@ -14,18 +15,20 @@ const CategoryNav = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
 
   const handleClickCategoryButton = (categoryId) => {
-    axios.get(`http://localhost:8080/api/v1/products/category/${categoryId}`)
-    .then(response => setProducts(response.data))
-    .catch(error => console.error("Error: ", error));
-    const element = document.getElementById("category-section");
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start'});
-    }
-    setSelectedCategory(categoryId);
+    fetchProductsByCategoryId(categoryId)
+      .then(data => {
+        setProducts(data);
+        const element = document.getElementById("category-section");
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start'});
+        }
+        setSelectedCategory(categoryId);
+      })
+      .catch(error => console.error("Error: ", error));
   }
 
   return (
-    <ul className="flex flex-col sticky top-[60px]">
+    <ul className="flex basis-2/12 items-center h-screen flex-col sticky top-[60px] z-30">
       {categoryList.map((category) => 
           <li className="flex max-w-[50px] relative cursor-pointer"
             key={category.id}

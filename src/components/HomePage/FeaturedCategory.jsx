@@ -9,6 +9,14 @@ const FeaturedCategory = () => {
     setSelectedCategory
   } = useContext(LayoutContext);
 
+  const featuredProduct = [
+    {productId: 4, name: "All-Time Favorites", imgSrc: "/private/category/all_time_favorites.png"},
+    {productId: 1, name: "Burgers", imgSrc: "/private/category/burgers.png"},
+    {productId: 2, name: "Chicken", imgSrc: "/private/category/chicken.png"},
+    {productId: 6, name: "Sides", imgSrc: "/private/category/sides.png"},
+    {productId: 9, name: "Drinks", imgSrc: "/private/category/drinks.png"},
+    {productId: 10, name: "Group Order", imgSrc: "/private/category/group_order.png"}
+  ]
   const featuredCategory = [
     {categoryId: 4, name: "All-Time Favorites", imgSrc: "/private/category/all_time_favorites.png"},
     {categoryId: 1, name: "Burgers", imgSrc: "/private/category/burgers.png"},

@@ -4,8 +4,8 @@ import SelectedOptionInput from "./SelectedOptionInput";
 const OptionDetailModal = () => {
 
   const selectedOptionModalStyle = {
-    height: 450,
-    width:900,
+    height: "50%",
+    width: "60%",
     flexDirection: "column"
   };
 

@@ -7,12 +7,14 @@ const ProductDetailInput = ({
   productCalories,
   productType,
   briefInfo,
+  imageSource,
   selectedCategoryIds,
   setProductName,
   setProductPrice,
   setProductCalories,
   setProductType,
   setBriefInfo,
+  setImageSource,
   setSelectedCategoryIds
 }) => {
   const DEFAULT_OPTION_STRING = "----Select----";
@@ -22,6 +24,10 @@ const ProductDetailInput = ({
       setSelectedCategoryIds(prev => prev.filter(index => index !== categoryId))
     else
       setSelectedCategoryIds(prev => [...prev, categoryId]);
+  }
+
+  const handleChangeImageSource = (e) => {
+    setImageSource(e.target.files[0]);
   }
 
   return (
@@ -50,6 +56,8 @@ const ProductDetailInput = ({
           </select>
           <label htmlFor="briefInfoInput">Brief Information</label>
           <input id="briefInfoInput" className={styles.productInput} name="briefInfo" value={briefInfo} placeholder="brief information about new product" onChange={(e) => setBriefInfo(e.target.value)}/>
+          <label htmlFor="imageSourceInput">Image</label>
+          <input id="imageSourceInput" type="file" onChange={(e) => handleChangeImageSource(e)}/>
         </div>
         <label>Category *</label>
           <div className="flex flex-wrap w-full justify-start gap-5">

@@ -5,7 +5,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
-import { ACCESS_TOKEN_EXPIRATION_TIME, REFRESH_TOKEN_EXPIRATION_TIME } from "../../utils/jwtExpirationTime";
+import { ACCESS_TOKEN_EXPIRATION_TIME, REFRESH_TOKEN_EXPIRATION_TIME } from "../../utils/cookieExpirationTime";
 import api from "../../utils/api";
 import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import { LayoutContext } from "../../contexts/LayoutContext";

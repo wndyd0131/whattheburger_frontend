@@ -10,7 +10,6 @@ const UncountableOptionSection = () => {
     setFormData
   } = useContext(SelectedOptionContext);
 
-  const isDefault = formData.isDefault;
   const measureValue = formData.measureValue;
   const extraPrice = formData.extraPrice;
   const orderIndex = formData.orderIndex;
@@ -22,16 +21,6 @@ const UncountableOptionSection = () => {
 
   return (
     <div className="grid grid-cols-[150px_1fr] gap-y-[20px]">
-      <label htmlFor="isDefaultInput">is default:</label>
-      <input
-        id="isDefaultInput"
-        type="checkbox"
-        checked={isDefault}
-        onChange={
-          (e) => setFormData(prev => ({...prev, isDefault: e.target.checked}))
-        }
-      />
-
       <label htmlFor="measureValueInput">default unit:</label>
       <select
         id="defaultMeasureValueInput"

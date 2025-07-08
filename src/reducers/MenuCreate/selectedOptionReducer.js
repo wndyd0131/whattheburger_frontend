@@ -35,7 +35,7 @@ export const selectedOptionReducer = (state, action) => {
         maxQuantity: 1,
         extraPrice: 0,
         orderIndex: nextIdx,
-        countType: "SINGLE",
+        countType: "COUNTABLE",
         optionTrait: emptyOptionTrait
       };
       return [...state, newOption];

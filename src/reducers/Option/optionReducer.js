@@ -79,9 +79,9 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
             if (optionDetail.productOptionId === productOptionId) {
               const quantityList = optionDetail.quantityDetail.quantityList;
               if (index >= 0 && index < quantityList.length) {
-                const curIndex = optionDetail.quantityDetail.isSelected;
+                const curIndex = optionDetail.quantityDetail.selectedIdx;
                 const oldPrice = quantityList[curIndex].extraPrice;
-                optionDetail.quantityDetail.isSelected = index;
+                optionDetail.quantityDetail.selectedIdx = index;
                 const newPrice = quantityList[index].extraPrice;
                 updatedState.currentSelections.totalExtraPrice -= oldPrice;
                 updatedState.currentSelections.totalExtraPrice += newPrice;
@@ -110,12 +110,14 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
           console.log("US", updatedState);
           updatedState.currentSelections.items[customRuleIdx].optionDetails.forEach((optionDetail, optionDetailIdx) => {
             if (optionDetail.isSelected) {
+              if (optionDetail.productOptionId === productOptionId)
+                return updatedState;
               if (optionDetail.countType === "COUNTABLE") {
                 oldExtraPrice = optionDetail.extraPrice * optionDetail.optionQuantity;
                 oldCalories = optionDetail.calories * optionDetail.optionQuantity;
               } else if (optionDetail.countType === "UNCOUNTABLE") {
                   const quantityList = optionDetail.quantityDetail.quantityList;
-                  const curIndex = optionDetail.quantityDetail.isSelected;
+                  const curIndex = optionDetail.quantityDetail.selectedIdx;
                   if (curIndex >= 0 && curIndex < quantityList.length) {
                     oldExtraPrice = optionDetail.extraPrice + quantityList[curIndex].extraPrice;
                     oldCalories = optionDetail.extraCalories + quantityList[curIndex].extraCalories;
@@ -130,7 +132,7 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
             } else { // initialize to default setting
               optionDetail.isSelected = false;
               optionDetail.optionQuantity = optionDetail.defaultQuantity;
-              optionDetail.quantityDetail.isSelected = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.isSelected;
+              optionDetail.quantityDetail.selectedIdx = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.selectedIdx;
 
 
               if (optionDetail.optionTraitResponses[0])
@@ -162,7 +164,7 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
                   oldCalories = optionDetail.calories * optionDetail.optionQuantity;
                 } else if (optionDetail.countType === "UNCOUNTABLE") {
                     const quantityList = optionDetail.quantityDetail.quantityList;
-                    const curIndex = optionDetail.quantityDetail.isSelected;
+                    const curIndex = optionDetail.quantityDetail.selectedIdx;
                     if (curIndex >= 0 && curIndex < quantityList.length) {
                       oldExtraPrice = optionDetail.extraPrice + quantityList[curIndex].extraPrice;
                       oldCalories = optionDetail.extraCalories + quantityList[curIndex].extraCalories;
@@ -176,7 +178,7 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
                 if (optionDetail.optionTraitResponses[0])
                   optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
                 optionDetail.optionQuantity = optionDetail.defaultQuantity;
-                optionDetail.quantityDetail.isSelected = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.isSelected;
+                optionDetail.quantityDetail.selectedIdx = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.selectedIdx;
                 optionDetail.isSelected = false;
               }
               else if (!optionDetail.isSelected && selectedCount < maxSelection){
@@ -206,7 +208,7 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
                   oldCalories = optionDetail.calories * optionDetail.optionQuantity;
                 } else if (optionDetail.countType === "UNCOUNTABLE") {
                   const quantityList = optionDetail.quantityDetail.quantityList;
-                  const curIndex = optionDetail.quantityDetail.isSelected;
+                  const curIndex = optionDetail.quantityDetail.selectedIdx;
                   if (curIndex >= 0 && curIndex < quantityList.length) {
                     oldExtraPrice = optionDetail.extraPrice + quantityList[curIndex].extraPrice;
                     oldCalories = optionDetail.extraCalories + quantityList[curIndex].extraCalories;
@@ -221,7 +223,7 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
                 if (optionDetail.optionTraitResponses[0])
                   optionDetail.optionTraitResponses[0].currentSelection = optionDetail.optionTraitResponses[0].defaultSelection;
                 optionDetail.optionQuantity = optionDetail.defaultQuantity;
-                optionDetail.quantityDetail.isSelected = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.isSelected;
+                optionDetail.quantityDetail.selectedIdx = updatedState.defaultSelections.items[customRuleIdx].optionDetails[optionDetailIdx].quantityDetail.selectedIdx;
                 optionDetail.isSelected = false;
               }
               else {
@@ -268,7 +270,7 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
         const selectedIdx = option.quantityDetailResponses.findIndex(quantityDetail => quantityDetail.isDefault === true);
         const quantityDetail = {
           quantityList: option.quantityDetailResponses,
-          isSelected: selectedIdx !== -1 ? selectedIdx : null
+          selectedIdx: selectedIdx !== -1 ? selectedIdx : null
         }
 
         const optionDetailObject = {
@@ -308,7 +310,6 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
       updatedState.defaultSelections.items = structuredClone(customRules);
       updatedState.currentSelections.totalCalories = totalCalories;
       updatedState.defaultSelections.totalCalories = totalCalories;
-      console.log("UUSS", updatedState);
       return updatedState;
     }
     case ACTIONS.LOAD_FROM_CART: {
@@ -361,7 +362,7 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
               const quantityDetail = updatedState.currentSelections.items[customRuleIdx].optionDetails[optionIdx].quantityDetail;
               const quantityList = quantityDetail.quantityList;
               const selectedIdx = quantityList.findIndex(quantity => quantity.id === quantityId);
-              quantityDetail.isSelected = selectedIdx !== -1 ? selectedIdx : null;
+              quantityDetail.selectedIdx = selectedIdx !== -1 ? selectedIdx : null;
             }
             if (isSelected)
               updatedState.currentSelections.items[customRuleIdx].selectedCount++;

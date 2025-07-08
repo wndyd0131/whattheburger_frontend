@@ -9,6 +9,7 @@ import { CloseButton } from "../../../svg/Utils";
 import { LayoutContext } from "../../../contexts/LayoutContext";
 import { CartContext } from "../../Cart/contexts/CartContext";
 import { ModalContext } from "./contexts/ModalContext";
+import { motion } from "framer-motion";
 
 const OrderModal = ({mode}) => {
 
@@ -84,14 +85,17 @@ const OrderModal = ({mode}) => {
         mode: mode
       }}>
       <Modal
-        height={modalStyle.height}
-        width={modalStyle.width}
         flexDirection={modalStyle.flexDirection}
         position={modalStyle.position}
       >
-        <div className="flex absolute justify-center items-center rounded-full top-2 right-2 w-[30px] h-[30px] bg-gray-300 cursor-pointer" onClick={() => handleClickCloseButton()}>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="flex absolute justify-center items-center rounded-full top-4 right-4 w-10 h-10 bg-white shadow-lg hover:shadow-xl cursor-pointer z-10 border border-gray-200 hover:bg-gray-50 transition-all duration-200"
+          onClick={() => handleClickCloseButton()}
+        >
           <CloseButton/>
-        </div>
+        </motion.button>
         <OrderSummary/>
         <OrderCustomize/>
       </Modal>

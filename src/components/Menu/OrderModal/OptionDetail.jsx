@@ -2,6 +2,7 @@ import { useContext } from "react";
 import TraitModifier from "../TraitModifier";
 import CountModifier from "../CountModifier";
 import { OptionContext } from "./contexts/OptionContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 const OptionDetail = () => {
 
@@ -10,16 +11,37 @@ const OptionDetail = () => {
   } = useContext(OptionContext);
 
   return (
-  <div className="flex flex-col gap-y-2 items-center min-h-[70px] pt-5">
-    <CountModifier/>
-    {option.optionTraitResponses.map((optionTrait, optionTraitIdx) => {
-      if (option.isSelected) {
-        return (
-          <TraitModifier key={optionTraitIdx} optionTrait={optionTrait} optionTraitIdx={optionTraitIdx}/>
-        );
-      }
-    })}
-  </div>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3, delay: 0.2 }}
+      className="flex flex-col space-y-3 items-center min-h-[70px]"
+    >
+      <CountModifier/>
+      
+      <AnimatePresence>
+        {option.isSelected && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full space-y-2"
+          >
+            {option.optionTraitResponses.map((optionTrait, optionTraitIdx) => (
+              <motion.div
+                key={optionTraitIdx}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2, delay: optionTraitIdx * 0.1 }}
+              >
+                <TraitModifier optionTrait={optionTrait} optionTraitIdx={optionTraitIdx}/>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 

@@ -10,6 +10,7 @@ import axios from "axios";
 import { UserContext } from "./contexts/UserContext";
 import Layout from "./Layout";
 import { LayoutProvider } from "./contexts/LayoutContext";
+import Order from "./pages/Order";
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
               <Route path="/about" element={<AboutUs/>}></Route>
               <Route path="/admin/menu" element={<MenuCreate/>}></Route>
               <Route path="/auth" element={<Auth/>}></Route>
+              <Route path="/order" element={<Order/>}></Route>
             </Routes>
           </Layout>
         </LayoutProvider>

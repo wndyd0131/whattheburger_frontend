@@ -6,6 +6,9 @@ import CustomizationDetailInput from "../components/MenuCreate/CustomizationDeta
 import OptionModal from "../components/MenuCreate/OptionModal/OptionModal.jsx";
 import {customRuleReducer} from "../reducers/MenuCreate/customRuleReducer.js";
 import {selectedOptionReducer} from "../reducers/MenuCreate/selectedOptionReducer.js";
+import { fetchCategories } from "../api/category.js";
+import { fetchOptions } from "../api/option.js";
+import { fetchOptionTraits } from "../api/optionTrait.js";
 
 export const MenuCreateContext = createContext();
 
@@ -17,6 +20,7 @@ const MenuCreate = () => {
   const [productPrice, setProductPrice] = useState(0);
   const [productCalories, setProductCalories] = useState(0);
   const [productType, setProductType] = useState("");
+  const [imageSource, setImageSource] = useState(null);
   const [briefInfo, setBriefInfo] = useState("");
   const [categories, setCategories] = useState([]);
   const [options, setOptions] = useState([]);
@@ -30,7 +34,7 @@ const MenuCreate = () => {
 
   const [selectedCustomRuleIdx, setSelectedCustomRuleIdx] = useState(null);
 
-  const handleClickCreateButton = async () => {
+  const handleClickCreateButton = () => {
     const customRuleRequests = [];
 
     customRuleState.map((customRule, customRuleIdx) => {
@@ -80,7 +84,7 @@ const MenuCreate = () => {
       )
     })
 
-    const data = {
+    const productData = {
       productName: productName,
       productPrice: productPrice,
       calories: productCalories,
@@ -90,38 +94,39 @@ const MenuCreate = () => {
       customRuleRequests: customRuleRequests
     }
 
-    console.log("Requested with", data);
-    try {
-      const response = await axios.post("http://localhost:8080/api/v1/products", data);
-      console.log("Response:", response.data);
-    }
-    catch (error) {
-      console.error("Error:", error);
-    }
+    const formData = new FormData();
+
+    formData.append('productBlob', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
+    formData.append('productImage', imageSource);
+
+    console.log("Requested with", formData);
+  
+    const response = axios.post("http://localhost:8080/api/v1/products", formData)
+      .then(response => console.log("Response:", response.data))
+      .catch(err => console.error(err));
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/v1/category")
-    .then(response => {
-      console.log(response);
-      setCategories(response.data);
-    })
-    .catch(error => console.error(error));
+    fetchCategories()
+      .then(data => {
+        console.log(data);
+        setCategories(data);
+      })
+      .catch(error => console.error(error));
 
-    axios.get("http://localhost:8080/api/v1/options")
-    .then(response => {
-      console.log("OPTION_RESPONSE", response.data);
-      setOptions(response.data);
-    })
-    .catch(error => console.error(error));
+    fetchOptions()
+      .then(data => {
+        console.log("OPTION_RESPONSE", data);
+        setOptions(data);
+      })
+      .catch(error => console.error(error));
 
-    axios.get("http://localhost:8080/api/v1/optionTraits")
-    .then(response => {
-      setOptionTraits(response.data);
-    })
-    .catch(error => console.error(error));
-
-  }, [])
+    fetchOptionTraits()
+      .then(data => {
+        setOptionTraits(data);
+      })
+      .catch(error => console.error(error));
+  }, []); // should be refactored
 
   return (
     <MenuCreateContext.Provider value={{
@@ -144,12 +149,14 @@ const MenuCreate = () => {
             productCalories={productCalories}
             productType={productType}
             briefInfo={briefInfo}
+            imageSource={imageSource}
             selectedCategoryIds={selectedCategoryIds}
             setProductName={setProductName}
             setProductPrice={setProductPrice}
             setProductCalories={setProductCalories}
             setProductType={setProductType}
             setBriefInfo={setBriefInfo}
+            setImageSource={setImageSource}
             setSelectedCategoryIds={setSelectedCategoryIds}
           />
 

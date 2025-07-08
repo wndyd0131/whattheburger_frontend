@@ -129,10 +129,3 @@
 .popularMenuBox img {
   width: 200px;
 }
-
-@font-face {
-  font-family: "WhattheFont";
-  src: url("/private/fonts/whatthe2.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
