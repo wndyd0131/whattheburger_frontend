@@ -69,7 +69,6 @@ const OrderModal = ({mode}) => {
   const handleConfirmCloseButton = () => {
     setConfirmModalOpened(false);
     setSelectedProduct(null);
-    console.log("MODE!", mode);
     if (mode === "cart") {
       setSelectedCartIdx(null);
     }

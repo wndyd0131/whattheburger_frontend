@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import OrderModal from "../Menu/OrderModal/OrderModal";
 import { CartContext } from "./contexts/CartContext";
+import { fromCartResponseToOptionDto } from "../../utils/dtoMapper";
 
 const OrderList = () => {
 
@@ -31,26 +32,56 @@ const OrderList = () => {
   const [closeButtonHovered, setCloseButtonHovered] = useState(false);
 
   const handleClickModifyButton = (productId, cartIdx) => {
-    api.get(`/products/${productId}`)
+    api.get(`/cart/${cartIdx}`)
       .then(response => {
-        console.log("PRODUCT_RESPONSE", response.data);
-        const optionResponse = response.data.optionResponses;
+        const data = response.data
+        console.log("CART_RESPONSE", data);
         dispatchRoot({
-          type: OPTION_ACTIONS.LOAD_OPTIONS,
+          type: CART_ACTIONS.LOAD_PRODUCT, // load everything to single cart
           payload: {
-            optionResponse: optionResponse
+            cartIdx: cartIdx,
+            cartData: data
           }
         });
         dispatchRoot({
-          type: OPTION_ACTIONS.LOAD_FROM_CART,
+          type: OPTION_ACTIONS.LOAD_FROM_CART, // load from cart
           payload: {
-            cartIdx: cartIdx
+            cartIdx: cartIdx,
+            cartData: data
           }
         });
-        setSelectedProduct(response.data);
+        dispatchRoot({
+          type: OPTION_ACTIONS.SET_DEFAULT_FROM_CART,
+          payload: {
+            cartIdx: cartIdx,
+            cartData: data
+          }
+        })
+        setSelectedProduct({
+          productId: data.productId,
+          productName: data.productName,
+          productPrice: data.basePrice,
+          imageSource: data.imageSource,
+          briefInfo: data.briefInfo
+        });
         setSelectedCartIdx(cartIdx);
       })
       .catch(err => console.error(err));
+    // api.get(`/products/${productId}`)
+    //   .then(response => {
+    //     console.log("PRODUCT_RESPONSE", response.data);
+    //     const optionResponse = response.data.optionResponses;
+    //     dispatchRoot({
+    //       type: OPTION_ACTIONS.LOAD_OPTIONS,
+    //       payload: {
+    //         optionResponse: optionResponse
+    //       }
+    //     });
+
+    //     setSelectedProduct(response.data);
+    //     setSelectedCartIdx(cartIdx);
+    //   })
+    //   .catch(err => console.error(err));
   }
   const handleClickMinusButton = () => {
 
@@ -64,7 +95,7 @@ const OrderList = () => {
         console.log("RESPONSE", response);
         const cartData = response.data;
         dispatchRoot({
-          type: CART_ACTIONS.HYDRATE,
+          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
           payload: {
             cartData: cartData
           }
@@ -82,8 +113,9 @@ const OrderList = () => {
   return (
     <div className="flex flex-col basis-10/12 overflow-auto">
       {cartState.cartList.map((cart, cartIdx) => {
-        const cartQuantity = cart.quantity;
-        const cartPrice = cart.product.productPrice * cartQuantity;
+        console.log("CART", cart);
+        const cartQuantity = cart.product.quantity;
+        const cartPrice = cart.product.productTotalPrice * cartQuantity;
         const productId = cart.product.productId;
         return (
           <div key={cartIdx} className="flex h-full w-full outline-1 outline-gray-200"> 
@@ -100,7 +132,7 @@ const OrderList = () => {
                 </div>
               </div>
               <div className="flex flex-col">
-                {cart.customRules.map((customRule, customRuleIdx) => {
+                {cart.product.customRules.map((customRule, customRuleIdx) => {
                   const optionString = customRule.productOptions
                     .filter(option => option.isSelected)
                     .map(option => {

@@ -80,7 +80,7 @@ const SignInForm = () => {
           console.log("RESPONSE", response);
           const cartData = response.data;
           dispatchRoot({
-            type: CART_ACTIONS.HYDRATE,
+            type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
             payload: {
               cartData: cartData
             }

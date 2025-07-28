@@ -8,6 +8,7 @@ import api from "../../../utils/api";
 import { CART_ACTIONS } from "../../../reducers/Cart/actions";
 import { ModalContext } from "./contexts/ModalContext";
 import { patchCartItem, postCartItem } from "../../../api/cart";
+import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
 
 const DecisionFooter = () => {
   
@@ -32,10 +33,10 @@ const DecisionFooter = () => {
   const createCartRequestBody = () => {
     const customRuleRequests = optionState.currentSelections.items.map((customRule) => {
       let customRuleId = customRule.customRuleId;
-      let optionRequests = customRule.optionDetails.map((optionDetail) => {
-        let optionTraitRequests = optionDetail.optionTraitResponses.map((optionTraitDetail) => (
+      let optionRequests = customRule.optionList.map((optionDetail) => {
+        let optionTraitRequests = optionDetail.traitList.map((optionTraitDetail) => (
           {
-            productOptionTraitId: optionTraitDetail.productOptionTraitId,
+            productOptionTraitId: optionTraitDetail.traitId,
             currentValue: optionTraitDetail.currentSelection
           }
         ));
@@ -43,13 +44,13 @@ const DecisionFooter = () => {
         const selectedIdx = optionDetail.quantityDetail.selectedIdx;
         let quantityId = null;
         if (selectedIdx >= 0 && selectedIdx < quantityList.length) {
-          quantityId = quantityList[selectedIdx].id;
+          quantityId = quantityList[selectedIdx].quantityId;
         } // else throw exception
         
         const quantityDetailRequest = quantityId !== null ? { id: quantityId } : null;
 
         return {
-          productOptionId: optionDetail.productOptionId,
+          productOptionId: optionDetail.optionId,
           isSelected: optionDetail.isSelected,
           optionQuantity: optionDetail.optionQuantity,
           optionTraitRequests: optionTraitRequests,
@@ -63,7 +64,7 @@ const DecisionFooter = () => {
     });
 
     const cartObject = {
-      productId: selectedProduct.id,
+      productId: selectedProduct.productId,
       customRuleRequests: customRuleRequests
     }
 
@@ -81,10 +82,13 @@ const DecisionFooter = () => {
         {
           setSelectedProduct(null);
           dispatchRoot({
-            type: CART_ACTIONS.HYDRATE,
+            type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
             payload: {
               cartData: data
             }
+          });
+          dispatchRoot({
+            type: OPTION_ACTIONS.INIT_SELECTION
           });
           toast.success('Added to bag');
         })
@@ -96,13 +100,14 @@ const DecisionFooter = () => {
 
   const handleClickSaveButton = (cartIdx) => {
     const cartObject = createCartRequestBody();
+    console.log("CART OBJECT", cartObject);
 
     patchCartItem(cartIdx, cartObject)
       .then(data => {
         console.log("RESPONSE", data);
         setSelectedProduct(null);
         dispatchRoot({
-          type: CART_ACTIONS.HYDRATE,
+          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
           payload: {
             cartData: data
           }

@@ -66,10 +66,11 @@ const ProductInfo = () => {
             MEAL
           </motion.button>
         </div>
-        
+        {console.log("SP", selectedProduct)}
+        {console.log("OS", optionState)}
         <div className="flex flex-col items-center space-y-2">
           <h2 className="text-xl font-bold text-[#FE7800] font-['Whatthefont']">
-            ${(selectedProduct.price + optionState.currentSelections.totalExtraPrice).toFixed(2)}
+            ${(selectedProduct.productPrice + optionState.currentSelections.totalExtraPrice).toFixed(2)}
           </h2>
           <span className="text-sm text-gray-600">{optionState.currentSelections.totalCalories} Calories</span>
         </div>

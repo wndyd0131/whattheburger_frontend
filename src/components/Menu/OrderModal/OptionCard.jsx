@@ -16,12 +16,13 @@ const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
 
   const handleClickOptionCard = () => {
     const customRuleType = customRule.customRuleType;
+    console.log("optionA", option);
     dispatchRoot({
       type: OPTION_ACTIONS.MODIFY_SELECTION,
       payload: {
         customRuleIdx: customRuleIdx,
         customRuleType: customRuleType,
-        productOptionId: option.productOptionId
+        optionId: option.optionId
       }
     });
   }

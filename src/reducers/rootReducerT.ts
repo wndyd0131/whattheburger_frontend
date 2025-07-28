@@ -1,6 +1,6 @@
-import { cartReducer, initialCartState } from "./Cart/cartReducer";
-import { initialOptionState, optionReducer } from "./Option/optionReducer";
-import { initialOrderState, orderReducer } from "./Order/orderReducer";
+import { cartReducer, initialCartState } from "./Cart/cartReducerT";
+import { initialOptionState, optionReducer } from "./Option/optionReducerT";
+import { initialOrderState, orderReducer } from "./Order/orderReducerT";
 
 export const initialState = {
   optionState: initialOptionState,

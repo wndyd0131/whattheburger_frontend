@@ -43,7 +43,7 @@ const OrderSummaryDetail = () => {
                     {customRule.customRuleName}
                   </h3>
                   <div className="space-y-2">
-                    {customRule.optionDetails.map((optionDetail, optionDetailIdx) => 
+                    {customRule.optionList.map((optionDetail, optionDetailIdx) => 
                       optionDetail.isSelected ? 
                       <motion.li 
                         key={optionDetailIdx}
@@ -52,10 +52,10 @@ const OrderSummaryDetail = () => {
                         transition={{ duration: 0.2 }}
                         className="flex items-center gap-3 font-medium text-gray-700 font-['Whatthefont'] p-2 bg-white rounded-lg shadow-sm"
                       >
-                        <span className="flex-1">{optionDetail.name}</span>
+                        <span className="flex-1">{optionDetail.optionName}</span>
                         <CountLabel customRuleIdx={customRuleIdx} optionDetail={optionDetail} optionDetailIdx={optionDetailIdx}/>
                         <div className="flex gap-1">
-                          {optionDetail.optionTraitResponses.map((optionTrait, optionTraitIdx) => 
+                          {optionDetail.traitList.map((optionTrait, optionTraitIdx) => 
                             <TraitLabel key={optionTraitIdx} optionTrait={optionTrait}/>
                           )}
                         </div>

@@ -33,7 +33,7 @@ const UncountableModifier = () => {
       type: OPTION_ACTIONS.MODIFY_QUANTITY,
       payload: {
         customRuleIdx: customRuleIdx,
-        productOptionId: option.productOptionId,
+        optionId: option.optionId,
         modifyType: modifyType,
         index: value
       }

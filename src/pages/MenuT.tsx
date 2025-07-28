@@ -44,15 +44,15 @@ const Menu = () => {
     .then(({data}) => 
       {
         if (Array.isArray(data)) {
-          const productList = data.map(item => ({
-            productId: item.id,
-            productName: item.name,
-            productPrice: item.price,
-            productCalories: item.calolries,
+          const product = data.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            calories: item.calolries,
             briefInfo: item.briefInfo,
             imageSource: item.imageSource
           }));
-          setProducts(productList);
+          setProducts(product);
         }
         // exception
       })

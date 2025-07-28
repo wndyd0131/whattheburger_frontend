@@ -6,6 +6,7 @@ import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import { motion } from "framer-motion";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import api from "../../utils/api";
+import { fromProductResponseToOptionDto } from "../../utils/dtoMapper";
 
 const MenuCard = ({product, imgSrc, calories}) => {
 
@@ -17,13 +18,14 @@ const MenuCard = ({product, imgSrc, calories}) => {
   const {
     isLoading,
     setIsLoading,
+    selectedProduct,
     setSelectedProduct,
   } = useContext(MenuContext);
 
   const handleClickStartOrderButton = () => {
     setIsLoading(true);
 
-    api.get(`/products/${product.id}`)
+    api.get(`/products/${product.productId}`)
     .then(response => {
       console.log("RESPONSE: ", response.data);
       const optionResponse = response.data.optionResponses;
@@ -33,13 +35,13 @@ const MenuCard = ({product, imgSrc, calories}) => {
           optionResponse: optionResponse
         }
       });
-      setSelectedProduct(product);
+      setSelectedProduct(response.data);
     })
     .catch(error => console.error(error))
     .finally(() => setIsLoading(false));
   }
 
-  console.log("PRODUCT", product);
+  console.log("SELECTED PRODUCT", selectedProduct);
   return (
     <motion.div
       initial={{opacity: 0}}
@@ -55,10 +57,10 @@ const MenuCard = ({product, imgSrc, calories}) => {
       
       <div className="flex flex-col p-6 space-y-4">
         <div className="flex justify-between items-start">
-          <h2 className="text-xl font-bold text-gray-800 font-['Whatthefont']">{product.name}</h2>
+          <h2 className="text-xl font-bold text-gray-800 font-['Whatthefont']">{product.productName}</h2>
           <div className="flex flex-col items-end">
-            <span className="text-2xl font-bold text-[#FE7800] font-['Whatthefont']">${product.price}</span>
-            <span className="text-sm text-gray-500">{product.calories} cals</span>
+            <span className="text-2xl font-bold text-[#FE7800] font-['Whatthefont']">${product.productPrice}</span>
+            <span className="text-sm text-gray-500">{product.productCalories} cals</span>
           </div>
         </div>
         

@@ -28,7 +28,7 @@ const OptionDetail = () => {
             transition={{ duration: 0.3 }}
             className="w-full space-y-2"
           >
-            {option.optionTraitResponses.map((optionTrait, optionTraitIdx) => (
+            {option.traitList.map((optionTrait, optionTraitIdx) => (
               <motion.div
                 key={optionTraitIdx}
                 initial={{ opacity: 0, x: -10 }}

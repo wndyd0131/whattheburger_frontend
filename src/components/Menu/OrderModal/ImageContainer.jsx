@@ -14,7 +14,7 @@ const ImageContainer = () => {
       <motion.img 
         className="w-[140px] h-[140px] object-cover rounded-xl shadow-sm"
         src={option.imageSource} 
-        alt={option.name}
+        alt={option.optionName}
       />
       
       {/* Subtle gradient overlay */}
