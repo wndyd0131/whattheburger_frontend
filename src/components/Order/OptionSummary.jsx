@@ -1,56 +1,59 @@
 import React from 'react'
+import UncountableLabel from '../UncountableLabel';
 
-const OptionSummary = () => {
+const OptionSummary = ({customRuleList, productPrice, extraPrice}) => {
   return (
-    <div className="flex flex-col">
-      {cart.customRules.map((customRule, customRuleIdx) => {
-        const optionString = customRule.productOptions
-          .filter(option => option.isSelected)
-          .map(option => {
-            let measureString = "";
-            if (option.measureType) {
-              switch (option.measureType) {
-                case "SIZE": {
-                  switch (option.optionQuantity) {
-                    case 0:
-                      measureString = "Kids";
-                    case 1:
-                      measureString = "Small";
-                    case 2:
-                      measureString = "Medium";
-                    case 3:
-                      measureString = "Large";
-                  }
-                }
-                case "DEGREE": {
-                  switch (option.optionQuantity) {
-                    case 0:
-                      measureString = "Easy";
-                    case 1:
-                      measureString = "Regular";
-                    case 2:
-                      measureString = "Extra";
-                  }
-                }
-              }
-            }
-
-            const optionCountString = option.countType === "COUNTABLE" ? 'x' + option.optionQuantity : measureString;
-            const optionTraitString = option.productOptionTraits
-              .filter(trait => trait.optionTraitType === "BINARY" && trait.currentValue === 1)
-              .map(trait => '(' + trait.labelCode + ')')
-              .join('');
-            return option.optionName + ' ' + '(' + optionCountString + ')' + (optionTraitString.length > 0 ? ' ' + optionTraitString : '');
-          }
-        ).join(', ');
+    <div>
+      {customRuleList.map((customRule, customRuleIdx) => {
         return (
           <span key={customRuleIdx} className="flex flex-col">
-          <strong>{customRule.customRuleName}: </strong>
-          <span className="text-gray-500 text-sm italic">{optionString.length < 1 ? "N/A" : optionString}</span>
+            {customRule.optionList.length > 0 &&
+             <strong>{customRule.customRuleName}: </strong>
+            }
+            <ul>
+              {customRule.optionList
+                .map((option, optionIdx) => {
+                  const quantity = option.quantity;
+                  const quantityDetail = option.quantityDetail;
+                  const quantityHtml = quantityDetail
+                  ? <UncountableLabel quantityType={quantityDetail.quantityType}/>
+                  : <span>(x{quantity})</span>
+                  // const optionCountString = option.countType === "COUNTABLE" ? 'x' + option.optionQuantity : measureString;
+                  const traitHtml = 
+                    <ul>
+                      {
+                        option.traitList.map((trait, traitIdx) => {
+                          return (
+                            <li key={traitIdx} className="flex justify-between">
+                              <p>{trait.traitName + ' ' + trait.selectedValue}</p>
+                              <p>{trait.calculatedPrice.toFixed(2)}</p>
+                            </li>
+                          )
+                        })
+                      }
+                    </ul>
+                  return (
+                    <li key={optionIdx}>
+                      <div className="flex justify-between">
+                        <p className='flex gap-x-1 items-center'>{option.optionName}{quantityHtml}</p>
+                        <p className={`${option.calculatedPrice > 0 ? "font-bold" : ""}`}>{option.calculatedPrice.toFixed(2)}</p>
+                        
+                      </div>
+                      {traitHtml}
+                    </li>
+                  );
+                }
+              )}
+            </ul>
           </span>
         );
       }
       )}
+      <span className='flex border-t-1 mt-2'></span>
+      <div className='flex mt-2 justify-between'>
+        <p>Total</p>
+        <p><strong>{extraPrice.toFixed(2)}</strong></p>
+      </div>
     </div>
   )
 }

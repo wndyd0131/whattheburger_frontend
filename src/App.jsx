@@ -11,6 +11,8 @@ import { UserContext } from "./contexts/UserContext";
 import Layout from "./Layout";
 import { LayoutProvider } from "./contexts/LayoutContext";
 import Order from "./pages/Order";
+import OrderComplete from "./pages/OrderComplete";
+import OrderSearch from "./pages/OrderSearch";
 
 function App() {
 
@@ -41,19 +43,20 @@ function App() {
   return (
       <Router>
         <LayoutProvider>
-          <Layout>
             <Routes>
-              <Route path="/" element={<HomePage/>}></Route>
-              <Route path="/menu" element={<Menu/>}></Route>
-              <Route path="/about" element={<AboutUs/>}></Route>
-              <Route path="/admin/menu" element={<MenuCreate/>}></Route>
-              <Route path="/auth" element={<Auth/>}></Route>
-              <Route path="/order" element={<Order/>}></Route>
+              <Route element={<Layout/>}>
+                <Route path="/" element={<HomePage/>}></Route>
+                <Route path="/menu" element={<Menu/>}></Route>
+                <Route path="/about" element={<AboutUs/>}></Route>
+                <Route path="/admin/menu" element={<MenuCreate/>}></Route>
+                <Route path="/auth" element={<Auth/>}></Route>
+                <Route path="/order" element={<Order/>}></Route>
+                <Route path="/order/complete" element={<OrderComplete/>}></Route>
+                <Route path="/order/search" element={<OrderSearch/>}></Route>
+              </Route>
             </Routes>
-          </Layout>
         </LayoutProvider>
       </Router>
-
   );
 }
 

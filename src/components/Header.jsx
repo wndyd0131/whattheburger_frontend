@@ -9,17 +9,20 @@ import axios from "axios";
 import Logo from "./Layout/Logo";
 import Hamburger from "./Header/Hamburger";
 import CartButton from "./Header/CartButton";
+import { useMediaQuery } from "@mui/material";
 
 const Header = () => {
   const {
     userDetails
   } = useContext(UserContext);
+  const isMobile = useMediaQuery('(max-width: 48rem)');
 
   const [headerOpened, setHeaderOpened] = useState(false);
 
   return (
     <>
     <AnimatePresence>
+      {!isMobile &&
       <motion.header
         initial={{y: '-5vh'}}
         animate={{y: 0}}
@@ -35,25 +38,41 @@ const Header = () => {
           h-[60px]
           shadow-[0_4px_3px_-5px_rgba(0,0,0,0.5)]
           z-40
-
-          max-md:fixed
-          max-md:h-full
-          max-md:w-[350px]
-          max-md:flex-col
-          max-md:shadow-xl
-          max-md:pl-5
-          max-md:pt-2
-          max-md:pb-5
-          max-md:rounded-r-2xl
-          max-md:${headerOpened ? "" : "hidden"}
+        `}
+      >
+        <Navigation></Navigation>
+        <div className="
+          flex
+          justify-center
+          basis-1/5
+        ">
+          <AuthSection></AuthSection>
+          <CartButton/>
+        </div>
+      </motion.header>
+      }
+      {isMobile && headerOpened &&
+      <motion.header
+        initial={{y: '-5vh'}}
+        animate={{y: 0}}
+        exit={{x: '-100vw'}}
+        className={`
+          fixed
+          h-full
+          bg-white
+          w-[350px]
+          flex-col
+          shadow-xl
+          pl-5
+          pt-2
+          pb-5
+          rounded-r-2xl
         `}>
           <Logo/>
           <div className="
             flex absolute right-[15px] top-[20px] cursor-pointer
-            
-            md:hidden
           "
-            onClick={() => setHeaderOpened(!headerOpened)}
+            onClick={() => setHeaderOpened(false)}
           >
             <LeftArrowIcon width="20px" height="20px" color="#FE7800"/>
           </div>
@@ -61,16 +80,18 @@ const Header = () => {
           <div className="
             flex
             justify-center
-            md:basis-1/5
           ">
             <AuthSection></AuthSection>
             <CartButton/>
           </div>
 
 
-        </motion.header>
+      </motion.header>
+      }
     </AnimatePresence>
-    <Hamburger headerOpened={headerOpened} setHeaderOpened={setHeaderOpened}/>
+    {isMobile && !headerOpened &&
+      <Hamburger headerOpened={headerOpened} setHeaderOpened={setHeaderOpened}/>
+    }
     </>
   );
 }

@@ -12,7 +12,7 @@ const ContentContainer = () => {
   const extraPrice = option.countType == "COUNTABLE"
     ? option.extraPrice * option.optionQuantity
     : option.extraPrice + option.quantityDetail.quantityList[option.quantityDetail.selectedIdx].extraPrice;
-  const calories = option ? option.calories * option.optionQuantity : option.calories;
+  const calories = option ? option.extraCalories * option.optionQuantity : option.extraCalories;
   const extraPriceText = extraPrice > 0 ? `+$${extraPrice.toFixed(2)}` : "Free";
 
   return (
@@ -24,7 +24,7 @@ const ContentContainer = () => {
     >
       <div className="space-y-2">
         <h3 className="text-lg font-bold text-gray-800 font-['Whatthefont'] leading-tight">
-          {option.name}
+          {option.optionName}
         </h3>
         
         <div className="flex items-center justify-between">

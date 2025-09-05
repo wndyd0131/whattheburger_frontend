@@ -1,11 +1,9 @@
 import React from 'react'
 
-const ImageContainer = () => {
+const ImageContainer = ({image}) => {
   return (
-    <div className="flex justify-center items-center min-w-[200px]">
-      <img className="w-[200px] h-[200px]" src="src\assets\private\menu\Whattheburger31.png">
-      
-      </img>
+    <div className="flex justify-center items-center min-w-[200px] max-w-[250px]">
+      <img className="" src={image}/>
     </div>
   )
 }

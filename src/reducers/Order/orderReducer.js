@@ -1,11 +1,94 @@
 import { ORDER_ACTIONS as ACTIONS } from "./actions";
 
 export const initialOrderState = {
-  products: [],
+  orderId: null,
+  orderNumber: null,
+  orderStatus: null,
+  orderType: null,
+  paymentStatus: null,
+  paymentMethod: null,
+  orderNote: null,
+  discountType: null,
+  taxPrice: null,
+  guestName: null,
+  guestEmail: null,
+  guestPhoneNum: null,
+  productList: [],
   totalPrice: 0
 };
 export const orderReducer = (state=initialOrderState, action, cartState) => {
   switch(action.type) {
+    case ACTIONS.LOAD_ORDER: {
+      const updatedState = structuredClone(state);
+      const {
+        orderResponse
+      } = action.payload;
+      const productList = orderResponse.productResponses.map(productResponse => {
+        const customRuleList = productResponse.customRuleResponses.map(customRuleResponse => {
+          const optionList = customRuleResponse.optionResponses.map(optionResponse => {
+            const traitList = optionResponse.traitResponses.map(traitResponse => {
+              return {
+                traitId: traitResponse.id,
+                originalTraitId: traitResponse.productOptionTraitId,
+                calculatedCalories: traitResponse.calculatedCalories,
+                calculatedPrice: traitResponse.calculatedPrice,
+                labelCode: traitResponse.labelCode,
+                traitName: traitResponse.name,
+                traitType: traitResponse.optionTraitType,
+                selectedValue: traitResponse.selectedValue
+                // basePrice
+                // baseCalories
+              }
+            });
+            const quantityDetail = optionResponse.quantityDetail
+            ? {
+              quantityId: optionResponse.quantityDetail.productOptionOptionQuantityId,
+              calculatedPrice: optionResponse.quantityDetail.calculatedPrice,
+              calculatedCalories: optionResponse.quantityDetail.extraCalories,
+              quantityType: optionResponse.quantityDetail.quantityType
+            }
+            : null;
+
+            return {
+                optionId: optionResponse.id,
+                originalOptionId: optionResponse.productOptionId,
+                calculatedPrice: optionResponse.calculatedPrice,
+                calculatedCalories: optionResponse.calculatedCalories,
+                optionName: optionResponse.name,
+                countType: optionResponse.countType,
+                quantity: optionResponse.quantity,
+                traitList: traitList,
+                quantityDetail: quantityDetail,
+            }});
+            return {
+              customRuleId: customRuleResponse.id,
+              originalCustomRuleId: customRuleResponse.customRuleId,
+              customRuleName: customRuleResponse.name,
+              optionList: optionList,
+              calculatedPrice: customRuleResponse.calculatedPrice,
+            }
+          });
+          return {
+            productId: productResponse.id,
+            originalProductId: productResponse.productId,
+            productName: productResponse.name,
+            productType: productResponse.productType,
+            imageSource: productResponse.imageSource,
+            calculatedCalories: productResponse.calculatedCalories,
+            quantity: productResponse.quantity,
+            customRuleList: customRuleList,
+            calculatedPrice: productResponse.totalPrice,
+            extraPrice: productResponse.extraPrice,
+            basePrice: productResponse.basePrice
+          }
+      });
+      updatedState.orderId = orderResponse.id;
+      updatedState.orderNumber = orderResponse.orderNumber,
+      updatedState.orderType = orderResponse.orderType;
+      updatedState.productList = productList;
+      updatedState.totalPrice = orderResponse.totalPrice;
+      return updatedState;
+    }
     case ACTIONS.TRANSFER_FROM_CART: {
       const updatedState = structuredClone(state);
       const productList = cartState.cartList.map(cartItem => {
@@ -76,12 +159,12 @@ export const orderReducer = (state=initialOrderState, action, cartState) => {
             briefInfo: cartItem.product.briefInfo,
             baseCalories: cartItem.product.baseCalories,
             quantity: cartItem.product.quantity,
-            customRules: customRuleList,
+            customRuleList: customRuleList,
             productTotalPrice: cartItem.product.productTotalPrice,
             productExtraPrice: cartItem.product.productExtraPrice
           }
       });
-      updatedState.products = productList;
+      updatedState.productList = productList;
       updatedState.totalPrice = cartState.totalPrice;
       console.log("ORDER STATE", updatedState);
       return updatedState;

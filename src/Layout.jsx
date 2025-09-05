@@ -11,8 +11,9 @@ import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import { CART_ACTIONS } from "./reducers/Cart/actions";
 import api from "./utils/api";
+import { Outlet } from "react-router-dom";
 
-const Layout = ({ children }) => { {/* nested components */}
+const Layout = () => { {/* nested components */}
   const {
     userDetails
   } = useContext(UserContext);
@@ -44,7 +45,9 @@ const Layout = ({ children }) => { {/* nested components */}
   return (
     <>
       <Header></Header>
-      <main className="flex flex-col flex-grow min-h-screen">{children}</main> {/* inserting nested components as dynamic content */}
+      <main className="flex flex-col flex-grow min-h-screen">
+        <Outlet/>
+      </main> {/* inserting nested components as dynamic content */}
       
       <AnimatePresence>
         {cartOpened && <Cart/>}

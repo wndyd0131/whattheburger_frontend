@@ -2,7 +2,7 @@ import { HamburgerIcon } from "../../svg/Utils";
 
 const Hamburger = ({ headerOpened, setHeaderOpened }) => {
   if (headerOpened) {
-    return null
+    return null;
   }
   return (
     <div className="

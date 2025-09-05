@@ -28,8 +28,8 @@ const OrderSummaryDetail = () => {
       
       <div className="flex flex-col flex-1 space-y-4">
         <ul className="space-y-4">
+          {console.log("Option State", optionState)}
           {optionState.currentSelections.items.map((customRule, customRuleIdx) => {
-            console.log("OrderSummaryDetail", optionState);
             if (customRule.selectedCount > 0) {
               return (
                 <motion.div 

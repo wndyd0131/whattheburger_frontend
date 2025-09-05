@@ -1,4 +1,4 @@
-import { CartAction } from "../types/actions/cart/cartAction";
+import { CartAction } from "../types/payloads/cart/cartAction";
 import { CART_ACTIONS as ACTIONS } from "./actionsT";
 
 export const initialCartState = {
