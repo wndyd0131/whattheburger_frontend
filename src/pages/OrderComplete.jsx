@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { LoadingSpinner } from '../svg/Utils';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
@@ -17,6 +17,10 @@ const OrderComplete = () => {
   const [orderNumber, setOrderNumber] = useState("");
   const [orderSummary, setOrderSummary] = useState({});
   const [productList, setProductList] = useState([]);
+  const [orderStage, setOrderStage] = useState(1);
+  const [orderComplete, setOrderComplete] = useState(false);
+  const wsRef = useRef(null);
+
   const {
     reducer: {
       rootState,
@@ -46,6 +50,20 @@ const OrderComplete = () => {
   ]
 
   useEffect(() => {
+    const onMessage = (event) => {
+    const data = JSON.parse(event.data);
+      if (data.payload.status === 'PREP_COMPLETE' && orderStage === 1) {
+        setOrderStage(2);
+      }
+      console.log(data);
+    }
+    if (wsRef.current == null) {
+      const ws = new WebSocket("ws://localhost:8080/ws/track");
+      wsRef.current = ws;
+      ws.addEventListener("open", () => console.log("[ws] open"), {once: true}); // auto-remove
+      ws.addEventListener("message", onMessage);
+    }
+
     setLoading(true);
     const params = new URLSearchParams(window.location.search);
     // const orderNumber = params.get("orderNumber");
@@ -68,6 +86,14 @@ const OrderComplete = () => {
       })
       .catch(err => console.error(err))
       .finally(() => setLoading(false))
+
+      return () => {
+        const ws = wsRef.current;
+        if (ws) {
+          ws.removeEventListener("message", onMessage);
+          wsRef.current = null;
+        }
+      };
   }, []);
 
   console.log("PRODUCT LIST", orderState.productList);
@@ -91,15 +117,29 @@ const OrderComplete = () => {
       </div>
       <div className="flex flex-col h-screen p-10">
         <div className="flex gap-x-10">
-          <div className="flex flex-col items-center basis-4/7 max-w-[1]">
+          <div className="flex flex-col items-center basis-4/7">
             <h2 className='mb-5'>Order Progress</h2>
-            <div className='flex w-[100%] border border-gray-300 rounded-lg'>
-              d
-            </div>
+                <div className='flex w-full h-full max-w-300 p-5 border justify-center items-center border-gray-300 rounded-lg'>
+                {orderStage === 1 &&
+                  <div className='flex flex-col justify-center items-center'>
+                    <img src="/public/icons/utils/gif/prep_loading.gif" width={200}></img>
+                    <div className='text-center text-xl font-["sans-serif"]'>
+                      <p>We are preparing your food right now,</p>
+                      <p>it may costs around <span className='font-bold text-[#FE7800]'>5</span> minutes.</p>
+                    </div>
+                  </div>
+                } {orderStage === 2 &&
+                  <div className='flex flex-col justify-center items-center'>
+                    <div className='flex border-1 border-gray-200 rounded-lg'>
+                    </div>
+                    <img src="/public/icons/utils/gif/delivery_loading.gif" width={200}></img>
+                  </div>
+                }
+                </div>
           </div>
           <div className="flex flex-col items-center basis-3/7 max-w-lvw">
             <h2 className='mb-5'>Order Summary</h2>
-            <div className="flex flex-col py-5 px-3 w-[100%] border border-gray-300 rounded-lg overflow-y-auto">
+            <div className="flex flex-col py-5 px-3 w-full border border-gray-300 rounded-lg overflow-y-auto">
               <OrderSummary/>
             </div>
           </div>

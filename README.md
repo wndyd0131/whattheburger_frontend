@@ -1,4 +1,4 @@
-# Whataburger Redesign - Fullstack Clone (Unofficial)
+# Whataburger Redesign 🍔 - Fullstack Clone (Unofficial)
 
 ## Overview
 This is a fullstack web application simulating a fast food ordering system of Whataburger, rebuilt with modern technologies to enhance usability and maintainability.
@@ -45,7 +45,7 @@ The project was built for the following reasons:
 * Redis (session/cart cache)
 * Lucid Chart (diagrams)
 * JUnit (testing)
-* Rest API
+* Swagger
 
 ## Features
 * Customizable Order System
@@ -62,9 +62,9 @@ The project was built for the following reasons:
 - [x] User logic
 - [x] Order logic
 - [x] Cart logic
-- [ ] Payment logic
+- [x] Payment logic
+- [ ] Current order tracking logic
 - [ ] Order history
-- [ ] Logging useful data
 - [ ] Chatbot
 - [ ] Deployment
 
