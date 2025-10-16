@@ -170,7 +170,7 @@ const MenuCreate = () => {
             setMinSelection={setMinSelection}
             setMaxSelection={setMaxSelection}
           />
-          <button className={styles.finishButton} onClick={() => handleClickCreateButton()}>
+          <button className="flex w-[100px] h-[50px] text-lg bg-white text-[#FE7800] border border-gray-200 rounded-md font-['Whatthefont'] justify-center self-center items-center cursor-pointer hover:bg-gray-100" onClick={() => handleClickCreateButton()}>
             Create
           </button>
 

@@ -16,6 +16,7 @@
     "@googlemaps/js-api-loader": "^2.0.1",
     "@mapbox/search-js-core": "^1.4.0",
     "@mapbox/search-js-react": "^1.4.0",
+    "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.1.0",
     "@tailwindcss/vite": "^4.1.4",
     "@vis.gl/react-google-maps": "^1.5.5",

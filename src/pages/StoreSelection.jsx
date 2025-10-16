@@ -4,6 +4,8 @@ import { AddressAutofill, useGeocodingCore } from '@mapbox/search-js-react';
 import api from '../utils/api';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import Cookie from 'js-cookie';
+import { STORE_ID_EXPIRATION_TIME } from '../utils/cookieExpirationTime';
 
 const StoreSelection = () => {
   const MAPBOX_API_KEY = import.meta.env.VITE_MAPBOX_API_KEY;
@@ -46,6 +48,7 @@ const StoreSelection = () => {
   }
 
   const handleClickButton = (storeId) => {
+    Cookie.set("storeId", storeId, { expires: STORE_ID_EXPIRATION_TIME });
     nav(`/menu/${storeId}`);
   }
 
