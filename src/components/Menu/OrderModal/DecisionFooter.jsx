@@ -1,10 +1,7 @@
 import { motion } from "framer-motion";
 import { useContext } from "react";
-import { MenuContext } from "../../../contexts/MenuContext";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { LayoutContext } from "../../../contexts/LayoutContext";
-import api from "../../../utils/api";
 import { CART_ACTIONS } from "../../../reducers/Cart/actions";
 import { ModalContext } from "./contexts/ModalContext";
 import { patchCartItem, postCartItem } from "../../../api/cart";

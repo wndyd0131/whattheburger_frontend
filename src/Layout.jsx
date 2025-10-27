@@ -8,7 +8,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { LayoutContext } from "./contexts/LayoutContext";
 import { ToastContainer } from "react-toastify";
-import axios from "axios";
 import { CART_ACTIONS } from "./reducers/Cart/actions";
 import api from "./utils/api";
 import { Outlet, useLocation } from "react-router-dom";

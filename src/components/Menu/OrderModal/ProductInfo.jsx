@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import MenuImageContainer from "../../MenuImageContainer";
+import MenuImageContainer from "../MenuImageContainer";
 import { LayoutContext } from "../../../contexts/LayoutContext";
 import { ModalContext } from "./contexts/ModalContext";
 import { motion } from "framer-motion";

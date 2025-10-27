@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
-import axios from "axios";
 import { MenuContext } from "../../contexts/MenuContext";
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { fetchProductsByCategoryId } from "../../api/product";
 import CategoryIcon from "./CategoryIcon";
 import { LayoutContext } from "../../contexts/LayoutContext";
 

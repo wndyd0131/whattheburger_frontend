@@ -1,7 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormContext } from "./contexts/FormContext";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";

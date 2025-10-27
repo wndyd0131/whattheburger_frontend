@@ -1,6 +1,4 @@
-import { useContext } from "react";
 import Modal from "../../Modal";
-import { MenuContext } from "../../../contexts/MenuContext";
 import { motion } from "framer-motion";
 
 const ConfirmModal = ({setConfirmModalOpened, message, handlerFunction}) => {

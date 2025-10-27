@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CloseButton, RightArrowIcon } from '../../svg/Utils'
+import { RightArrowIcon } from '../../svg/Utils'
 import { LayoutContext } from '../../contexts/LayoutContext';
 
 const Header = () => {

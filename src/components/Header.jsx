@@ -4,8 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { LeftArrowIcon } from "../svg/Utils";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { LayoutContext } from "../contexts/LayoutContext";
-import axios from "axios";
 import Logo from "./Layout/Logo";
 import Hamburger from "./Header/Hamburger";
 import CartButton from "./Header/CartButton";

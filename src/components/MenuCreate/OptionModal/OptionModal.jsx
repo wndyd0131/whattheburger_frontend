@@ -1,12 +1,10 @@
 import { useState, createContext, useContext, useReducer } from "react";
-import { MenuCreateContext } from "../../../pages/MenuCreate";
 import Modal from "../../Modal";
 import SearchBar from "./SearchBar";
 import SortSection from "./SortSection";
 import OptionItemSection from "./OptionItemSection";
 import SelectedOptionSection from "./SelectedOptionSection";
 import DecisionFooter from "./DecisionFooter";
-import OptionDetailModal from "../OptionDetailModal/OptionDetailModal";
 
 export const SelectedOptionContext = createContext();
 

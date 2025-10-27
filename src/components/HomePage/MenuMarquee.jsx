@@ -1,5 +1,3 @@
-import styles from "/src/styles/HomePage.module.css";
-
 import Whattheburger from "/src/assets/private/menu/Whattheburger35.png"
 import ChickenFajita from "/src/assets/private/menu/ChickenFajitaTaco29.png";
 import HoneyBBQ from "/src/assets/private/menu/HoneyBBQ-alacarte1.png";

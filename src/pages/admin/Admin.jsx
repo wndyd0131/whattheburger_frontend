@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import { Collapse, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import MenuCreate from './MenuCreate';
-import StoreProductCreate from '../components/StoreProductCreate';
-import api from '../utils/api';
-import { StoreProductCreateProvider } from '../contexts/StoreProductCreateContext';
+import MenuCreate from '../../components/Admin/MenuCreate';
+import StoreProductCreate from '../../components/StoreProductCreate';
+import api from '../../utils/api';
+import { StoreProductCreateProvider } from '../../contexts/StoreProductCreateContext';
 
 const Admin = () => {
   const [productOpen, setProductOpen] = useState(false);

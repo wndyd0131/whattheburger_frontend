@@ -1,14 +1,13 @@
 import { useState, useEffect, useReducer, useContext, createContext, useMemo } from "react";
-import "../styles/Menu.styles.css";
-import { MenuContext } from "../contexts/MenuContext";
-import ImageSlider from "../components/ImageSlider";
-import { BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from "../svg/categoryNav";
-import { LayoutContext } from "../contexts/LayoutContext";
+import "/src/styles/Menu.styles.css";
+import { MenuContext } from "../../contexts/MenuContext";
+import ImageSlider from "../../components/ImageSlider";
+import { LayoutContext } from "../../contexts/LayoutContext";
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import api from "../utils/api";
-import MenuSection from "../components/Menu/MenuSection";
+import api from "../../utils/api";
+import MenuSection from "../../components/Menu/MenuSection";
 import Cookie from "js-cookie";
-import { STORE_ID_EXPIRATION_TIME } from "../utils/cookieExpirationTime";
+import { STORE_ID_EXPIRATION_TIME } from "../../utils/cookieExpirationTime";
 
 const Menu = () => {
   

@@ -1,7 +1,5 @@
 import { useContext, useState } from "react";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
-import { MenuCreateContext } from "../../../pages/MenuCreate";
-import Modal from "../../Modal";
 import QuantityDetailModal from "./QuantityDetailModal";
 
 const QuantitySection = () => {

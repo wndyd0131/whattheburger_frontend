@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { MenuCreateContext } from "../../../pages/MenuCreate";
+import { MenuCreateContext } from "/src/components/Admin/MenuCreate";
 import { SelectedOptionContext } from "./OptionModal";
-import { ACTIONS } from "../../../reducers/MenuCreate/actions";
+import { ACTIONS } from "/src/reducers/MenuCreate/actions";
 
 const OptionItemSection = () => {
   const {

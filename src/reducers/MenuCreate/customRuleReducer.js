@@ -14,7 +14,6 @@ export const customRuleReducer = (state, action) => {
         }
       ];
     case ACTIONS.DELETE_CUSTOMRULE:
-      console.log(state);
       return state.filter((_, idx) => idx !== action.payload.customRuleIdx);
       
     case ACTIONS.SAVE_CUSTOMRULE:

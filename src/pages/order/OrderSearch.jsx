@@ -1,8 +1,6 @@
-import { AppBar, Box, Button, createTheme, Tab, Tabs, TextField, ThemeProvider } from '@mui/material';
-import { orange } from '@mui/material/colors';
+import { Box, Button, createTheme, Tab, Tabs, TextField, ThemeProvider } from '@mui/material';
 import React, { useState } from 'react'
-import api from '../utils/api';
-import { fetchOrderByEmailAndOrderNumber } from '../api/order';
+import { fetchOrderByEmailAndOrderNumber } from '../../api/order';
 
 const theme = createTheme({
   palette: {

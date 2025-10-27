@@ -5,7 +5,6 @@ import { UserContext } from '../../contexts/UserContext';
 import { ACCESS_TOKEN_EXPIRATION_TIME, REFRESH_TOKEN_EXPIRATION_TIME } from '../../utils/cookieExpirationTime';
 import { useNavigate } from 'react-router-dom';
 import { LayoutContext } from '../../contexts/LayoutContext';
-import { ORDER_ACTIONS } from '../../reducers/Order/actions';
 import { ORDER_SESSION_ACTIONS } from '../../reducers/OrderSession/action';
 import Cookie from "js-cookie";
 

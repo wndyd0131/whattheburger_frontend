@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../contexts/UserContext';
-import { LayoutContext } from '../contexts/LayoutContext';
-import api from '../utils/api';
-import { ORDER_ACTIONS } from '../reducers/Order/actions';
+import { UserContext } from '../../contexts/UserContext';
+import { LayoutContext } from '../../contexts/LayoutContext';
+import api from '../../utils/api';
 import { motion } from 'framer-motion';
-import { LoadingSpinner } from '../svg/Utils';
-import OrderForm from '../components/Order/OrderForm';
-import { ORDER_SESSION_ACTIONS } from '../reducers/OrderSession/action';
-import OrderSessionSummary from '../components/Order/OrderSessionSummary';
-import { OrderFormProvider } from '../contexts/OrderFormContext';
+import OrderForm from '../../components/Order/OrderForm';
+import { ORDER_SESSION_ACTIONS } from '../../reducers/OrderSession/action';
+import OrderSessionSummary from '../../components/Order/OrderSessionSummary';
+import { OrderFormProvider } from '../../contexts/OrderFormContext';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Order = () => {

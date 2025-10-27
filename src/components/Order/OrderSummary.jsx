@@ -1,6 +1,4 @@
 import React, { useContext } from 'react'
-import ImageContainer from './ImageContainer';
-import ContentContainer from './ContentContainer';
 import { LayoutContext } from '../../contexts/LayoutContext';
 import OrderSummaryList from './OrderSummaryList';
 

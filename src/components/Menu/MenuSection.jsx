@@ -5,7 +5,6 @@ import CategoryNav from './CategoryNav';
 import MenuContainer from './MenuContainer';
 import OrderModal from './OrderModal/OrderModal';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LayoutContext } from '../../contexts/LayoutContext';
 
 const MenuSection = () => {
   const {

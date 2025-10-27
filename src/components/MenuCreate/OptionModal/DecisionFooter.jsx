@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { MenuCreateContext } from "../../../pages/MenuCreate";
-import { ACTIONS } from "../../../reducers/MenuCreate/actions";
+import { MenuCreateContext } from "/src/components/Admin/MenuCreate";
+import { ACTIONS } from "/src/reducers/MenuCreate/actions";
 
 const DecisionFooter = () => {
 

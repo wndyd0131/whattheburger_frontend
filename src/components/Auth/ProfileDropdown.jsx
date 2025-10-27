@@ -72,22 +72,23 @@ const ProfileDropdown = ({props}) => {
         shadow-md
         rounded-md
         bg-white
+        w-full
         translate-x-6
         whitespace-nowrap
 
         md:top-[80%]
         max-md:bottom-[80%]
       ">
-        <ul className="flex flex-col p-[20px] gap-y-3">
-          <li className="flex items-center cursor-pointer gap-2">
+        <ul className="flex flex-col w-full">
+          <li className="flex items-center cursor-pointer gap-2 p-3 hover:bg-gray-100">
               <ProfileIcon width="18px" height="18px"/>
               <p>Profile</p>
           </li>
-          <li className="flex items-center cursor-pointer gap-2">
+          <li className="flex items-center cursor-pointer gap-2 p-3 hover:bg-gray-100">
               <ListIcon width="18px" height="18px"/>
               <p>My Order</p>
           </li>
-          <li className="flex items-center cursor-pointer gap-2" onClick={() => handleClickSignOut()}>
+          <li className="flex items-center cursor-pointer gap-2 p-3 hover:bg-gray-100" onClick={() => handleClickSignOut()}>
             <LogoutIcon width="18px" height="18px"/>
             <p>Sign out</p>
           </li>

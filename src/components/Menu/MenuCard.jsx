@@ -1,12 +1,10 @@
 import { useContext } from "react";
-import MenuImageContainer from "../MenuImageContainer";
+import MenuImageContainer from "./MenuImageContainer";
 import { MenuContext } from "../../contexts/MenuContext";
-import axios from "axios";
 import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import { motion } from "framer-motion";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import api from "../../utils/api";
-import { fromProductResponseToOptionDto } from "../../utils/dtoMapper";
 
 const MenuCard = ({product, calories}) => {
 

@@ -1,14 +1,14 @@
 import {useState, useEffect, createContext, useReducer} from "react";
-import styles from "../styles/MenuCreate.module.css";
+import styles from "/src/styles/MenuCreate.module.css";
 import axios from "axios";
-import ProductDetailInput from "../components/MenuCreate/ProductDetailInput.jsx";
-import CustomizationDetailInput from "../components/MenuCreate/CustomizationDetailInput.jsx";
-import OptionModal from "../components/MenuCreate/OptionModal/OptionModal.jsx";
-import {customRuleReducer} from "../reducers/MenuCreate/customRuleReducer.js";
-import {selectedOptionReducer} from "../reducers/MenuCreate/selectedOptionReducer.js";
-import { fetchCategories } from "../api/category.js";
-import { fetchOptions } from "../api/option.js";
-import { fetchOptionTraits } from "../api/optionTrait.js";
+import ProductDetailInput from "../MenuCreate/ProductDetailInput.jsx";
+import CustomizationDetailInput from "../MenuCreate/CustomizationDetailInput.jsx";
+import OptionModal from "../MenuCreate/OptionModal/OptionModal.jsx";
+import {customRuleReducer} from "../../reducers/MenuCreate/customRuleReducer.js";
+import {selectedOptionReducer} from "../../reducers/MenuCreate/selectedOptionReducer.js";
+import { fetchCategories } from "../../api/category.js";
+import { fetchOptions } from "../../api/option.js";
+import { fetchOptionTraits } from "../../api/optionTrait.js";
 
 export const MenuCreateContext = createContext();
 

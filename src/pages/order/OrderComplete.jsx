@@ -1,17 +1,13 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
-import { CopyIcon, LoadingSpinner } from '../svg/Utils';
+import { CopyIcon } from '../../svg/Utils';
 import { useNavigate } from 'react-router-dom';
-import api from '../utils/api';
-import { LayoutContext } from '../contexts/LayoutContext';
-import { ORDER_ACTIONS } from '../reducers/Order/actions';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Container, List, ListItem, Typography } from '@mui/material';
-import { normalizeProduct } from '../utils/normalizer';
-import ImageContainer from '../components/Order/ImageContainer';
-import OptionSummary from '../components/Order/OptionSummary';
-import OrderSummary from '../components/Order/OrderSummary';
+import api from '../../utils/api';
+import { LayoutContext } from '../../contexts/LayoutContext';
+import { ORDER_ACTIONS } from '../../reducers/Order/actions';
+import { normalizeProduct } from '../../utils/normalizer';
+import OrderSummary from '../../components/Order/OrderSummary';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import Cookie from 'js-cookie'
 
 const OrderComplete = () => {
 

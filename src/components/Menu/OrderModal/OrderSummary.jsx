@@ -1,5 +1,3 @@
-import { useState, useContext } from "react";
-import ConfirmModal from "./ConfirmModal";
 import ProductInfo from "./ProductInfo";
 import OrderSummaryDetail from "./OrderSummaryDetail";
 import DecisionFooter from "./DecisionFooter";

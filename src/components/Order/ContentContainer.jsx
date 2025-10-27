@@ -1,5 +1,4 @@
 import React from 'react'
-import ProductSummary from './ProductSummary';
 import OptionSummary from './OptionSummary';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import ChargeSummary from './ChargeSummary';

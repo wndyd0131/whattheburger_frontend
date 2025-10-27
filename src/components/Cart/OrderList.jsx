@@ -1,15 +1,11 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom"
 import { LayoutContext } from "../../contexts/LayoutContext";
 import { CloseButton } from "../../svg/Utils";
 import api from "../../utils/api";
 import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import { toast } from "react-toastify";
 import { OPTION_ACTIONS } from "../../reducers/Option/actions";
-import OrderModal from "../Menu/OrderModal/OrderModal";
 import { CartContext } from "./contexts/CartContext";
-import { fromCartResponseToOptionDto } from "../../utils/dtoMapper";
-import Cookie from "js-cookie"
 
 const OrderList = () => {
 
@@ -68,22 +64,8 @@ const OrderList = () => {
         setSelectedCartIdx(cartIdx);
       })
       .catch(err => console.error(err));
-    // api.get(`/products/${productId}`)
-    //   .then(response => {
-    //     console.log("PRODUCT_RESPONSE", response.data);
-    //     const optionResponse = response.data.optionResponses;
-    //     dispatchRoot({
-    //       type: OPTION_ACTIONS.LOAD_OPTIONS,
-    //       payload: {
-    //         optionResponse: optionResponse
-    //       }
-    //     });
-
-    //     setSelectedProduct(response.data);
-    //     setSelectedCartIdx(cartIdx);
-    //   })
-    //   .catch(err => console.error(err));
   }
+
   const handleClickMinusButton = (quantity, cartIdx) => {
     const newQuantity = quantity - 1;
     if (newQuantity <= 0)
