@@ -40,6 +40,7 @@ const Header = () => {
           z-40
         `}
       >
+        <Logo/>
         <Navigation></Navigation>
         <div className="
           flex
@@ -67,6 +68,7 @@ const Header = () => {
           pt-2
           pb-5
           rounded-r-2xl
+          z-100
         `}>
           <Logo/>
           <div className="

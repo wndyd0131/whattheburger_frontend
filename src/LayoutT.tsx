@@ -29,7 +29,6 @@ const Layout = ({ children }) => { {/* nested components */}
   useEffect(() => {
     api.get("/cart")
     .then(response => {
-      console.log("CART_RESPONSE", response.data);
       const cartData = response.data;
       dispatchRoot({
         type: CART_ACTIONS.LOAD_ALL_PRODUCTS,

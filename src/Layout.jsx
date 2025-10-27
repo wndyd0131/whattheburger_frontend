@@ -11,36 +11,66 @@ import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import { CART_ACTIONS } from "./reducers/Cart/actions";
 import api from "./utils/api";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import Cookie from "js-cookie";
 
 const Layout = () => { {/* nested components */}
   const {
     userDetails
   } = useContext(UserContext);
 
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) window.scrollTo({ top: 0, left: 0, behavior: "smooth"});
+  }, [pathname, hash])
+
   const {
     cartOpened,
+    selectedStoreId,
+    setSelectedStoreId,
     reducer
   } = useContext(LayoutContext);
 
   const {
+    rootState,
     dispatchRoot
   } = reducer;
 
+
   useEffect(() => {
-    api.get("/cart")
-    .then(response => {
-      console.log("CART_RESPONSE", response.data);
-      const cartData = response.data;
-      dispatchRoot({
-        type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
-        payload: {
-          cartData: cartData
-        }
+    const storeId = Cookie.get("storeId");
+    if (storeId) {
+      api.get("/cart")
+      .then(res => {
+        const cartData = res.data;
+        dispatchRoot({
+          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+          payload: {
+            cartData: cartData
+          }
+        });
+        setSelectedStoreId(storeId);
       })
-    })
-    .catch(err => console.error(err));
+      .catch(err => console.error(err));
+    }
   }, [])
+
+  // useEffect(() => {
+  //   if (!selectedStoreId) return;
+  //   api.get("/cart")
+  //   .then(res => {
+  //     console.log("CART_RESPONSE", res.data);
+  //     const cartData = res.data;
+  //     dispatchRoot({
+  //       type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+  //       payload: {
+  //         cartData: cartData
+  //       }
+  //     });
+  //   })
+  //   .catch(err => console.error(err));
+  // }, [selectedStoreId]);
 
   return (
     <>

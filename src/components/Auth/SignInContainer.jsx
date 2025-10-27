@@ -27,7 +27,7 @@ const SignInContainer = () => {
       handleClickSignIn,
       handleClickSignUp
     }}>
-      <div className="flex flex-col items-center justify-self-center self-center h-[700px] w-[500px] rounded-2xl border-1 border-gray-200 shadow-md m-[70px] p-[40px]">
+      <div className="flex flex-col items-center justify-self-center self-center h-full w-full min-w-[400px] max-w-[500px] rounded-2xl border-1 border-gray-200 shadow-md m-[70px] p-[50px]">
         {isSignIn &&
           <SignInForm/>
         }

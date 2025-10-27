@@ -16,7 +16,6 @@ const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
 
   const handleClickOptionCard = () => {
     const customRuleType = customRule.customRuleType;
-    console.log("optionA", option);
     dispatchRoot({
       type: OPTION_ACTIONS.MODIFY_SELECTION,
       payload: {
@@ -40,10 +39,10 @@ const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, delay: optionIdx * 0.05 }}
         whileHover={{ y: -4, scale: 1.02 }}
-        className="flex justify-center p-2"
+        className="flex font-[sans-serif] justify-center p-2 min-w-[250px] w-full max-w-[300px]"
       >
         <motion.div
-          className={`relative flex flex-col w-full bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 ${
+          className={`relative flex flex-col p-2 w-full bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 ${
             option.isSelected 
               ? "border-[#FE7800]" 
               : "border-gray-100 hover:border-orange-200 hover:bg-gray-50"
@@ -54,7 +53,6 @@ const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
               : "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
           }}
         >
-          {/* Selection Indicator */}
           {option.isSelected && (
             <motion.div
               initial={{ scale: 0 }}
@@ -67,7 +65,7 @@ const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
             </motion.div>
           )}
           
-          {/* Hover Overlay */}
+        
           <motion.div
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 1 }}

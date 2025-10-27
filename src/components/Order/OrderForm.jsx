@@ -2,11 +2,11 @@ import React from 'react'
 import DeliveryForm from './DeliveryForm';
 import PickupForm from './PickupForm';
 
-const OrderForm = ({orderType, formData, setFormData}) => {
+const OrderForm = ({orderType}) => {
   if (orderType === 'DELIVERY') {
-    return <DeliveryForm formData={formData} setFormData={setFormData}/>
+    return <DeliveryForm/>
   } else if (orderType === 'PICKUP') {
-    return <PickupForm formData={formData} setFormData={setFormData}/>
+    return <PickupForm/>
   }
 }
 

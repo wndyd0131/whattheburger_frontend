@@ -70,7 +70,6 @@ const Menu = () => {
     }
   }, [hash]);
 
-  console.log("RS: ", rootState);
 
   return (
     <MenuContext.Provider value={{

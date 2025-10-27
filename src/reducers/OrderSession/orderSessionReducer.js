@@ -79,6 +79,7 @@ export const orderSessionReducer = (state=initialOrderSessionState, action) => {
       });
       updatedState.orderType = orderSessionResponse.orderType;
       updatedState.productList = productList;
+      updatedState.storeId = orderSessionResponse.storeId;
       updatedState.totalPrice = orderSessionResponse.totalPrice;
       return updatedState;
     }

@@ -84,7 +84,6 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
           const {
             index
           } = action.payload;
-          console.log("INDEX", index);
           updatedState.currentSelections.items[customRuleIdx].optionList.forEach((optionDetail) => {
             if (optionDetail.optionId === optionId) {
               const quantityList = optionDetail.quantityDetail.quantityList;
@@ -117,7 +116,6 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
           let oldCalories = 0;
           let newExtraPrice = 0;
           let newCalories = 0;
-          console.log("US", updatedState);
           updatedState.currentSelections.items[customRuleIdx].optionList.forEach((optionDetail, optionDetailIdx) => {
             if (optionDetail.isSelected) {
               if (optionDetail.optionId === optionId) {
@@ -211,7 +209,6 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
           updatedState.currentSelections.items[customRuleIdx].optionList.forEach((optionDetail, optionDetailIdx) => {
             if (optionDetail.optionId === optionId) {
               if (optionDetail.isSelected) {
-                console.log("TRUE");
                 // remove
                 let oldExtraPrice = 0;
                 let oldCalories = 0;
@@ -275,11 +272,11 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
     case ACTIONS.LOAD_OPTIONS: {
       const updatedState = structuredClone(state);
       const optionResponses = action.payload.optionResponse;
-      console.log("OPTION_RESPONSE", optionResponses);
       const customRuleList = [];
       let totalCalories = 0;
       
-      optionResponses.forEach((optionResponse) => {
+      optionResponses
+        .forEach((optionResponse) => {
         const customRuleIdx = optionResponse.customRuleResponse.orderIndex;
         const quantityList = optionResponse.quantityDetailResponses.map(quantityResponse => ({
           quantityId: quantityResponse.id,
@@ -362,12 +359,9 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
     }
     case ACTIONS.LOAD_FROM_CART: {
       const updatedState = structuredClone(state);
-      console.log("US", updatedState);
 
       const cartIdx = action.payload.cartIdx;
       const cartItem = cartState.cartList[cartIdx]
-
-      console.log("CART_ITEM", cartItem);
 
       const totalExtraPrice = cartItem.product.productExtraPrice;
       const customRules = cartItem.product.customRules.map(customRule => {
@@ -446,12 +440,10 @@ export const optionReducer = (state=initialOptionState, action, cartState) => {
     }
     case ACTIONS.SET_DEFAULT_FROM_CART: {
       const updatedState = structuredClone(state);
-      console.log("US", updatedState);
 
       const cartIdx = action.payload.cartIdx;
       const cartItem = cartState.cartList[cartIdx]
 
-      console.log("CART_ITEM", cartItem);
 
       const customRules = cartItem.product.customRules.map(customRule => {
         let selectedCount = 0;

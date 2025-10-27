@@ -12,6 +12,10 @@ const ChargeSummary = ({product}) => {
       <p>{product.extraPrice.toFixed(2)}</p>
       </div>
       <div className='flex justify-between'>
+      <p>Quantity</p>
+      <p>x {product.quantity}</p>
+      </div>
+      <div className='flex justify-between'>
       <p>Total Price</p>
       <p>{product.calculatedPrice.toFixed(2)}</p>
       </div>

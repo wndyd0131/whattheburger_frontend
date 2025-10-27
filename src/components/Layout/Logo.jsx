@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Logo = () => {
   return (
     <div className="
@@ -10,10 +12,10 @@ const Logo = () => {
       max-md:mb-15
       max-md:self-start
     ">
-      <a className="flex items-center" href="/">
+      <Link className="flex items-center" to="/">
         <img className="h-18 min-w-18" src="/private/logo/whattheburger-logo.png"/>
         <p className="flex font-['Whatthefont'] text-[#FE7800] text-2xl">Whattheburger</p>
-      </a>
+      </Link>
     </div>
   )
 }

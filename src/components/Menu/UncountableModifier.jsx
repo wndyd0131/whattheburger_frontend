@@ -13,6 +13,8 @@ const UncountableModifier = () => {
         main: '#FE7800',
         light: '#F90000'
       }
+    }, typography: {
+      fontFamily: 'sans-serif',
     }
   });
   
@@ -45,7 +47,6 @@ const UncountableModifier = () => {
 // [kids, small, medium, large]
   const quantityDetail = option.quantityDetail;
   const quantityDetailList = option.quantityDetail.quantityList;
-  console.log("QDL", quantityDetail);
   
   const marks = quantityDetailList.map((quantity, quantityIdx) => {
     const quantityType = quantity.quantityType;

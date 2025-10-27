@@ -77,7 +77,6 @@ const OrderModal = ({mode}) => {
     })
   }
 
-  console.log("OPTION_STATE", optionState);
     return (
       <ModalContext.Provider value={{
         modalData: modalData,

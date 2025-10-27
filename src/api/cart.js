@@ -5,5 +5,5 @@ export const postCartItem = (body) =>
     .then(res => res.data);
 
 export const patchCartItem = (cartIdx, body) =>
-  api.patch(`/cart/${cartIdx}`, body)
+  api.patch(`/cart/${cartIdx}/option`, body)
     .then(res => res.data);

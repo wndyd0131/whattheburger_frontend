@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "motion/react";
 
-import Banner1 from "/src/assets/private/slideshow/whatheburger_banner_1.webp";
-import Banner2 from "/src/assets/private/slideshow/whatheburger_banner_2.webp";
-import Banner3 from "/src/assets/private/slideshow/whatheburger_banner_3.webp";
+import Banner1 from "/src/assets/private/slideshow/banner_1.png";
+import Banner2 from "/src/assets/private/slideshow/banner_2.png";
+import { LeftArrowIcon, RightArrowIcon } from "../svg/Utils";
 
-const images = [Banner1, Banner2, Banner3];
+const images = [Banner1, Banner2];
 
 const ImageSlider = () => {
   const [index, setIndex] = useState(0);
@@ -30,17 +30,15 @@ const ImageSlider = () => {
 
   return (
     <motion.div
-      initial={{opacity: 0, y: 30}}
-      whileInView={{opacity: 1, y: 0}}
       transition={{ duration: 1.5, ease: "easeInOut"}}
       className="flex relative justify-center items-center overflow-hidden">
       <img className="block w-[1000px] h-auto object-contain rounded-[10px]" src={images[index]}/>
       <div>
-        <button className="flex absolute justify-center border-1 border-[rgba(0,0,0,0.05)] rounded-[30px] bg-[rgba(0,0,0,0.4)] w-[50px] h-[50px] translate-y-[-50%] top-[50%] left-0 ml-[20px] cursor-pointer" onClick={() => changeImage(0)}>
-          <img src="icons/image-slider-left-button.svg"/>
+        <button className="flex absolute justify-center w-[50px] h-[50px] translate-y-[-50%] top-[50%] left-0 ml-[20px] cursor-pointer" onClick={() => changeImage(0)}>
+          <LeftArrowIcon/>
         </button>
-        <button className="flex absolute justify-center border-1 border-[rgba(0,0,0,0.05)] rounded-[30px] bg-[rgba(0,0,0,0.4)] w-[50px] h-[50px] translate-y-[-50%] top-[50%] right-0 ml-[20px] cursor-pointer" onClick={() => changeImage(1)}>
-          <img src="icons/image-slider-right-button.svg"/>
+        <button className="flex absolute justify-center w-[50px] h-[50px] translate-y-[-50%] top-[50%] right-0 ml-[20px] cursor-pointer" onClick={() => changeImage(1)}>
+          <RightArrowIcon/>
         </button>
       </div>
       <div className="flex absolute justify-center items-center px-[5px] py-[10px] max-w-[100px] translate-x-[-50%] h-[12px] border-1 border-[rgba(0,0,0,0.05)] bg-[rgba(0,0,0,0.4)] rounded-[30px] left-[50%] bottom-[30px] gap-[6px]">

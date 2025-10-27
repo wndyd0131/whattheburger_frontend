@@ -13,30 +13,31 @@ import { LayoutProvider } from "./contexts/LayoutContext";
 import Order from "./pages/Order";
 import OrderComplete from "./pages/OrderComplete";
 import OrderSearch from "./pages/OrderSearch";
-import ProtectedMenuRoute from "./ProtectedMenuRoute";
+import ProtectedMenuRoute from "./routes/ProtectedMenuRoute";
 import StoreSelection from "./pages/StoreSelection";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import Admin from "./pages/Admin";
+import ProtectedStoreMenuRoute from "./routes/ProtectedStoreMenuRoute";
+import RequireAuth from "./routes/RequireRoles";
+import RequireRoles from "./routes/RequireRoles";
 
 function App() {
   const {
-    setUserDetails
+    setUserDetails,
+    setIsLoading
   } = useContext(UserContext);
   const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
-    console.log(GOOGLE_MAPS_API_KEY);
-    const script = document.createElement("script");
-    script.src = `src="https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=maps`;
-    script.async = true;
-    document.body.appendChild(script);
-
     const accessToken = Cookies.get('accessToken');
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'auto';
+    }
     if (accessToken) {
+      setIsLoading(true);
       axios.get('http://localhost:8080/api/v1/users', {
         headers: {Authorization: `Bearer ${accessToken}`}
       }).then (response => {
-          console.log("HI", response.data);
           setUserDetails((prev) => ({
             ...prev,
             userId: response.data.userId,
@@ -44,14 +45,24 @@ function App() {
             lastName: response.data.lastName,
             phoneNum: response.data.phoneNum,
             zipcode: response.data.zipcode,
-            isAuthenticated: true
+            isAuthenticated: true,
+            role: response.data.role
           }));
-      }).catch(err => console.error(err));
+      })
+      .catch(err => {
+        console.error(err);
+        setUserDetails(null);
+      })
+      .finally(() => {
+        setIsLoading(false)
+      });
+    } else {
+      setUserDetails(null);
     }
 
-    return () => {
-      document.body.removeChild(script);
-    }
+    // return () => {
+    //   document.body.removeChild(script);
+    // }
   }, [])
 
   return (
@@ -65,10 +76,14 @@ function App() {
                   </ProtectedMenuRoute>
                 }></Route>
                 <Route path="/menu/:storeId" element={
-                  <Menu/>
+                  <ProtectedStoreMenuRoute>
+                    <Menu/>
+                  </ProtectedStoreMenuRoute>
                 }></Route>
                 <Route path="/about" element={<AboutUs/>}></Route>
-                <Route path="/admin" element={<Admin/>}></Route>
+                <Route element={<RequireRoles role={'ADMIN'} />}>
+                  <Route path="/admin" element={<Admin/>} />
+                </Route>
                 <Route path="/admin/menu" element={<MenuCreate/>}></Route>
                 <Route path="/menu/store" element={
                   <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
@@ -76,7 +91,7 @@ function App() {
                   </APIProvider>
                 }></Route>
                 <Route path="/auth" element={<Auth/>}></Route>
-                <Route path="/order" element={<Order/>}></Route>
+                <Route path="/order-session/:sessionId/store/:storeId" element={<Order/>}></Route>
                 <Route path="/order/complete" element={<OrderComplete/>}></Route>
                 <Route path="/order/search" element={<OrderSearch/>}></Route>
               </Route>

@@ -5,7 +5,8 @@ import api from '../utils/api';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Cookie from 'js-cookie';
-import { STORE_ID_EXPIRATION_TIME } from '../utils/cookieExpirationTime';
+import { ORDER_TYPE_EXPIRATION_TIME, STORE_ID_EXPIRATION_TIME } from '../utils/cookieExpirationTime';
+import StoreCardSkeleton from '../components/StoreCardSkeleton';
 
 const StoreSelection = () => {
   const MAPBOX_API_KEY = import.meta.env.VITE_MAPBOX_API_KEY;
@@ -15,13 +16,16 @@ const StoreSelection = () => {
 
   const [selectedStoreId, setSelectedStoreId] = useState(null);
   const [stores, setStores] = useState([]);
-  const [orderType, setOrderType] = useState("PICKUP");
+  const [selectedOrderType, setSelectedOrderType] = useState("DELIVERY");
 
   const [storeMarkers, setStoreMarkers] = useState([]);
   const [query, setQuery] = useState("");
   const [coordinates, setCoordinates] = useState([]);
   const geocodingCore = useGeocodingCore({ accessToken: MAPBOX_API_KEY});
   const [marker, setMarker] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const bootStrapping = isLoading && stores.length === 0;
 
   const selectedStore = useMemo(() => 
     stores.find(store => store.storeId === selectedStoreId) ?? null
@@ -36,6 +40,10 @@ const StoreSelection = () => {
     setQuery(e.target.value);
   }
 
+  const handleClickOrderTypeButton = (orderType) => {
+    setSelectedOrderType(orderType);
+  }
+
   const mapRef = useRef(); // for controlling map
   const mapContainerRef = useRef(); // for pointing where to create the map
   const storeMarkersRef = useRef([]);
@@ -47,9 +55,12 @@ const StoreSelection = () => {
     mapRef.current.flyTo({ center: [store.coordinate.longitude, store.coordinate.latitude], zoom: 15 })
   }
 
-  const handleClickButton = (storeId) => {
-    Cookie.set("storeId", storeId, { expires: STORE_ID_EXPIRATION_TIME });
-    nav(`/menu/${storeId}`);
+  const handleClickButton = (storeId, orderType) => {
+    if (storeId && orderType) {
+      Cookie.set("storeId", storeId, { expires: STORE_ID_EXPIRATION_TIME });
+      Cookie.set("orderType", orderType, { expires: ORDER_TYPE_EXPIRATION_TIME});
+      nav(`/menu/${storeId}#category-section`);
+    }
   }
 
   useEffect(() => {
@@ -66,7 +77,10 @@ const StoreSelection = () => {
       setMapLoaded(true);
     });
 
-    console.log(mapRef.current);
+    const orderType = Cookie.get("orderType");
+    if (orderType) {
+      setSelectedOrderType(orderType);
+    }
    
     return () => {
       mapRef.current.remove();
@@ -83,16 +97,16 @@ const StoreSelection = () => {
             <div className='flex flex-col gap-5 font-[sans-serif]'>
               <div className='flex bg-orange-300 text-white rounded-4xl font-[sans-serif] font-bold'>
                 <span
-                  disabled={orderType === "PICKUP"}
-                  className={`flex justify-center w-full p-2 text-sm rounded-4xl cursor-pointer ${orderType === "PICKUP" ? "bg-[#FE7800]" : ""}`}
-                  onClick={() => setOrderType("PICKUP")}
+                  disabled={selectedOrderType === "PICKUP"}
+                  className={`flex justify-center w-full p-2 text-sm rounded-4xl cursor-pointer ${selectedOrderType === "PICKUP" ? "bg-[#FE7800]" : ""}`}
+                  onClick={() => handleClickOrderTypeButton("PICKUP")}
                 >
                   Pickup
                 </span>
                 <span
-                  disabled={orderType === "DELIVERY"}
-                  className={`flex justify-center w-full p-2 text-sm rounded-4xl cursor-pointer ${orderType === "DELIVERY" ? "bg-[#FE7800]" : ""}`}
-                  onClick={() => setOrderType("DELIVERY")}
+                  disabled={selectedOrderType === "DELIVERY"}
+                  className={`flex justify-center w-full p-2 text-sm rounded-4xl cursor-pointer ${selectedOrderType === "DELIVERY" ? "bg-[#FE7800]" : ""}`}
+                  onClick={() => handleClickOrderTypeButton("DELIVERY")}
                 >  
                   Delivery
                 </span>
@@ -101,7 +115,6 @@ const StoreSelection = () => {
                 <AddressAutofill
                   accessToken={MAPBOX_API_KEY}
                   onRetrieve={retrieveRes => {
-                    console.log(retrieveRes);
                     const longitude = retrieveRes.features[0].geometry.coordinates[0];
                     const latitude = retrieveRes.features[0].geometry.coordinates[1];
                     geocodingCore.forward(query)
@@ -120,22 +133,22 @@ const StoreSelection = () => {
                       .setLngLat([longitude, latitude])
                       .addTo(mapRef.current));
                     mapRef.current.flyTo({center: [longitude, latitude], zoom: 12});
-                    console.log("Fetching nearby stores...");
+                    
+                    setIsLoading(true);
                     fetchNearBy(longitude, latitude, RADIUS_METER)
                         .then(res => {
-                          console.log(res);
                           storeMarkersRef.current = res.data.map(store => {
-                            console.log("Adding marker");
+                            
                             return new mapboxgl.Marker({ color: '#FE7800' })
                               .setLngLat([store.coordinate.longitude, store.coordinate.latitude])
                               .addTo(mapRef.current)
                           });
                           setStores(res.data);
-                          console.log("LENGTH", storeMarkersRef.current.length);
                         })
-                        .catch(err => console.error(err));
-                    console.log("Finished fetching");
-                    console.log(storeMarkersRef.current);
+                        .catch(err => console.error(err))
+                        .finally(() => {
+                          setIsLoading(false);
+                        })
                   }}
                 >
                 <div className="flex p-2 border-1 border-gray-200 rounded-4xl h-[60px]">
@@ -149,12 +162,15 @@ const StoreSelection = () => {
                 </div>
                 </AddressAutofill>
               </form>
-              <button className="flex justify-center">Use my location</button>
+              <button className="flex justify-center text-[#FE7800] cursor-pointer">Use current location</button>
             </div>
           </div>
-          <div className='grid grid-cols-1 gap-4 overflow-y-auto border-1 border-gray-200 rounded-lg p-5'>
-            {stores.map(store => {
-              console.log("STORE", store);
+          <div className='grid grid-cols-1 gap-4 overflow-y-auto h-full border-gray-200 p-5'>
+            {bootStrapping
+            ? (
+              Array.from({ length: 6}).map((_, idx) => <StoreCardSkeleton key={idx}/>)
+            )
+            :stores.map(store => {
               const fullAddress = `${store.address.street}, ${store.address.city}, ${store.address.state} ${store.address.zipcode}`
               const distanceMiles = (store.distance / 1609.34).toFixed(2);
               const selected = store.storeId === selectedStore?.storeId;
@@ -164,7 +180,7 @@ const StoreSelection = () => {
                   onClick={() => handleClickStoreCard(store.storeId)}
                 >
                   <header>
-                    <h3 className="font-[sans-serif] font-semibold">Store <span className="font-['Whatthefont'] text-[#FE7800]">#{store.houseNumber}</span></h3>
+                    <h3 className="font-[sans-serif] font-semibold">Store <span className="font-['Whatthefont'] text-[#FE7800]">#{store.storeId}</span></h3>
                   </header>
                   <address className='font-semibold'>{store.branch}</address>
                   <dl className="grid grid-rows-2 grid-cols-4 gap-y-2 py-2 text-sm">
@@ -208,9 +224,9 @@ const StoreSelection = () => {
       <div className="flex py-5 justify-center items-center">
         <motion.button
           disabled={selectedStoreId === null}
-          className={`flex justify-center items-center px-5 py-5 text-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl font-['Whatthefont'] cursor-pointer`}
-          onClick={() => handleClickButton(selectedStoreId)}
-          whileHover={{scale: 1.1}}
+          className={`flex justify-center items-center px-5 py-5 text-xl  text-white font-bold rounded-2xl shadow-lg hover:shadow-xl font-['Whatthefont'] 
+            ${selectedStoreId === null ? "bg-gray-400" : "bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-300 hover:from-orange-500 hover:to-red-500 transform"}`}
+          onClick={() => handleClickButton(selectedStoreId, selectedOrderType)}
           transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8}}
         >
             See Menu

@@ -37,7 +37,6 @@ const StoreProductCreate = () => {
     if (selectedProductId !== null && selectedStoreIds.length > 0) {
       api.post("/store/product", requestBody)
         .then(res => {
-          console.log(res.data);
           setSelectedProductId(null);
           setSelectedStoreIds([]);
           toast.success('Product successfully registered', {

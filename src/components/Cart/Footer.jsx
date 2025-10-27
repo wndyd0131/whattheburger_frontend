@@ -9,6 +9,7 @@ import { ORDER_ACTIONS } from '../../reducers/Order/actions';
 import ConfirmModal from '../Menu/OrderModal/ConfirmModal';
 import Modal from '../Modal';
 import SignInSection from './SignInSection';
+import { toast } from 'react-toastify';
 
 const Footer = () => {
 
@@ -18,8 +19,8 @@ const Footer = () => {
       dispatchRoot
     }
   } = useContext(LayoutContext);
-  
-  const nav = useNavigate();
+
+  const cartState = rootState.cartState;
 
   const [trashCanIconHovered, setTrashCanIconHovered] = useState(false);
 
@@ -28,24 +29,50 @@ const Footer = () => {
   const handleClickOrderButton = () => {
     setSignInModalOpened(true);
   }
+
+  const handleClickTrashCanIcon = () => {
+    api.delete('/cart')
+     .then(res => {
+        const cartData = res.data;
+        dispatchRoot({
+          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+          payload: {
+            cartData: cartData
+          }
+        });
+        toast.success('Successfully deleted from cart');
+      })
+      .catch(
+        err => {
+          toast.error('Failed to delete from cart');
+          console.error(err);
+        });
+  }
+
   return (
     <>
       <div className="flex relative justify-center items-center basis-1/12 w-full border-t-1 border-gray-200 gap-10">
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
             onClick={() => handleClickOrderButton()}
-            className="py-4 px-10 bg-gradient-to-r from-[#FE7800] to-orange-500 text-white text-lg font-['Whatthefont'] font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:from-orange-500 hover:to-red-500 transform hover:-translate-y-1"
+            disabled={cartState.cartList.length === 0}
+            className={`py-4 px-10 text-white text-lg font-['Whatthefont'] font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300
+              ${cartState.cartList.length === 0 ? "bg-gray-300" : "bg-gradient-to-r from-[#FE7800] to-orange-500 hover:from-orange-500 hover:to-red-500 transform"}  
+            `}
           >
             Order
           </motion.button>
 
         <button
-          className="flex absolute right-5 justify-center items-center border-1 bg-white text-[#FE7800] border-[#FE7800] font-['Whatthefont'] w-[40px] h-[40px] rounded-full whitespace-nowrap cursor-pointer hover:bg-[#FE7800] hover:text-white hover:border-white"
+          className={`
+            flex absolute right-5 justify-center items-center border  font-['Whatthefont'] w-[40px] h-[40px] rounded-full whitespace-nowrap
+            ${cartState.cartList.length === 0 ? "border-gray-200 bg-gray-200" : "bg-white border-[#FE7800] hover:bg-[#FE7800] hover:border-white cursor-pointer"}
+            `}
+          disabled={cartState.cartList.length === 0}
+          onClick={() => handleClickTrashCanIcon()}
           onMouseEnter={() => setTrashCanIconHovered(true)}
           onMouseLeave={() => setTrashCanIconHovered(false)}
         >
-          <TrashCanIcon width={30} height={30} color={trashCanIconHovered ? "#FFFFFF" : "#FE7800"}/>
+          <TrashCanIcon width={30} height={30} color={trashCanIconHovered ? "#FFFFFF" : cartState.cartList.length === 0 ? "#999999" : "#FE7800"}/>
         </button>
       </div>
       {

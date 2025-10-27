@@ -17,7 +17,6 @@ const CountableModifier = () => {
 
   const handleClickPlusButton = (customRuleIdx, option) => {
     const modifyType = "PLUS";
-    console.log("OPTION", option);
     dispatchRoot({
       type: OPTION_ACTIONS.MODIFY_QUANTITY,
       payload: {
@@ -43,7 +42,7 @@ const CountableModifier = () => {
   return (
     <div className="flex justify-between w-[160px] h-[40px]">
       <button
-        className={`flex justify-center border-1 rounded-[5px] h-[30px] w-[50px] ${option.isSelected ? "border-[#FE7800] text-[#FE7800] cursor-pointer" : "bg-gray-100 text-gray-300"}`}
+        className={`flex justify-center border-1 h-[30px] w-[50px] rounded-full ${option.isSelected ? "border-[#FE7800] text-[#FE7800] hover:bg-orange-50" : "bg-gray-100 text-gray-300"}`}
         onClick={() => handleClickMinusButton(customRuleIdx, option)}
         disabled={option.isSelected === false}
       >
@@ -55,7 +54,7 @@ const CountableModifier = () => {
         </h3>
       }
       <button
-        className={`flex justify-center border-1 rounded-[5px] h-[30px] w-[50px] ${option.isSelected ? "border-[#FE7800] text-[#FE7800] cursor-pointer" : "bg-gray-100 text-gray-300"}`}
+        className={`flex justify-center border-1 h-[30px] w-[50px] rounded-full ${option.isSelected ? "border-[#FE7800] text-[#FE7800] hover:bg-orange-50" : "bg-gray-100 text-gray-300"}`}
         onClick={() => handleClickPlusButton(customRuleIdx, option)}
         disabled={option.isSelected === false}
       >

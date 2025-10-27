@@ -1,5 +1,4 @@
 export const fromProductResponseToOptionDto = (data) => {
-  console.log("Product Response", data);
   const optionResponses = data.optionResponses;
   const customRuleList = [];
   optionResponses.forEach(optionResponse => {
@@ -84,8 +83,6 @@ export const fromCartResponseToOptionDto = (data) => {
 
       const cartIdx = action.payload.cartIdx;
       const cartItem = cartState.cartList[cartIdx]
-
-      console.log("CART_ITEM", cartItem);
 
       const totalExtraPrice = cartItem.product.productExtraPrice;
       const customRules = cartItem.product.customRules.map(customRule => {

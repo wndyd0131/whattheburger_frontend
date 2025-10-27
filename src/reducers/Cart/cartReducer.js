@@ -80,7 +80,7 @@ export const cartReducer = (state=initialCartState, action) => {
         });
         const productObject = {
           product: {
-            productId: cartData.productId,
+            productId: cartData.storeProductId,
             productName: cartData.productName,
             basePrice: cartData.basePrice,
             productType: cartData.productType,
@@ -100,8 +100,6 @@ export const cartReducer = (state=initialCartState, action) => {
       const {
         cartData
       } = action.payload;
-      const updatedState = structuredClone(state);
-      console.log("CARTDATA", cartData);
       const productResponses = cartData.productResponses;
       const totalPrice = cartData.cartTotalPrice;
       const cartList = productResponses.map(productResponse => {
@@ -171,7 +169,7 @@ export const cartReducer = (state=initialCartState, action) => {
         });
         return {
           product: {
-            productId: productResponse.productId,
+            productId: productResponse.storeProductId,
             productName: productResponse.productName,
             basePrice: productResponse.basePrice,
             productType: productResponse.productType,
@@ -185,13 +183,20 @@ export const cartReducer = (state=initialCartState, action) => {
           }
         }
       });
-      updatedState.cartList = cartList;
-      updatedState.totalPrice = totalPrice;
-      return updatedState;
+
+      return {
+        ...state,
+        cartList: cartList,
+        totalPrice: totalPrice
+      };
     }
-    case ACTIONS.UPDATE: {
-      
+    case ACTIONS.INIT: {
+      return {
+        cartList: [],
+        totalPrice: 0
+      }
     }
+
     default:
       return state;
   }

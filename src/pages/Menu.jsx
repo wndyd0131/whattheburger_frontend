@@ -1,90 +1,106 @@
-import { useState, useEffect, useReducer, useContext, createContext } from "react";
+import { useState, useEffect, useReducer, useContext, createContext, useMemo } from "react";
 import "../styles/Menu.styles.css";
 import { MenuContext } from "../contexts/MenuContext";
 import ImageSlider from "../components/ImageSlider";
 import { BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from "../svg/categoryNav";
 import { LayoutContext } from "../contexts/LayoutContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../utils/api";
 import MenuSection from "../components/Menu/MenuSection";
+import Cookie from "js-cookie";
+import { STORE_ID_EXPIRATION_TIME } from "../utils/cookieExpirationTime";
 
 const Menu = () => {
   
-  const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
   const {
-    selectedCategory,
-    setSelectedCategory,
+    selectedStoreId,
+    setSelectedStoreId,
+    deselectStore,
     reducer: {
       rootState,
       dispatchRoot
     }
   } = useContext(LayoutContext);
 
-  const categoryList = [
-    { id: 1, name: "Burgers", icon: <BurgerIcon color={selectedCategory === 1 ? "#FE7800" : "#555555"}/>},
-    { id: 2, name: "Chickens", icon: <ChickenIcon color={selectedCategory === 2 ? "#FE7800" : "#555555"}/>},
-    { id: 3, name: "Fish", icon: <FishIcon color={selectedCategory === 3 ? "#FE7800" : "#555555"}/>},
-    { id: 4, name: "ATF & LTO", icon: <SpecialIcon color={selectedCategory === 4 ? "#FE7800" : "#555555"}/>},
-    { id: 5, name: "Kids", icon: <KidsIcon color={selectedCategory === 5 ? "#FE7800" : "#555555"}/>},
-    { id: 6, name: "Sides", icon: <SidesIcon color={selectedCategory === 6 ? "#FE7800" : "#555555"}/>},
-    { id: 7, name: "Salad", icon: <SaladIcon color={selectedCategory === 7 ? "#FE7800" : "#555555"}/>},
-    { id: 8, name: "Dessert", icon: <DessertIcon color={selectedCategory === 8 ? "#FE7800" : "#555555"}/>},
-    { id: 9, name: "Drink", icon: <DrinkIcon color={selectedCategory === 9 ? "#FE7800" : "#555555"}/>},
-    { id: 10, name: "Group Order", icon: <GroupIcon color={selectedCategory === 10 ? "#FE7800" : "#555555"}/>},
-  ]
+  const [categories, setCategories] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { storeId: storeIdParam } = useParams();
 
-  const { hash } = useLocation();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const nav = useNavigate();
 
-  useEffect(() => { /* Get Product By Category */
-    setIsLoading(true);
-    api.get(`http://localhost:8080/api/v1/products/category/${selectedCategory}`)
-    .then(({data}) => 
-      {
-        if (Array.isArray(data)) {
-          const productList = data.map(item => ({
-            productId: item.id,
-            productName: item.name,
-            productPrice: item.price,
-            productCalories: item.calolries,
-            briefInfo: item.briefInfo,
-            imageSource: item.imageSource
-          }));
-          setProducts(productList);
-        }
-        // exception
-      })
-    .catch(error => console.error("Error: ", error))
-    .finally(() => setIsLoading(false));
+  const selectedCategoryId = searchParams.get("categoryId");
+
+  useEffect(() => {
+    Cookie.set("orderType", "DELIVERY");
   }, []);
 
   useEffect(() => {
-    if (hash) {
-      const id = hash.replace('#', '');
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ block: 'start', behavior: 'smooth'});
-      }
+    if (!storeIdParam || isNaN(storeIdParam)) return;
+    setSelectedStoreId(Number(storeIdParam));
+    if (Cookie.get("storeId") !== Number(storeIdParam)) {
+      Cookie.set("storeId", Number(storeIdParam), { expires: STORE_ID_EXPIRATION_TIME});
     }
-  }, [hash]);
+  }, [storeIdParam]);
 
-  console.log("RS: ", rootState);
+  useEffect(() => { /* Get Product By Category */
+    if (!selectedStoreId) return;
+    setIsLoading(true);
+    
+    api.get(`/store/${selectedStoreId}/category/product`)
+      .then(({data}) => {
+        if (Array.isArray(data)) {
+          setCategories(data);
+        }
+      })
+      .catch(err => {
+        const status = err.response?.status;
+        deselectStore();
+        nav("/menu/store");
+        if (status === 404) {
+          nav("/menu/store");
+        } else {
+          console.error(err)
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [selectedStoreId]);
+
+  useEffect(() => {
+    if (!location.hash) return;
+
+    const id = location.hash.slice(1);
+    const el = document.getElementById(id);
+    if (el) {
+      requestAnimationFrame(() => {
+        el.scrollIntoView({ behavior: "smooth", block: "start"});
+      })
+    }
+  }, [location.hash]);
+
+  const selectedCategory = useMemo(() => {
+    const fallbackId = categories.length ? categories[0].categoryId : null;
+    const effectiveId = selectedCategoryId ?? fallbackId;
+    return categories.find(category => String(category.categoryId) === String(effectiveId)) ?? null;
+  }, [categories, selectedCategoryId]);
 
   return (
     <MenuContext.Provider value={{
       isLoading: isLoading,
       setIsLoading: setIsLoading,
-      categoryList: categoryList,
-      products: products,
-      setProducts: setProducts,
+      categories: categories,
+      setCategories: setCategories,
       selectedCategory: selectedCategory,
-      setSelectedCategory: setSelectedCategory,
+      selectedCategoryId: selectedCategoryId,
       selectedProduct: selectedProduct,
-      setSelectedProduct: setSelectedProduct,
+      setSelectedProduct: setSelectedProduct
     }}>
-      <div className="flex flex-col bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 min-h-screen">
+      <div className="flex flex-col font-[sans-serif] bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 min-h-screen">
         <ImageSlider/>
         <MenuSection/>
       </div>

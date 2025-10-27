@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import ImageContainer from './ImageContainer';
 import ContentContainer from './ContentContainer';
 import { LayoutContext } from '../../contexts/LayoutContext';
+import OrderSummaryList from './OrderSummaryList';
 
 const OrderSummary = () => {
 
@@ -12,20 +13,23 @@ const OrderSummary = () => {
     }
   } = useContext(LayoutContext);
 
-  console.log("ROOTSTATE", rootState);
-
   const orderState = rootState.orderState;
+  const productList = orderState.productList;
+
   return (
-    <div className="flex flex-col basis-10/12 overflow-auto">
-      {orderState.productList.map((product, productIdx) => {
-        return (
-          <div key={productIdx} className="flex outline-1 outline-gray-200">
-            <ImageContainer image={product.imageSource}/>
-            <ContentContainer product={product}/>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <OrderSummaryList productList={productList}/>
+      <div className="flex justify-end border-t border-[rgb(225,225,225)] p-3">
+        <div className="grid items-center grid-cols-2 gap-x-10 gap-y-3 font-[sans-serif] text-gray-500">
+          <p className="">Subtotal</p>
+          <p>${orderState.totalPrice}</p>
+          <p className>Tax*</p>
+          <p>$0</p>
+          <p className="text-2xl text-black font-semibold">Total</p>
+          <p className="text-2xl text-black font-semibold">${orderState.totalPrice}</p>
+        </div>
+      </div>
+    </>
   )
 }
 

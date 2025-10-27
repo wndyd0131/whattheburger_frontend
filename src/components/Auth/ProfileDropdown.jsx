@@ -17,7 +17,8 @@ const ProfileDropdown = ({props}) => {
   const {
     reducer: {
       dispatchRoot
-    }
+    },
+    selectedStoreId
   } = useContext(LayoutContext);
 
   const {
@@ -31,30 +32,29 @@ const ProfileDropdown = ({props}) => {
   const handleClickSignOut = () => {
     Cookie.remove("accessToken");
     Cookie.remove("refreshToken");
-    setUserDetails({});
-    api.get('/cart')
-    .then(response => {
-      console.log("RESPONSE", response);
-      const cartData = response.data;
-      dispatchRoot({
-        type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
-        payload: {
-          cartData: cartData
-        }
-      });
-      toast.success('Successfully signed out');
-    })
-    .catch(err => {
-      toast.error('Failed to sign out');
-      console.error(err);
-    });
+    setUserDetails(undefined);
+    if (selectedStoreId) {
+      api.get('/cart')
+      .then(response => {
+        const cartData = response.data;
+        dispatchRoot({
+          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+          payload: {
+            cartData: cartData
+          }
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    }
+    toast.success('Successfully signed out');
     navigate("/");
   }
 
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!profileRef.current?.contains(e.target)) {
-        console.log("PROFILE_REF", profileRef);
         setIsOpened(false);
       }
     }
@@ -69,7 +69,7 @@ const ProfileDropdown = ({props}) => {
         absolute
         border-1
         border-gray-300
-        shadow-md z-1
+        shadow-md
         rounded-md
         bg-white
         translate-x-6

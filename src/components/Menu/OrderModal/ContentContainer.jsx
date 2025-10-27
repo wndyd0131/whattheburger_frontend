@@ -9,9 +9,13 @@ const ContentContainer = () => {
     option,
   } = useContext(OptionContext);
 
-  const extraPrice = option.countType == "COUNTABLE"
-    ? option.extraPrice * option.optionQuantity
-    : option.extraPrice + option.quantityDetail.quantityList[option.quantityDetail.selectedIdx].extraPrice;
+  let extraPrice = 0;
+  if (option.countType === "COUNTABLE") {
+    extraPrice = option.extraPrice * option.optionQuantity;
+  } else if (option.countType === "UNCOUNTABLE") {
+    extraPrice = option.extraPrice + option.quantityDetail.quantityList[option.quantityDetail.selectedIdx].extraPrice;
+  }
+  
   const calories = option ? option.extraCalories * option.optionQuantity : option.extraCalories;
   const extraPriceText = extraPrice > 0 ? `+$${extraPrice.toFixed(2)}` : "Free";
 

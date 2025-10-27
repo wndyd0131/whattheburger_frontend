@@ -9,6 +9,7 @@ import { CART_ACTIONS } from "../../../reducers/Cart/actions";
 import { ModalContext } from "./contexts/ModalContext";
 import { patchCartItem, postCartItem } from "../../../api/cart";
 import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
+import Cookie from "js-cookie";
 
 const DecisionFooter = () => {
   
@@ -25,6 +26,7 @@ const DecisionFooter = () => {
     reducer: {
       dispatchRoot,
       rootState: {
+        cartState,
         optionState
       }
     }
@@ -63,8 +65,11 @@ const DecisionFooter = () => {
       }
     });
 
+    const storeId = Cookie.get("storeId");
+
     const cartObject = {
-      productId: selectedProduct.productId,
+      storeId: storeId,
+      storeProductId: selectedProduct.storeProductId,
       customRuleRequests: customRuleRequests
     }
 
@@ -76,7 +81,6 @@ const DecisionFooter = () => {
       ...createCartRequestBody(),
       quantity: 1
     };
-    console.log("CART OBJECT", cartObject);
     postCartItem(cartObject)
       .then(data => 
         {
@@ -100,11 +104,9 @@ const DecisionFooter = () => {
 
   const handleClickSaveButton = (cartIdx) => {
     const cartObject = createCartRequestBody();
-    console.log("CART OBJECT", cartObject);
 
     patchCartItem(cartIdx, cartObject)
       .then(data => {
-        console.log("RESPONSE", data);
         setSelectedProduct(null);
         dispatchRoot({
           type: CART_ACTIONS.LOAD_ALL_PRODUCTS,

@@ -6,10 +6,42 @@ const Auth = () => {
   const [signUpForm, setSignUpForm] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
     firstName: '',
     lastName: '',
     phoneNum: '',
-    zipcode: ''
+    zipCode: ''
+  });
+
+  const [signUpError, setSignUpError] = useState({
+    email: {
+      message: '',
+      isTouched: false
+    },
+    password: {
+      message: '',
+      isTouched: false
+    },
+    confirmPassword: {
+      message: '',
+      isTouched: false
+    },
+    firstName: {
+      message: '',
+      isTouched: false
+    },
+    lastName: {
+      message: '',
+      isTouched: false
+    },
+    phoneNum: {
+      message: '',
+      isTouched: false
+    },
+    zipCode: {
+      message: '',
+      isTouched: false
+    }
   });
 
   const [signInForm, setSignInForm] = useState({
@@ -22,7 +54,9 @@ const Auth = () => {
       signInForm: signInForm,
       setSignInForm: setSignInForm,
       signUpForm: signUpForm,
-      setSignUpForm: setSignUpForm
+      setSignUpForm: setSignUpForm,
+      signUpError: signUpError,
+      setSignUpError: setSignUpError
     }}>
       <SignInContainer/>
     </AuthContext.Provider>

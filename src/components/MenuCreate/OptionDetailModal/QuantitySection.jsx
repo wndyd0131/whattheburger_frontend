@@ -19,10 +19,6 @@ const QuantitySection = () => {
     setSelectedQuantityId(quantityId);
   }
 
-  console.log("OPTIONS", selectedOptionState);
-  console.log("OPTION_ID", selectedOptionIdx);
-  console.log("FORMDATA", formData);
-
   return (
     <div className="flex flex-col min-h-0 flex-grow">
       <div className="flex-col overflow-y-auto divide-y divide-gray-300">

@@ -10,9 +10,24 @@ export const initialOrderState = {
   orderNote: null,
   discountType: null,
   taxPrice: null,
-  guestName: null,
-  guestEmail: null,
-  guestPhoneNum: null,
+  contactInfo: {
+    email: null,
+    firstName: null,
+    lastName: null,
+    phoneNum: null
+  },
+  addressInfo: {
+    cityState: null,
+    streetAddr: null,
+    streetAddrDetail: null,
+    zipCode: null
+  },
+  cardInfo: {
+    brand: null,
+    last4: null,
+    expireMonth: null,
+    expireYear: null
+  },
   productList: [],
   totalPrice: 0
 };
@@ -82,11 +97,34 @@ export const orderReducer = (state=initialOrderState, action, cartState) => {
             basePrice: productResponse.basePrice
           }
       });
+  
       updatedState.orderId = orderResponse.id;
+      updatedState.storeId = orderResponse.storeId;
       updatedState.orderNumber = orderResponse.orderNumber,
       updatedState.orderType = orderResponse.orderType;
       updatedState.productList = productList;
       updatedState.totalPrice = orderResponse.totalPrice;
+      updatedState.paymentMethod = orderResponse.paymentMethod;
+      updatedState.paymentStatus = orderResponse.paymentStatus;
+      updatedState.contactInfo = {
+        email: orderResponse.contactInfo.email,
+        firstName: orderResponse.contactInfo.firstName,
+        lastName: orderResponse.contactInfo.lastName,
+        phoneNum: orderResponse.contactInfo.phoneNum
+      };
+      updatedState.addressInfo = {
+        cityState: orderResponse.addressInfo.cityState,
+        streetAddr: orderResponse.addressInfo.streetAddr,
+        streetAddrDetail: orderResponse.addressInfo.streetAddrDetail,
+        zipCode: orderResponse.addressInfo.zipCode
+      };
+      updatedState.cardInfo = {
+        brand: orderResponse.cardInfo.cardBrand,
+        last4: orderResponse.cardInfo.cardLast4,
+        expireMonth: orderResponse.cardInfo.cardExpireMonth,
+        expireYear: orderResponse.cardInfo.cardExpireYear
+      };
+      updatedState.orderNote = orderResponse.orderNote;
       return updatedState;
     }
     case ACTIONS.TRANSFER_FROM_CART: {
@@ -108,7 +146,6 @@ export const orderReducer = (state=initialOrderState, action, cartState) => {
               }
             });
             let quantityDetail;
-            console.log("QUANTITY DETAIL", option.quantityDetail)
             if (option.quantityDetail) {
               const selectedIdx = option.quantityDetail.quantityList.findIndex(quantity => quantity.quantityId === option.quantityDetail.selectedId);
               quantityDetail = {
@@ -166,7 +203,6 @@ export const orderReducer = (state=initialOrderState, action, cartState) => {
       });
       updatedState.productList = productList;
       updatedState.totalPrice = cartState.totalPrice;
-      console.log("ORDER STATE", updatedState);
       return updatedState;
     }
     default:

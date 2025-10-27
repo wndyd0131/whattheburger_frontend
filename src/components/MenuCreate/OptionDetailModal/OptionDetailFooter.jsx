@@ -19,8 +19,6 @@ const OptionDetailFooter = () => {
   } = useContext(SelectedOptionContext);
 
   const handleClickSaveButton = () => {
-    console.log("SAVE", optionTraits);
-    console.log(selectedOptionTraitIdx);
 
     const optionTraitId = 
       selectedOptionTraitIdx !== null ?
@@ -28,7 +26,6 @@ const OptionDetailFooter = () => {
         :
         null
       ;
-    console.log("OTI", optionTraitId);
 
     const optionTraitDetail = {
       elementId: selectedOptionTraitIdx,
@@ -49,7 +46,6 @@ const OptionDetailFooter = () => {
       measureValue: formData.measureValue,
       quantityDetails: formData.quantityDetails
     }
-    console.log("OD", optionDetail);
 
     selectedOptionDispatch({
       type: ACTIONS.SAVE_OPTION,

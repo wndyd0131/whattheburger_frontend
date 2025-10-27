@@ -14,7 +14,6 @@ export const selectedOptionReducer = (state, action) => {
           extraPrice: 0
         }
       });
-      console.log("QD", quantityDetails);
       const nextIdx = state.length;
       const emptyOptionTrait = {
         elementId: null,

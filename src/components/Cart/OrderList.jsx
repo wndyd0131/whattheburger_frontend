@@ -9,8 +9,11 @@ import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import OrderModal from "../Menu/OrderModal/OrderModal";
 import { CartContext } from "./contexts/CartContext";
 import { fromCartResponseToOptionDto } from "../../utils/dtoMapper";
+import Cookie from "js-cookie"
 
 const OrderList = () => {
+
+  const MAX_ORDER_QUANTITY_PER_PRODUCT = 20;
 
   const { 
     reducer: {
@@ -26,16 +29,14 @@ const OrderList = () => {
     setSelectedCartIdx
   } = useContext(CartContext);
   
-
   const cartState = rootState.cartState;
 
   const [closeButtonHovered, setCloseButtonHovered] = useState(false);
 
-  const handleClickModifyButton = (productId, cartIdx) => {
+  const handleClickModifyButton = (cartIdx) => {
     api.get(`/cart/${cartIdx}`)
       .then(response => {
         const data = response.data
-        console.log("CART_RESPONSE", data);
         dispatchRoot({
           type: CART_ACTIONS.LOAD_PRODUCT, // load everything to single cart
           payload: {
@@ -83,17 +84,48 @@ const OrderList = () => {
     //   })
     //   .catch(err => console.error(err));
   }
-  const handleClickMinusButton = () => {
-
+  const handleClickMinusButton = (quantity, cartIdx) => {
+    const newQuantity = quantity - 1;
+    if (newQuantity <= 0)
+      return;
+    const requestBody = {
+      quantity: newQuantity
+    }
+    api.patch(`/cart/${cartIdx}/product`, requestBody)
+      .then(res => {
+        const cartData = res.data;
+        dispatchRoot({
+          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+          payload: {
+            cartData: cartData
+          }
+        });
+      })
+      .catch(err => console.error(err));
   }
-  const handleClickPlusButton = () => {
-
+  const handleClickPlusButton = (quantity, cartIdx) => {
+    const newQuantity = quantity + 1;
+    if (newQuantity > MAX_ORDER_QUANTITY_PER_PRODUCT)
+      return;
+    const requestBody = {
+      quantity: newQuantity
+    }
+    api.patch(`/cart/${cartIdx}/product`, requestBody)
+      .then(res => {
+        const cartData = res.data;
+        dispatchRoot({
+          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+          payload: {
+            cartData: cartData
+          }
+        });
+      })
+      .catch(err => console.error(err));
   }
   const handleClickCloseButton = (cartIdx) => {
     api.delete(`/cart/${cartIdx}`)
-      .then(response => {
-        console.log("RESPONSE", response);
-        const cartData = response.data;
+      .then(res => {
+        const cartData = res.data;
         dispatchRoot({
           type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
           payload: {
@@ -111,16 +143,23 @@ const OrderList = () => {
   }
 
   return (
-    <div className="flex flex-col basis-10/12 overflow-auto">
+    <div className={
+      `flex flex-col basis-10/12 overflow-auto
+      ${cartState.cartList.length === 0 ? "justify-center items-center" : ""}
+      `}>
+      {cartState.cartList.length === 0 &&
+        <span className="text-3xl font-[sans-serif] text-gray-500">
+          Your cart is empty
+        </span>
+      }
       {cartState.cartList.map((cart, cartIdx) => {
-        console.log("CART", cart);
         const cartQuantity = cart.product.quantity;
-        const cartPrice = cart.product.productTotalPrice * cartQuantity;
-        const productId = cart.product.productId;
+        const cartPrice = cart.product.productTotalPrice.toFixed(2);
+        const productId = cart.product.storeProductId;
         return (
           <div key={cartIdx} className="flex h-full w-full outline-1 outline-gray-200"> 
             <div className="flex justify-center items-center min-w-[200px]">
-              <img className="w-[200px] h-[200px]" src="src\assets\private\menu\Whattheburger31.png">
+              <img className="w-[200px] h-[200px]" src={cart.product.imageSource}>
               
               </img>
             </div>
@@ -128,7 +167,7 @@ const OrderList = () => {
               <div className="flex items-center gap-3 font-['Whatthefont']">
                 <h3 className="text-[#FE7800]">{cart.product.productName}</h3>
                 <div className="flex justify-center items-center p-3 max-w-[100px] h-[20px] rounded-[20px] text-[18px] text-white bg-[#FE7800]">
-                  only
+                  {cart.product.productType}
                 </div>
               </div>
               <div className="flex flex-col">
@@ -136,35 +175,16 @@ const OrderList = () => {
                   const optionString = customRule.productOptions
                     .filter(option => option.isSelected)
                     .map(option => {
-                      let measureString = "";
-                      if (option.measureType) {
-                        switch (option.measureType) {
-                          case "SIZE": {
-                            switch (option.optionQuantity) {
-                              case 0:
-                                measureString = "Kids";
-                              case 1:
-                                measureString = "Small";
-                              case 2:
-                                measureString = "Medium";
-                              case 3:
-                                measureString = "Large";
-                            }
-                          }
-                          case "DEGREE": {
-                            switch (option.optionQuantity) {
-                              case 0:
-                                measureString = "Easy";
-                              case 1:
-                                measureString = "Regular";
-                              case 2:
-                                measureString = "Extra";
-                            }
-                          }
-                        }
+                      let optionCountString = "";
+                      if (option.countType === "COUNTABLE") {
+                        optionCountString = 'x' + option.optionQuantity;
+                      } else if (option.countType === "UNCOUNTABLE") {
+                        const quantityList = option.quantityDetail.quantityList;
+                        const selectedQuantityId = option.quantityDetail.selectedId;
+                        const quantityObj = quantityList.find(q => q.quantityId === selectedQuantityId);
+                        optionCountString = quantityObj.quantityType;
                       }
-
-                      const optionCountString = option.countType === "COUNTABLE" ? 'x' + option.optionQuantity : measureString;
+                      
                       const optionTraitString = option.productOptionTraits
                         .filter(trait => trait.optionTraitType === "BINARY" && trait.currentValue === 1)
                         .map(trait => '(' + trait.labelCode + ')')
@@ -197,7 +217,7 @@ const OrderList = () => {
               <div className="flex basis-3/5 justify-end items-center mr-5">
                 <button
                   className="flex w-[100px] h-[40px] bg-white border-1 border-[#FE7800] rounded-full justify-center items-center font-bold cursor-pointer hover:bg-[#FE7800] hover:text-white duration-200"
-                  onClick={() => handleClickModifyButton(productId, cartIdx)}
+                  onClick={() => handleClickModifyButton(cartIdx)}
                 >
                   Modify
                 </button>
@@ -207,8 +227,8 @@ const OrderList = () => {
                 <h2>${cartPrice}</h2>
                 <div className="flex justify-between items-center border-1 border-gray-200 shadow-xs rounded-md overflow-hidden h-[35px] w-[160px] m-2">
                   <button
-                    className={`flex justify-center items-center bg-gray-100 h-full w-[50px] cursor-pointer`}
-                    onClick={() => handleClickMinusButton(cart)}
+                    className={`flex justify-center items-center bg-gray-100 h-full w-[50px] hover:bg-gray-200`}
+                    onClick={() => handleClickMinusButton(cartQuantity, cartIdx)}
                   >
                     <strong>-</strong>
                   </button>
@@ -216,8 +236,8 @@ const OrderList = () => {
                       {cartQuantity}
                     </h3>
                   <button
-                    className={`flex justify-center items-center bg-gray-100 h-full w-[50px] cursor-pointer`}
-                    onClick={() => handleClickPlusButton(cart)}
+                    className={`flex justify-center items-center bg-gray-100 h-full w-[50px] hover:bg-gray-200`}
+                    onClick={() => handleClickPlusButton(cartQuantity, cartIdx)}
                   >
                     <strong>+</strong>
                   </button>

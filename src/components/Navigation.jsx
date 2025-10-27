@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
+
+  const MotionLink = motion(Link);
   return (
     <nav
       className="
@@ -21,13 +24,16 @@ const Navigation = () => {
         max-md:gap-[30px]
         max-md:px-2
       ">
-      <motion.a whileHover={{scale: 1.1}} className="nav-menu" href="/menu">MENU</motion.a>
-      <motion.a whileHover={{scale: 1.1}} href="#">REWARDS</motion.a>
-      <motion.a whileHover={{scale: 1.1}} href="#">CAREERS</motion.a>
-      <motion.a whileHover={{scale: 1.1}} href="#">WHATTHESTORE</motion.a>
-      <motion.a whileHover={{scale: 1.1}} href="#">STORIES</motion.a>
-      <motion.a whileHover={{scale: 1.1}} href="#">COMMUNITY</motion.a>
-      <motion.a whileHover={{scale: 1.1}} href="#">GROCERY</motion.a>
+
+      
+
+      <MotionLink whileHover={{scale: 1.1}} className="nav-menu" to="/menu" replace={true}>MENU</MotionLink>
+      <MotionLink whileHover={{scale: 1.1}} href="#">REWARDS</MotionLink>
+      <MotionLink whileHover={{scale: 1.1}} href="#">CAREERS</MotionLink>
+      <MotionLink whileHover={{scale: 1.1}} href="#">WHATTHESTORE</MotionLink>
+      <MotionLink whileHover={{scale: 1.1}} href="#">STORIES</MotionLink>
+      <MotionLink whileHover={{scale: 1.1}} href="#">COMMUNITY</MotionLink>
+      <MotionLink whileHover={{scale: 1.1}} href="#">GROCERY</MotionLink>
     </nav>
   );
 }

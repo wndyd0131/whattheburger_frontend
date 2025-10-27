@@ -15,10 +15,12 @@ const HomePage = () => {
   const [goOrderButtonClicked, setGoOrderButtonClicked] = useState(false);
   const handleClickPickupButton = () => {
     Cookies.set("orderType", "PICKUP", { expires: ORDER_TYPE_EXPIRATION_TIME });
+    Cookies.remove("storeId");
     nav("/menu");
   }
   const handleClickDeliveryButton = () => {
     Cookies.set("orderType", "DELIVERY", { expires: ORDER_TYPE_EXPIRATION_TIME });
+    Cookies.remove("storeId");
     nav("/menu");
   }
 
@@ -74,9 +76,6 @@ const HomePage = () => {
         padding="40px 0"
       >
         <FeaturedCategory/>
-        <div>
-          next
-        </div>
       </HomePageSection>
       <HomePageSection
       flexDirection="column"
@@ -96,7 +95,7 @@ const HomePage = () => {
           </div>
           <div className="flex basis-3/4 justify-center items-center flex-col w-[500px] px-[100px] gap-10">
             <div className="flex flex-col gap-3">
-              <h1 className="text-[#FE7800]">We Take pride in our craft</h1>
+              <h1 className="text-[#FE7800] font-[Whatthefont]">We Take pride in our craft</h1>
               <div className="text-gray-700 text-lg">
                 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corporis dolores modi minus aspernatur at, eius quidem reprehenderit earum aliquam? Impedit minus fuga inventore deserunt perspiciatis molestiae maiores expedita odit amet?</p>
                 <br></br>

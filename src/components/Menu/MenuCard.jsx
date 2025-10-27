@@ -8,7 +8,7 @@ import { LayoutContext } from "../../contexts/LayoutContext";
 import api from "../../utils/api";
 import { fromProductResponseToOptionDto } from "../../utils/dtoMapper";
 
-const MenuCard = ({product, imgSrc, calories}) => {
+const MenuCard = ({product, calories}) => {
 
   const {
     reducer: {
@@ -19,15 +19,18 @@ const MenuCard = ({product, imgSrc, calories}) => {
     isLoading,
     setIsLoading,
     selectedProduct,
-    setSelectedProduct,
+    setSelectedProduct
   } = useContext(MenuContext);
+
+  const {
+    selectedStoreId
+  } = useContext(LayoutContext);
 
   const handleClickStartOrderButton = () => {
     setIsLoading(true);
 
-    api.get(`/products/${product.productId}`)
+    api.get(`/store/${selectedStoreId}/product/${product.storeProductId}`)
     .then(response => {
-      console.log("RESPONSE: ", response.data);
       const optionResponse = response.data.optionResponses;
       dispatchRoot({
         type: OPTION_ACTIONS.LOAD_OPTIONS,
@@ -41,7 +44,6 @@ const MenuCard = ({product, imgSrc, calories}) => {
     .finally(() => setIsLoading(false));
   }
 
-  console.log("SELECTED PRODUCT", selectedProduct);
   return (
     <motion.div
       initial={{opacity: 0}}
@@ -51,16 +53,16 @@ const MenuCard = ({product, imgSrc, calories}) => {
       className="flex flex-col bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all w-full duration-300 overflow-hidden border border-gray-100 group"
     >
       <div className="relative overflow-hidden">
-        <MenuImageContainer width="100%" height="200px" imgSrc={product.imageSource}/>
+        <MenuImageContainer width="70%" height="200px" imgSrc={product.imageSource}/>
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
       
       <div className="flex flex-col p-6 space-y-4">
         <div className="flex justify-between items-start">
-          <h2 className="text-xl font-bold text-gray-800 font-['Whatthefont']">{product.productName}</h2>
+          <h2 className="text-xl font-bold h-[100px] text-gray-800 font-['Whatthefont']">{product.name}</h2>
           <div className="flex flex-col items-end">
-            <span className="text-2xl font-bold text-[#FE7800] font-['Whatthefont']">${product.productPrice}</span>
-            <span className="text-sm text-gray-500">{product.productCalories} cals</span>
+            <span className="text-2xl font-bold text-[#FE7800] font-['Whatthefont']">${product.price}</span>
+            <span className="text-sm text-gray-500">{product.calories} cals</span>
           </div>
         </div>
         

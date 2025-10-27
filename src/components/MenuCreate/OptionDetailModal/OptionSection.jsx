@@ -87,7 +87,6 @@ const OptionSection = () => {
     setFormData(prev => ({...prev, countType: e.target.value}));
   }
 
-  {console.log(formData)}
   const countType = formData.countType;
 
   return (

@@ -39,10 +39,8 @@ const MenuCreate = () => {
 
     customRuleState.map((customRule, customRuleIdx) => {
       const optionRequests = [];
-      console.log(customRule);
 
       customRule.options.map((option, optionIdx) => {
-        console.log(option);
         const optionTraitRequests = [];
         if (option.optionTrait.optionTraitId !== null) {
           optionTraitRequests.push({
@@ -98,8 +96,6 @@ const MenuCreate = () => {
 
     formData.append('productBlob', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
     formData.append('productImage', imageSource);
-
-    console.log("Requested with", formData);
   
     const response = axios.post("http://localhost:8080/api/v1/products", formData)
       .then(response => console.log("Response:", response.data))
@@ -109,14 +105,12 @@ const MenuCreate = () => {
   useEffect(() => {
     fetchCategories()
       .then(data => {
-        console.log(data);
         setCategories(data);
       })
       .catch(error => console.error(error));
 
     fetchOptions()
       .then(data => {
-        console.log("OPTION_RESPONSE", data);
         setOptions(data);
       })
       .catch(error => console.error(error));

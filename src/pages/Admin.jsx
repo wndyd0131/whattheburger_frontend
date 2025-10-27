@@ -32,13 +32,11 @@ const Admin = () => {
   useEffect(() => {
     api.get("/store")
       .then(res => {
-        console.log(res.data);
         setStores(res.data);
       })
       .catch(err => console.error(err));
     api.get("/products")
       .then(res => {
-        console.log(res.data);
         setProducts(res.data);
       })
   }, []);

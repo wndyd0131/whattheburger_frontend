@@ -23,6 +23,7 @@ const ProductInfo = () => {
 
   const [selectedButton, setSelectedButton] = useState("ONLY");
 
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -36,7 +37,7 @@ const ProductInfo = () => {
       </div>
       
       <div className="flex flex-col items-center space-y-4 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 font-['Whatthefont']">{selectedProduct.name}</h1>
+        <h1 className="text-2xl font-bold text-gray-800 font-['Whatthefont']">{selectedProduct.productName}</h1>
         
         <div className="flex justify-center items-center gap-3">
           <motion.button 
@@ -66,8 +67,6 @@ const ProductInfo = () => {
             MEAL
           </motion.button>
         </div>
-        {console.log("SP", selectedProduct)}
-        {console.log("OS", optionState)}
         <div className="flex flex-col items-center space-y-2">
           <h2 className="text-xl font-bold text-[#FE7800] font-['Whatthefont']">
             ${(selectedProduct.productPrice + optionState.currentSelections.totalExtraPrice).toFixed(2)}

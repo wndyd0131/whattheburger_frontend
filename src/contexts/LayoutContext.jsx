@@ -1,5 +1,7 @@
 import { useState, createContext, useReducer, useMemo } from "react";
 import { initialState, rootReducer } from "../reducers/rootReducer";
+import Cookie from "js-cookie";
+import { CART_ACTIONS } from "../reducers/Cart/actions";
 
 export const LayoutContext = createContext();
 
@@ -7,11 +9,19 @@ export const LayoutProvider = ({children}) => {
   const [cartOpened, setCartOpened] = useState(false);
   const [rootState, dispatchRoot] = useReducer(rootReducer, initialState);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(1);
+  const [selectedStoreId, setSelectedStoreId] = useState(null);
   const reducer = useMemo(() => ({
     rootState,
     dispatchRoot
   }), [rootState, dispatchRoot])
+
+  const deselectStore = () => {
+    setSelectedStoreId(null);
+    Cookie.remove("storeId");
+    dispatchRoot({
+      type: CART_ACTIONS.INIT
+    });
+  }
   
   return (
     <LayoutContext.Provider value={{
@@ -19,8 +29,9 @@ export const LayoutProvider = ({children}) => {
       setCartOpened,
       selectedProduct,
       setSelectedProduct,
-      selectedCategory,
-      setSelectedCategory,
+      selectedStoreId,
+      setSelectedStoreId,
+      deselectStore,
       reducer
     }}>
       {children}
