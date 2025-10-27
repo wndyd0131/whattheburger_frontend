@@ -1,7 +1,7 @@
 # Whataburger Redesign 🍔 - Fullstack Clone (Unofficial)
 
 ## Overview
-This is a fullstack web application simulating a fast food ordering system of Whataburger, rebuilt with modern technologies to enhance usability and maintainability.
+This is a fullstack web application simulating a fast food ordering system of Whataburger, implementing with React and Spring Boot.
 
 Features include:
 * User-friendly homepage
@@ -13,22 +13,6 @@ Features include:
 * Responsive design
 
 **Note:** This is a self-initiated project created to explore real-world web application structure and is not affiliated with Whataburger.
-
-## Motivation
-The project was built for the following reasons:
-* To practice fullstack development by tackling real-world application complexity
-  
-* To redesign and improve the Whataburger website's UI/UX out of personal passion as a former employee and longtime fan of the brand
-
-### Original website
-![Demo](src/assets/resources/website1.gif)
-* The website lacks structural clarity and user-centered flow, which is critical for modern e-commerce platforms.
-
-![Demo](src/assets/resources/website2.gif)
-* The website lacks the modern UX patterns common in today's web applications.
-
-## Current website
-
 
 ## Tech Stack
 ### Frontend
