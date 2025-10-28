@@ -1,6 +1,6 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
+import { RightArrowIcon } from '../../svg/Utils'
 import { LayoutContext } from '../../contexts/LayoutContext';
-
 const Header = () => {
   const {
     setCartOpened,

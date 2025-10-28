@@ -1,7 +1,10 @@
-import { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { MenuContext } from '../../contexts/MenuContext'
+import MenuHeader from './MenuHeader';
+import CategoryNav from './CategoryNav';
+import MenuContainer from './MenuContainer';
+import OrderModal from './OrderModal/OrderModal';
 import { useNavigate, useParams } from 'react-router-dom';
-
 const MenuSection = () => {
   const {
     selectedProduct,

@@ -1,4 +1,4 @@
-
+import { AnimatePresence, motion } from "framer-motion";
 const Modal = ({height, width, flexDirection, position, justifyContent, alignItems, children}) => {
   return (
       <motion.div

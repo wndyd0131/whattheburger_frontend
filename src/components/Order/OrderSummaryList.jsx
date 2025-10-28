@@ -1,4 +1,6 @@
-
+import React from 'react'
+import ImageContainer from './ImageContainer';
+import ContentContainer from './ContentContainer';
 const OrderSummaryList = ({productList}) => {
   return (
     <div className="flex flex-col basis-10/12 overflow-auto">

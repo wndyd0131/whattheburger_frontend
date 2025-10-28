@@ -1,11 +1,12 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import mapboxgl from 'mapbox-gl';
-import { useGeocodingCore } from '@mapbox/search-js-react';
+import { AddressAutofill, useGeocodingCore } from '@mapbox/search-js-react';
 import api from '../../utils/api';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Cookie from 'js-cookie';
 import { ORDER_TYPE_EXPIRATION_TIME, STORE_ID_EXPIRATION_TIME } from '../../utils/cookieExpirationTime';
-
+import StoreCardSkeleton from '../../components/Store/StoreCardSkeleton';
 const StoreSelection = () => {
   const MAPBOX_API_KEY = import.meta.env.VITE_MAPBOX_API_KEY;
   const RADIUS_METER = 20000;

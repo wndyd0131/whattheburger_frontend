@@ -1,7 +1,10 @@
 import { useContext } from "react";
+import { OptionContext } from "./contexts/OptionContext";
+import { motion } from "framer-motion";
 import { LayoutContext } from "../../../contexts/LayoutContext";
 import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
-
+import ImageContainer from "./ImageContainer";
+import ContentContainer from "./ContentContainer";
 const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
 
   const {

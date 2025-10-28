@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
 import Banner1 from "/src/assets/images/banner4.png";
 import Banner2 from "/src/assets/images/banner5.png";
 import { LeftArrowIcon, RightArrowIcon } from "../svg/Utils";
-
 const images = [Banner1, Banner2];
 
 const ImageSlider = () => {

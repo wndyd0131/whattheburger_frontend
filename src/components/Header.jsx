@@ -1,7 +1,13 @@
-import { useContext, useState } from "react";
+import Navigation from "./Navigation";
+import AuthSection from "./AuthSection";
+import { AnimatePresence, motion } from "framer-motion";
+import { LeftArrowIcon } from "../svg/Utils";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import Logo from "./Layout/Logo";
+import Hamburger from "./Header/Hamburger";
+import CartButton from "./Header/CartButton";
 import { useMediaQuery } from "@mui/material";
-
 const Header = () => {
   const {
     userDetails

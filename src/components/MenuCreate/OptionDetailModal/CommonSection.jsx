@@ -1,6 +1,5 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import { SelectedOptionContext } from '../OptionModal/OptionModal';
-
 const CommonSection = () => {
   const {
     formData,

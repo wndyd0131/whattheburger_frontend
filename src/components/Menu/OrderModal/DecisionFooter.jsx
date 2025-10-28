@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useContext } from "react";
 import { toast } from "react-toastify";
 import { LayoutContext } from "../../../contexts/LayoutContext";
@@ -6,6 +7,7 @@ import { ModalContext } from "./contexts/ModalContext";
 import { patchCartItem, postCartItem } from "../../../api/cart";
 import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
 import Cookie from "js-cookie";
+
 
 const DecisionFooter = () => {
   

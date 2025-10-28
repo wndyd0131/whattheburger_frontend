@@ -1,3 +1,5 @@
+import MenuList from "./HomePage/MenuList";
+import ImageSlider from "./ImageSlider";
 
 const Main = () => {
   return (

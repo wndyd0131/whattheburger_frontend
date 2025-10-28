@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 
 const HomePageSection = ({flexDirection, height, justifyContent, alignItems, backgroundColor, padding, children}) => {
   return (

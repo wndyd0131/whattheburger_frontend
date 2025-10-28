@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { OptionContext } from "./OrderModal/contexts/OptionContext";
 import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import { LayoutContext } from "../../contexts/LayoutContext";
-
 const CountableModifier = () => {
   const {
     reducer: {

@@ -1,6 +1,8 @@
 import { useContext } from "react";
+import CountLabel from "../CountLabel";
+import TraitLabel from "../TraitLabel";
 import { LayoutContext } from "../../../contexts/LayoutContext";
-
+import { motion } from "framer-motion";
 const OrderSummaryDetail = () => {
   const {
     reducer: {

@@ -1,5 +1,5 @@
+import {motion} from "motion/react";
 import { useState } from "react";
-
 const GoOrderButton = ({goOrderButtonClicked, setGoOrderButtonClicked}) => {
   const [backgroundColor, setBackgroundColor] = useState("bg-gradient-to-r from-amber-500 to-orange-500");
   return (

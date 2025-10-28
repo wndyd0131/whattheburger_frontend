@@ -6,6 +6,9 @@ import { fetchCategories } from "../../api/category.js";
 import { fetchOptions } from "../../api/option.js";
 import { fetchOptionTraits } from "../../api/optionTrait.js";
 import api from "../../utils/api.js";
+import ProductDetailInput from "../MenuCreate/ProductDetailInput.jsx";
+import CustomizationDetailInput from "../MenuCreate/CustomizationDetailInput.jsx";
+import OptionModal from "../MenuCreate/OptionModal/OptionModal.jsx";
 
 export const MenuCreateContext = createContext();
 

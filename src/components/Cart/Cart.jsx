@@ -1,4 +1,11 @@
+import { motion } from "motion/react";
+import Header from "./Header";
+import OrderList from "./OrderList";
+import Footer from "./Footer";
 import { useRef, useState } from "react";
+import OrderModal from "../Menu/OrderModal/OrderModal";
+import { CartContext } from "./contexts/CartContext";
+import PriceSummary from "./PriceSummary";
 const Cart = () => {
 
   const ref = useRef();

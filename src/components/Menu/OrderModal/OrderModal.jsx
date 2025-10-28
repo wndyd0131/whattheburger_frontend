@@ -1,9 +1,15 @@
 import { useContext, useState } from "react";
+import Modal from "../../Modal";
+import ConfirmModal from "./ConfirmModal";
+import OrderSummary from "./OrderSummary";
+import OrderCustomize from "./OrderCustomize";
 import { MenuContext } from "../../../contexts/MenuContext";
 import { OPTION_ACTIONS } from "../../../reducers/Option/actions";
+import { CloseButton } from "../../../svg/Utils";
 import { LayoutContext } from "../../../contexts/LayoutContext";
 import { CartContext } from "../../Cart/contexts/CartContext";
-
+import { ModalContext } from "./contexts/ModalContext";
+import { motion } from "framer-motion";
 const OrderModal = ({mode}) => {
 
   const modalStyle = {

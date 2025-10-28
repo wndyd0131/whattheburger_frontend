@@ -1,8 +1,11 @@
 import { useContext } from "react";
+import MenuImageContainer from "./MenuImageContainer";
 import { MenuContext } from "../../contexts/MenuContext";
 import { OPTION_ACTIONS } from "../../reducers/Option/actions";
+import { motion } from "framer-motion";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import api from "../../utils/api";
+
 
 const MenuCard = ({product, calories}) => {
 

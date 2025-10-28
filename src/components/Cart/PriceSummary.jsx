@@ -1,6 +1,5 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import { LayoutContext } from '../../contexts/LayoutContext';
-
 const PriceSummary = () => {
 
   const {

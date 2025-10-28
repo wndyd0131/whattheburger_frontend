@@ -1,13 +1,8 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { LayoutContext } from "../../contexts/LayoutContext";
+import { motion } from "motion/react";
+import { Link, useNavigate } from "react-router-dom";
 import Cookie from "js-cookie";
-const FeaturedCategory = () => {
 
-  const {
-    selectedCategory,
-    setSelectedCategory
-  } = useContext(LayoutContext);
+const FeaturedCategory = () => {
 
   const nav = useNavigate();
 

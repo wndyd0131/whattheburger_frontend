@@ -1,3 +1,8 @@
+import HomePage from "./pages/HomePage";
+import Menu from "./pages/menu/Menu";
+import MenuCreate from "./components/Admin/MenuCreate";
+import Auth from "./pages/auth/Auth";
+import {BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { UserContext } from "./contexts/UserContext";
@@ -12,7 +17,6 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import Admin from "./pages/admin/Admin";
 import ProtectedStoreMenuRoute from "./routes/ProtectedStoreMenuRoute";
 import RequireRoles from "./routes/RequireRoles";
-import api from "./utils/api";
 
 function App() {
   const {
