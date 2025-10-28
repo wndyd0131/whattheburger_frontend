@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { BreakfastIcon, BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from '../../svg/categoryNav'
+import { BreakfastIcon, BurgerIcon, ChickenIcon, DessertIcon, DrinkIcon, FishIcon, GroupIcon, KidsIcon, SaladIcon, SidesIcon, SpecialIcon } from '/src/svg/CategoryNav'
 import { MenuContext } from '../../contexts/MenuContext';
 const CategoryIcon = ({category, categoryIdx}) => {
   const {

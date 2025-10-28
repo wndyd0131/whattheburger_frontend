@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+import { useState } from "react";
 
 export const CloseButton = ({color="#000000"}) => {
   return (

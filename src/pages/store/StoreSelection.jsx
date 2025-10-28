@@ -169,12 +169,13 @@ const StoreSelection = () => {
             ? (
               Array.from({ length: 6}).map((_, idx) => <StoreCardSkeleton key={idx}/>)
             )
-            :stores.map(store => {
+            :stores.map((store, storeIdx) => {
               const fullAddress = `${store.address.street}, ${store.address.city}, ${store.address.state} ${store.address.zipcode}`
               const distanceMiles = (store.distance / 1609.34).toFixed(2);
               const selected = store.storeId === selectedStore?.storeId;
               return (
                 <div
+                  key={storeIdx}
                   className={`flex flex-col p-3 border rounded-2xl shadow-md w-full cursor-pointer hover:bg-gray-100 hover:transition duration-200 ${selected ? "border-[#FE7800]" : "border-gray-300"}`}
                   onClick={() => handleClickStoreCard(store.storeId)}
                 >
