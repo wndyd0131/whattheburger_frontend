@@ -9,6 +9,7 @@ import {selectedOptionReducer} from "../../reducers/MenuCreate/selectedOptionRed
 import { fetchCategories } from "../../api/category.js";
 import { fetchOptions } from "../../api/option.js";
 import { fetchOptionTraits } from "../../api/optionTrait.js";
+import api from "../../utils/api.js";
 
 export const MenuCreateContext = createContext();
 
@@ -97,7 +98,7 @@ const MenuCreate = () => {
     formData.append('productBlob', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
     formData.append('productImage', imageSource);
   
-    const response = axios.post("http://localhost:8080/api/v1/products", formData)
+    const response = api.post("/products", formData)
       .then(response => console.log("Response:", response.data))
       .catch(err => console.error(err));
   }

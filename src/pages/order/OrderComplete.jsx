@@ -18,6 +18,8 @@ const OrderComplete = () => {
     }
   } = useContext(LayoutContext);
 
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
   const nav = useNavigate()
   const [loading, setLoading] = useState(false);
   
@@ -150,7 +152,7 @@ const OrderComplete = () => {
       }
     }
     if (wsRef.current == null) {
-      const ws = new WebSocket("ws://localhost:8080/ws/track");
+      const ws = new WebSocket(`ws://${BACKEND_URL}/ws/track`);
       wsRef.current = ws;
       ws.addEventListener("open", () => console.log("[ws] open"), {once: true}); // auto-remove
       ws.addEventListener("message", onMessage);

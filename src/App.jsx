@@ -18,6 +18,7 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import Admin from "./pages/admin/Admin";
 import ProtectedStoreMenuRoute from "./routes/ProtectedStoreMenuRoute";
 import RequireRoles from "./routes/RequireRoles";
+import api from "./utils/api";
 
 function App() {
   const {
@@ -33,7 +34,7 @@ function App() {
     }
     if (accessToken) {
       setIsLoading(true);
-      axios.get('http://localhost:8080/api/v1/users', {
+      api.get('/users', {
         headers: {Authorization: `Bearer ${accessToken}`}
       }).then (response => {
           setUserDetails((prev) => ({
