@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { UserContext } from "./contexts/UserContext";
-<<<<<<< HEAD
 import Layout from "./Layout";
 import { LayoutProvider } from "./contexts/LayoutContext";
 import Order from "./pages/order/Order";
@@ -13,8 +12,6 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import Admin from "./pages/admin/Admin";
 import ProtectedStoreMenuRoute from "./routes/ProtectedStoreMenuRoute";
 import RequireRoles from "./routes/RequireRoles";
-=======
->>>>>>> eddcdd5ebee00a1c10576889a1afd8f762ced54e
 import api from "./utils/api";
 
 function App() {
