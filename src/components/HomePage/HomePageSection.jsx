@@ -1,4 +1,3 @@
-import { motion } from "motion/react";
 
 const HomePageSection = ({flexDirection, height, justifyContent, alignItems, backgroundColor, padding, children}) => {
   return (

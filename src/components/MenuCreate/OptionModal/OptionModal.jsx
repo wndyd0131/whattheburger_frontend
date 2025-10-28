@@ -1,10 +1,4 @@
-import { useState, createContext, useContext, useReducer } from "react";
-import Modal from "../../Modal";
-import SearchBar from "./SearchBar";
-import SortSection from "./SortSection";
-import OptionItemSection from "./OptionItemSection";
-import SelectedOptionSection from "./SelectedOptionSection";
-import DecisionFooter from "./DecisionFooter";
+import { useState, createContext, useContext } from "react";
 
 export const SelectedOptionContext = createContext();
 

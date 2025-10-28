@@ -1,8 +1,3 @@
-import OptionSection from './OptionSection';
-import OptionTraitSection from './OptionTraitSection';
-import OptionDetailFooter from './OptionDetailFooter';
-import QuantitySection from './QuantitySection';
-import CommonSection from './CommonSection';
 
 const SelectedOptionInput = () => {
   return (

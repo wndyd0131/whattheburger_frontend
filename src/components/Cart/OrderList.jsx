@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { LayoutContext } from "../../contexts/LayoutContext";
-import { CloseButton } from "../../svg/Utils";
 import api from "../../utils/api";
 import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import { toast } from "react-toastify";

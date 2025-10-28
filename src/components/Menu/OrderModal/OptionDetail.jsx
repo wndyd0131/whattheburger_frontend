@@ -1,8 +1,5 @@
 import { useContext } from "react";
-import TraitModifier from "../TraitModifier";
-import CountModifier from "../CountModifier";
 import { OptionContext } from "./contexts/OptionContext";
-import { motion, AnimatePresence } from "framer-motion";
 
 const OptionDetail = () => {
 

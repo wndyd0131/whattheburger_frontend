@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import { RightArrowIcon } from '../../svg/Utils'
+import { useContext } from 'react'
 import { LayoutContext } from '../../contexts/LayoutContext';
 
 const Header = () => {

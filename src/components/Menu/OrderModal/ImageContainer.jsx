@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { OptionContext } from './contexts/OptionContext';
-import { motion } from 'framer-motion';
 
 const ImageContainer = () => {
   const {

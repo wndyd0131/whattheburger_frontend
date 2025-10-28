@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { MenuContext } from "../../contexts/MenuContext";
-import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import CategoryIcon from "./CategoryIcon";
+import { useNavigate, useParams } from "react-router-dom";
 import { LayoutContext } from "../../contexts/LayoutContext";
 
 const CategoryNav = () => {

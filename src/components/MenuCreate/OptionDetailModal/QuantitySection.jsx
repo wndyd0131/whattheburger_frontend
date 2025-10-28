@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
-import QuantityDetailModal from "./QuantityDetailModal";
 
 const QuantitySection = () => {
 

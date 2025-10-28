@@ -1,9 +1,5 @@
 import {useState, useEffect, createContext, useReducer} from "react";
 import styles from "/src/styles/MenuCreate.module.css";
-import axios from "axios";
-import ProductDetailInput from "../MenuCreate/ProductDetailInput.jsx";
-import CustomizationDetailInput from "../MenuCreate/CustomizationDetailInput.jsx";
-import OptionModal from "../MenuCreate/OptionModal/OptionModal.jsx";
 import {customRuleReducer} from "../../reducers/MenuCreate/customRuleReducer.js";
 import {selectedOptionReducer} from "../../reducers/MenuCreate/selectedOptionReducer.js";
 import { fetchCategories } from "../../api/category.js";
@@ -98,7 +94,7 @@ const MenuCreate = () => {
     formData.append('productBlob', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
     formData.append('productImage', imageSource);
   
-    const response = api.post("/products", formData)
+    const response = api.post('/products', formData)
       .then(response => console.log("Response:", response.data))
       .catch(err => console.error(err));
   }

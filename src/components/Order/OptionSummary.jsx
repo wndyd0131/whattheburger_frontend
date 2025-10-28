@@ -1,5 +1,3 @@
-import React from 'react'
-import UncountableLabel from '../UncountableLabel';
 
 const OptionSummary = ({customRuleList, productPrice, extraPrice}) => {
   return (

@@ -1,7 +1,5 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { MenuContext } from '../../contexts/MenuContext'
-import { motion } from 'framer-motion'
-import Cookie from "js-cookie";
 import { useNavigate } from 'react-router-dom';
 import { LayoutContext } from '../../contexts/LayoutContext';
 

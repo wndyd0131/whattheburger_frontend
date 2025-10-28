@@ -1,16 +1,10 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import "./styles/Common.styles.css"
-import { AnimatePresence, motion } from "motion/react";
-import { ChatbotIcon } from "./svg/Utils";
-import Cart from "./components/Cart/Cart";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "./contexts/UserContext";
 import { LayoutContext } from "./contexts/LayoutContext";
-import { ToastContainer } from "react-toastify";
 import { CART_ACTIONS } from "./reducers/Cart/actions";
 import api from "./utils/api";
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Cookie from "js-cookie";
 
 const Layout = () => { {/* nested components */}

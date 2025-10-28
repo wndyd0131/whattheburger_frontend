@@ -1,7 +1,5 @@
 import { useContext } from "react";
 import { OptionContext } from "./contexts/OptionContext";
-import OptionDetail from "./OptionDetail";
-import { motion } from "framer-motion";
 
 const ContentContainer = () => {
 

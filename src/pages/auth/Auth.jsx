@@ -1,6 +1,4 @@
-import SignInContainer from "../../components/Auth/SignInContainer";
 import { useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
 
 const Auth = () => {
   const [signUpForm, setSignUpForm] = useState({

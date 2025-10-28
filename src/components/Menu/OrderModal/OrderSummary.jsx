@@ -1,7 +1,3 @@
-import ProductInfo from "./ProductInfo";
-import OrderSummaryDetail from "./OrderSummaryDetail";
-import DecisionFooter from "./DecisionFooter";
-import { motion } from "framer-motion";
 
 const OrderSummary = () => {
   return (

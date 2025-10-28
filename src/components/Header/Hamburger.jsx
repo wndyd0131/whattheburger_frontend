@@ -1,4 +1,3 @@
-import { HamburgerIcon } from "../../svg/Utils";
 
 const Hamburger = ({ headerOpened, setHeaderOpened }) => {
   if (headerOpened) {

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export const BurgerIcon = ({color}) => {
   return (
     <svg
@@ -118,8 +120,43 @@ export const SpecialIcon = ({color}) => {
 
 export const BreakfastIcon = ({color}) => {
   return (
-    <svg className="h-[50px] max-w-[50px] mt-[20px] mb-[20px]" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"><defs><style>{`.cls-1{fill:none;stroke:${color};stroke-miterlimit:10;stroke-width:2px;}`}</style></defs><circle class="cls-1" cx="10.09" cy="12" r="4.77"/>
-      <path class="cls-1" d="M11.51,1.5c2.86,0,6.69,0,8.78,3.05,3.51,5.11-2.85,7.85,0,9.81s2.68,5.57,1,6.86c-3.28,2.45-7.1-2.59-11.65.65C5.7,24.65-.19,17.78,2,10.23,3.06,6.35,6.73,1.5,11.51,1.5Z"/>
+    <svg className="h-[50px] max-w-[50px] mt-[20px] mb-[20px]" viewBox="0 0 24 24" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"><defs><style>{`.cls-1{fill:none;stroke:${color};stroke-miterlimit:10;stroke-width:2px;}`}</style></defs><circle className="cls-1" cx="10.09" cy="12" r="4.77"/>
+      <path className="cls-1" d="M11.51,1.5c2.86,0,6.69,0,8.78,3.05,3.51,5.11-2.85,7.85,0,9.81s2.68,5.57,1,6.86c-3.28,2.45-7.1-2.59-11.65.65C5.7,24.65-.19,17.78,2,10.23,3.06,6.35,6.73,1.5,11.51,1.5Z"/>
     </svg>
   )
+}
+
+
+BurgerIcon.propTypes = {
+  color: PropTypes.string
+}
+ChickenIcon.propTypes = {
+  color: PropTypes.string
+}
+DessertIcon.propTypes = {
+  color: PropTypes.string
+}
+DrinkIcon.propTypes = {
+  color: PropTypes.string
+}
+FishIcon.propTypes = {
+  color: PropTypes.string
+}
+SidesIcon.propTypes = {
+  color: PropTypes.string
+}
+GroupIcon.propTypes = {
+  color: PropTypes.string
+}
+KidsIcon.propTypes = {
+  color: PropTypes.string
+}
+SaladIcon.propTypes = {
+  color: PropTypes.string
+}
+SpecialIcon.propTypes = {
+  color: PropTypes.string
+}
+BreakfastIcon.propTypes = {
+  color: PropTypes.string
 }

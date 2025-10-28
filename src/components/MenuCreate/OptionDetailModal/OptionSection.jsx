@@ -1,7 +1,5 @@
 import { useContext } from "react";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
-import CountableOptionSection from "./CountableOptionSection";
-import UncountableOptionSection from "./UncountableOptionSection";
 
 const OptionSection = () => {
 

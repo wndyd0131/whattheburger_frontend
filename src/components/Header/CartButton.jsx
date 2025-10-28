@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { LayoutContext } from "../../contexts/LayoutContext";
-import { CartIcon } from "../../svg/Utils";
 
 const CartButton = () => {
 

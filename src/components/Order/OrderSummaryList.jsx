@@ -1,6 +1,3 @@
-import React from 'react'
-import ImageContainer from './ImageContainer';
-import ContentContainer from './ContentContainer';
 
 const OrderSummaryList = ({productList}) => {
   return (
