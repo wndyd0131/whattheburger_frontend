@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_VXevtSiqEVYFRZ6C7DzKM3dPnpLf",
+  "orgId": "team_lcBzZcFDFP7UxmhGHn8m4Kx7",
+  "projectName": "whattheburger-frontend",
+  "settings": {
+    "createdAt": 1761610434137,
+    "framework": "vite",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "22.x"
+  }
+}

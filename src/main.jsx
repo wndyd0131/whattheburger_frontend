@@ -5,9 +5,7 @@ import App from "./App";
 import { UserProvider } from './contexts/UserContext';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <UserProvider>
       <App/>
     </UserProvider>
-  </StrictMode>,
 )
