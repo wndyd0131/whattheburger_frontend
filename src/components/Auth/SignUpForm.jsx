@@ -1,12 +1,9 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormContext } from "./contexts/FormContext";
-import axios from "axios";
-import { TextField } from "@mui/material";
-import { LoadingSpinner } from "../../svg/Utils";
-import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import api from "../../utils/api";
 
 const SignUpForm = () => {
 
@@ -187,7 +184,7 @@ const SignUpForm = () => {
     if (isFormValid(signUpError)) {
       const requestObject = fromFormToRequest(signUpForm);
       setLoading(true);
-      axios.post('http://localhost:8080/api/v1/signup', requestObject)
+      api.post('/signup', requestObject)
       .then(response => {
         toast.success("You've successfully created your account");
         setIsSignIn(true);

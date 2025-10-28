@@ -1,8 +1,5 @@
 import { useContext } from "react";
-import MenuCard from "./MenuCard";
 import { MenuContext } from "../../contexts/MenuContext";
-import { motion } from "framer-motion";
-import MenuCardSkeleton from "./MenuCardSkeleton";
 
 const MenuContainer = () => {
 

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import api from "../../utils/api";
@@ -6,7 +6,6 @@ import Cookie from "js-cookie";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { LayoutContext } from "../../contexts/LayoutContext";
-import { ListIcon, LogoutIcon, ProfileIcon } from "../../svg/Utils";
 
 const ProfileDropdown = ({props}) => {
 

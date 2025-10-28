@@ -1,4 +1,3 @@
-import {motion} from "motion/react";
 import { useState } from "react";
 
 const GoOrderButton = ({goOrderButtonClicked, setGoOrderButtonClicked}) => {

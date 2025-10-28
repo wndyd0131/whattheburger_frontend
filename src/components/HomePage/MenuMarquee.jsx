@@ -3,7 +3,6 @@ import ChickenFajita from "/src/assets/private/menu/ChickenFajitaTaco29.png";
 import HoneyBBQ from "/src/assets/private/menu/HoneyBBQ-alacarte1.png";
 import PattyMelt from "/src/assets/private/menu/PattyMelt-alacarte1.png";
 import ChickenStrips from "/src/assets/private/menu/Whatthechickn-3strips1.png"
-import Marquee from "react-fast-marquee";
 
 const MenuMarquee = () => {
 

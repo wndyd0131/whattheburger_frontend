@@ -8,9 +8,6 @@ import { ACCESS_TOKEN_EXPIRATION_TIME, REFRESH_TOKEN_EXPIRATION_TIME } from "../
 import api from "../../utils/api";
 import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import { LayoutContext } from "../../contexts/LayoutContext";
-import { motion } from "framer-motion";
-import { LoadingSpinner } from "../../svg/Utils";
-import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
 
 const SignInForm = () => {

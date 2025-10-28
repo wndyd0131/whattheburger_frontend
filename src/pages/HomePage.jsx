@@ -1,10 +1,4 @@
 import { useState } from "react";
-import HomePageSection from "../components/HomePage/HomePageSection.jsx";
-import ImageSlider from "../components/ImageSlider";
-import FeaturedCategory from "../components/HomePage/FeaturedCategory.jsx";
-import GoOrderButton from "../components/HomePage/GoOrderButton.jsx";
-import {motion} from "motion/react";
-import IntroCardSection from "../components/HomePage/IntroCardSection.jsx";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { ORDER_TYPE_EXPIRATION_TIME } from "../utils/cookieExpirationTime.js";

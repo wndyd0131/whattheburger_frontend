@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { LayoutContext } from '../../contexts/LayoutContext';
-import OrderSummaryList from './OrderSummaryList';
 
 const OrderSummary = () => {
 

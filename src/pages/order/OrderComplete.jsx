@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
-import { CopyIcon } from '../../svg/Utils';
+import { useContext, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import { LayoutContext } from '../../contexts/LayoutContext';
 import { ORDER_ACTIONS } from '../../reducers/Order/actions';
 import { normalizeProduct } from '../../utils/normalizer';
-import OrderSummary from '../../components/Order/OrderSummary';
-import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 
 const OrderComplete = () => {

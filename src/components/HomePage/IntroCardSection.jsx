@@ -1,4 +1,3 @@
-import React from 'react'
 
 const IntroCardSection = () => {
   return (
@@ -11,12 +10,12 @@ const IntroCardSection = () => {
           </div>
         </div>
         <div className="basis-1/2">
-          <img src="src\assets\private\banner\banner3.png"></img>
+          <img src="src/assets/images/banner3.png"></img>
         </div>
       </div>
       <div className="flex max-h-[450px] max-w-[1200px] rounded-l-4xl overflow-hidden font-[normal]">
         <div className="basis-1/2">
-          <img src="src\assets\private\banner\banner1.png"></img>
+          <img src="src/assets/images/banner1.png"></img>
         </div>
         <div className="flex justify-start items-center basis-1/2 p-10">
           <div className="flex flex-col gap-3">
@@ -33,7 +32,7 @@ const IntroCardSection = () => {
           </div>
         </div>
         <div className="basis-1/2">
-          <img src="src\assets\private\banner\banner2.png"></img>
+          <img src="src/assets/images/banner2.png"></img>
         </div>
       </div>
     </>

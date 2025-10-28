@@ -1,8 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+const url = import.meta.env.VITE_BACKEND_URL;
+
 const api = axios.create({
-  baseURL: 'http://localhost:8080/api/v1',
+  baseURL: `${url}/api/v1`,
   withCredentials: true
 });
 

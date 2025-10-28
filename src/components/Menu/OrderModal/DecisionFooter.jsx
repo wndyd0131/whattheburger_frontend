@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useContext } from "react";
 import { toast } from "react-toastify";
 import { LayoutContext } from "../../../contexts/LayoutContext";

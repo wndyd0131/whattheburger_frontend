@@ -1,10 +1,7 @@
-import React, { useContext, useState } from 'react'
-import { TrashCanIcon } from '../../svg/Utils'
-import { motion } from "framer-motion";
+import { useContext, useState } from 'react'
 import api from '../../utils/api';
 import { LayoutContext } from '../../contexts/LayoutContext';
 import { CART_ACTIONS } from '../../reducers/Cart/actions';
-import SignInSection from './SignInSection';
 import { toast } from 'react-toastify';
 
 const Footer = () => {

@@ -1,11 +1,8 @@
-import { useState, useEffect, useReducer, useContext, createContext, useMemo } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
 import "/src/styles/Menu.styles.css";
-import { MenuContext } from "../../contexts/MenuContext";
-import ImageSlider from "../../components/ImageSlider";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../../utils/api";
-import MenuSection from "../../components/Menu/MenuSection";
 import Cookie from "js-cookie";
 import { STORE_ID_EXPIRATION_TIME } from "../../utils/cookieExpirationTime";
 

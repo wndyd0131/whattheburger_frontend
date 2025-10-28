@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { MenuCreateContext } from "/src/components/Admin/MenuCreate";
-import ToggleSwitch from "../../ToggleSwitch";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
 
 const OptionTraitSection = () => {

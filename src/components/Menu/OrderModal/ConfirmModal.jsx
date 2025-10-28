@@ -1,5 +1,3 @@
-import Modal from "../../Modal";
-import { motion } from "framer-motion";
 
 const ConfirmModal = ({setConfirmModalOpened, message, handlerFunction}) => {
 

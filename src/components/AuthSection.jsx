@@ -1,7 +1,5 @@
-import { useState, useContext, useRef, useEffect } from "react";
+import { useState, useContext, useRef } from "react";
 import { UserContext } from "../contexts/UserContext";
-import ProfileDropdown from "./Auth/ProfileDropdown";
-import { Link } from "react-router-dom";
 
 const AuthSection = () => {
 

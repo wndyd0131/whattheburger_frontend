@@ -1,6 +1,5 @@
-import { motion } from "motion/react";
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import Cookie from "js-cookie";
 const FeaturedCategory = () => {
