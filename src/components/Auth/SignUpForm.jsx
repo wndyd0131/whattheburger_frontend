@@ -6,6 +6,7 @@ import { LoadingSpinner } from "../../svg/Utils";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import api from "../../utils/api";
 const SignUpForm = () => {
 
   const {

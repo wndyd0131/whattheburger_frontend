@@ -17,6 +17,7 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import Admin from "./pages/admin/Admin";
 import ProtectedStoreMenuRoute from "./routes/ProtectedStoreMenuRoute";
 import RequireRoles from "./routes/RequireRoles";
+import api from "./utils/api";
 
 function App() {
   const {
