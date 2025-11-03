@@ -5,6 +5,7 @@ import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import { motion } from "framer-motion";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import api from "../../utils/api";
+import { fetchStoreProduct } from "../../api/product";
 
 
 const MenuCard = ({product, calories}) => {
@@ -28,16 +29,16 @@ const MenuCard = ({product, calories}) => {
   const handleClickStartOrderButton = () => {
     setIsLoading(true);
 
-    api.get(`/store/${selectedStoreId}/product/${product.storeProductId}`)
-    .then(response => {
-      const optionResponse = response.data.optionResponses;
+    fetchStoreProduct(selectedStoreId, product.storeProductId)
+    .then(data => {
+      const optionResponse = data.optionResponses;
       dispatchRoot({
         type: OPTION_ACTIONS.LOAD_OPTIONS,
         payload: {
           optionResponse: optionResponse
         }
       });
-      setSelectedProduct(response.data);
+      setSelectedProduct(data);
     })
     .catch(error => console.error(error))
     .finally(() => setIsLoading(false));

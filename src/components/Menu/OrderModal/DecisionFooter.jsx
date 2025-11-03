@@ -63,10 +63,7 @@ const DecisionFooter = () => {
       }
     });
 
-    const storeId = Cookie.get("storeId");
-
     const cartObject = {
-      storeId: storeId,
       storeProductId: selectedProduct.storeProductId,
       customRuleRequests: customRuleRequests
     }
@@ -79,7 +76,8 @@ const DecisionFooter = () => {
       ...createCartRequestBody(),
       quantity: 1
     };
-    postCartItem(cartObject)
+    const storeId = Cookie.get("storeId");
+    postCartItem(storeId, cartObject)
       .then(data => 
         {
           setSelectedProduct(null);
@@ -103,7 +101,8 @@ const DecisionFooter = () => {
   const handleClickSaveButton = (cartIdx) => {
     const cartObject = createCartRequestBody();
 
-    patchCartItem(cartIdx, cartObject)
+    const storeId = Cookie.get("storeId");
+    patchCartItem(storeId, cartIdx, cartObject)
       .then(data => {
         setSelectedProduct(null);
         dispatchRoot({

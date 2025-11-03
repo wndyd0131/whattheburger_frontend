@@ -6,6 +6,9 @@ import { LayoutContext } from '../../contexts/LayoutContext';
 import { CART_ACTIONS } from '../../reducers/Cart/actions';
 import SignInSection from './SignInSection';
 import { toast } from 'react-toastify';
+import { deleteCart, deleteCartItem } from '../../api/cart';
+import Cookie from "js-cookie";
+
 const Footer = () => {
 
   const { 
@@ -26,9 +29,10 @@ const Footer = () => {
   }
 
   const handleClickTrashCanIcon = () => {
-    api.delete('/cart')
-     .then(res => {
-        const cartData = res.data;
+    const storeId = Cookie.get("storeId");
+    deleteCart(storeId)
+     .then(data => {
+        const cartData = data;
         dispatchRoot({
           type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
           payload: {

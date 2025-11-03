@@ -64,8 +64,8 @@ const ProductDetailInput = ({
           {categories.map((category, categoryIdx) => {
             const categoryId = category.categoryId;
             const checkedCategory = selectedCategoryIds.find(index => index === categoryId);
-            const regularClassName = "min-w-[110px] min-h-[35px] border-1 border-orange-300 rounded-full hover:bg-orange-300 cursor-pointer";
-            const selectedClassName = "min-w-[110px] min-h-[35px] border-1 border-orange-300 bg-orange-300 rounded-full hover:bg-orange-400 cursor-pointer";
+            const regularClassName = "flex justify-center items-center min-w-[110px] min-h-[35px] border-1 border-gray-300 rounded-4xl hover:border-orange-500 hover:text-orange-500 cursor-pointer";
+            const selectedClassName = "flex justify-center items-center min-w-[110px] min-h-[35px] border-1 border-orange-500 text-orange-500 rounded-full cursor-pointer";
 
             return (
                 <button

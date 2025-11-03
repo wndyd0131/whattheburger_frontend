@@ -1,10 +1,11 @@
 import { TextField } from '@mui/material';
 import React, { useContext, useState } from 'react'
 import OrderFormContext from '../../contexts/OrderFormContext';
-import api from '../../utils/api';
 import { motion } from "framer-motion";
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
+import { checkout } from '../../api/checkout';
+import { LoadingSpinner } from '../../svg/Utils';
 const DeliveryForm = () => {
 
   const {
@@ -48,9 +49,8 @@ const DeliveryForm = () => {
     if (isFormValid()) {
       setLoading(true);
       const payload = shapePayload(formData);
-      api.post(`/checkout/${sessionId}`, payload)
-        .then(res => {
-          const data = res.data;
+      checkout(sessionId, payload)
+        .then(data => {
           window.location.href = data.successUrl;
         })
         .catch(err => console.error(err))

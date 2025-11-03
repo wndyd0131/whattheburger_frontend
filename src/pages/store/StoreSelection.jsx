@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookie from 'js-cookie';
 import { ORDER_TYPE_EXPIRATION_TIME, STORE_ID_EXPIRATION_TIME } from '../../utils/cookieExpirationTime';
 import StoreCardSkeleton from '../../components/Store/StoreCardSkeleton';
+import { fetchNearByStores } from '../../api/store';
 const StoreSelection = () => {
   const MAPBOX_API_KEY = import.meta.env.VITE_MAPBOX_API_KEY;
   const RADIUS_METER = 20000;
@@ -30,11 +31,6 @@ const StoreSelection = () => {
     stores.find(store => store.storeId === selectedStoreId) ?? null
   , [stores, selectedStoreId]);
 
-
-  const fetchNearBy = (lon, lat, radiusMeter) => {
-    return api.get(`/store/nearby?lon=${lon}&lat=${lat}&radiusMeter=${radiusMeter}`);
-  }
-
   const handleQueryChange = (e) => {
     setQuery(e.target.value);
   }
@@ -56,8 +52,8 @@ const StoreSelection = () => {
 
   const handleClickButton = (storeId, orderType) => {
     if (storeId && orderType) {
-      Cookie.set("storeId", storeId, { expires: STORE_ID_EXPIRATION_TIME });
-      Cookie.set("orderType", orderType, { expires: ORDER_TYPE_EXPIRATION_TIME});
+      Cookie.set("storeId", storeId, { expires: STORE_ID_EXPIRATION_TIME, sameSite: "None", secure: true });
+      Cookie.set("orderType", orderType, { expires: ORDER_TYPE_EXPIRATION_TIME, sameSite: "None", secure: true });
       nav(`/menu/${storeId}#category-section`);
     }
   }
@@ -134,20 +130,20 @@ const StoreSelection = () => {
                     mapRef.current.flyTo({center: [longitude, latitude], zoom: 12});
                     
                     setIsLoading(true);
-                    fetchNearBy(longitude, latitude, RADIUS_METER)
-                        .then(res => {
-                          storeMarkersRef.current = res.data.map(store => {
-                            
-                            return new mapboxgl.Marker({ color: '#FE7800' })
-                              .setLngLat([store.coordinate.longitude, store.coordinate.latitude])
-                              .addTo(mapRef.current)
-                          });
-                          setStores(res.data);
-                        })
-                        .catch(err => console.error(err))
-                        .finally(() => {
-                          setIsLoading(false);
-                        })
+                    fetchNearByStores(longitude, latitude, RADIUS_METER)
+                      .then(data => {
+                        storeMarkersRef.current = data.map(store => {
+                          
+                          return new mapboxgl.Marker({ color: '#FE7800' })
+                            .setLngLat([store.coordinate.longitude, store.coordinate.latitude])
+                            .addTo(mapRef.current)
+                        });
+                        setStores(data);
+                      })
+                      .catch(err => console.error(err))
+                      .finally(() => {
+                        setIsLoading(false);
+                      })
                   }}
                 >
                 <div className="flex p-2 border-1 border-gray-200 rounded-4xl h-[60px]">

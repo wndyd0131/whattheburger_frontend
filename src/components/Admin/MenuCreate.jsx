@@ -5,10 +5,10 @@ import {selectedOptionReducer} from "../../reducers/MenuCreate/selectedOptionRed
 import { fetchCategories } from "../../api/category.js";
 import { fetchOptions } from "../../api/option.js";
 import { fetchOptionTraits } from "../../api/optionTrait.js";
-import api from "../../utils/api.js";
 import ProductDetailInput from "../MenuCreate/ProductDetailInput.jsx";
 import CustomizationDetailInput from "../MenuCreate/CustomizationDetailInput.jsx";
 import OptionModal from "../MenuCreate/OptionModal/OptionModal.jsx";
+import { createProduct } from "../../api/product.js";
 
 export const MenuCreateContext = createContext();
 
@@ -97,8 +97,8 @@ const MenuCreate = () => {
     formData.append('productBlob', new Blob([JSON.stringify(productData)], { type: 'application/json' }));
     formData.append('productImage', imageSource);
   
-    const response = api.post('/products', formData)
-      .then(response => console.log("Response:", response.data))
+    createProduct(formData)
+      .then(data => console.log("Response data:", data))
       .catch(err => console.error(err));
   }
 
@@ -164,7 +164,7 @@ const MenuCreate = () => {
             setMinSelection={setMinSelection}
             setMaxSelection={setMaxSelection}
           />
-          <button className="flex w-[100px] h-[50px] text-lg bg-white text-[#FE7800] border border-gray-200 rounded-md font-['Whatthefont'] justify-center self-center items-center cursor-pointer hover:bg-gray-100" onClick={() => handleClickCreateButton()}>
+          <button className="flex w-[100px] h-[50px] text-lg bg-white text-[#FE7800] rounded-md font-['Whatthefont'] justify-center self-center items-center cursor-pointer border border-[#FE7800] hover:bg-gray-100 mb-10" onClick={() => handleClickCreateButton()}>
             Create
           </button>
 

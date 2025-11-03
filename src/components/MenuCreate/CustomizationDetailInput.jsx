@@ -135,63 +135,72 @@ const CustomizationDetailInput = ({
   
   return (
     <>
-      <div className={styles.inputContainer}>
+      <div className="flex flex-col gap-[20px]">
         <h2>Custom Rule</h2>
-        <button className={`${styles.customRuleButton} ${addButtonClicked ? styles.clicked: ""}`} disabled={addButtonClicked} onClick={() => handleClickAddButton()}>Add</button>
-      
-        <div className={`${styles.customizationContainer} ${customRuleState.length > 0 || addButtonClicked ? "" : styles.empty}`}>
+        <button className={
+          `flex w-[60px] h-[35px] text-lg bg-white text-[#FE7800] rounded-md font-['Whatthefont'] justify-center items-center border border-[#FE7800]
+          ${addButtonClicked ? "text-gray-200 border-gray-200" : "cursor-pointer hover:bg-gray-100"}
+          `}
+          disabled={addButtonClicked}
+          onClick={() => handleClickAddButton()}
+          >Add</button>
+        <div className={`grid auto-rows-[0fr] h-[350px] w-full border border-gray-200 rounded-md ${customRuleState.length > 0 || addButtonClicked ? "" : "flex justify-center auto-rows-[1fr] items-center h-[350px] border-gray-200"}`}>
           {addButtonClicked || customRuleState.length > 0 ? 
-          <>          
-            <div className={styles.customizationHead}>
-            <div className={styles.customizationHeadGrid}>
+          <div className="flex flex-col">
+            <div className="grid grid-cols-4 h-[45px] w-[800px] text-white font-bold bg-gradient-to-r from-amber-500 to-orange-500">
+            <div className="flex justify-center items-center">
               Custom Rule Name
             </div>
-            <div className={styles.customizationHeadGrid}>
+            <div className="flex justify-center items-center">
               Custom Rule Type
             </div>
-            <div className={styles.customizationHeadGrid}>
+            <div className="flex justify-center items-center">
               Minimum Selection
             </div>
-            <div className={styles.customizationHeadGrid}>
+            <div className="flex justify-center items-center">
               Maximum Selection
             </div>
-          </div>
-          {
-            customRuleState.map((customRule, customRuleIdx) => {
-              return (
-              <div key={customRuleIdx} className={styles.customizationGrid}>
-                <div className={styles.customizationInfo}>
-                  <div className={styles.customizationInfoGrid}>
-                    {customRule.customRuleName}
+            </div>
+            <div className="overflow-y-auto">
+            {
+              customRuleState.map((customRule, customRuleIdx) => {
+                return (
+                <div key={customRuleIdx} className={`flex h-[70px] ${customRuleIdx === customRuleState.length - 1 ? "" : "border-b border-gray-200"}`}>
+                  <div className="grid grid-cols-4 w-[800px] font-bold">
+                    <div className="flex justify-center items-center">
+                      {customRule.customRuleName}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {customRule.customRuleType}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {customRule.minSelection}
+                    </div>
+                    <div className="flex justify-center items-center">
+                      {customRule.maxSelection}
+                    </div>
                   </div>
-                  <div className={styles.customizationInfoGrid}>
-                    {customRule.customRuleType}
-                  </div>
-                  <div className={styles.customizationInfoGrid}>
-                    {customRule.minSelection}
-                  </div>
-                  <div className={styles.customizationInfoGrid}>
-                    {customRule.maxSelection}
+                  <div className="flex justify-between gap-5 p-5">
+                    <button className="flex w-[80px] h-[40px] text-sm bg-white text-[#FE7800] rounded-full font-['Whatthefont'] justify-center self-center items-center cursor-pointer border border-[#FE7800] hover:bg-gray-100" onClick={() => handleClickAddOptionButton(customRuleIdx)}>Add Options</button>
+                    <button className="flex w-[80px] h-[40px] text-sm bg-white text-[#FE7800] rounded-full font-['Whatthefont'] justify-center self-center items-center cursor-pointer border border-[#FE7800] hover:bg-gray-100">Modify</button>
+                    <button className="flex w-[80px] h-[40px] text-sm bg-white text-[#FE7800] rounded-full font-['Whatthefont'] justify-center self-center items-center cursor-pointer border border-[#FE7800] hover:bg-gray-100" onClick={() => handleClickDeleteGridButton(customRuleIdx)}>Delete</button>
                   </div>
                 </div>
-                <div className={styles.customizationGridButton2}>
-                  <button className={styles.customRuleButton} onClick={() => handleClickAddOptionButton(customRuleIdx)}>Add Options</button>
-                  <button className={styles.customRuleButton}>Modify</button>
-                  <button className={styles.customRuleButton} onClick={() => handleClickDeleteGridButton(customRuleIdx)}>Delete</button>
-                </div>
-              </div>
-              );
-            })
+                );
+              })
+            }
+            </div>
+          
+          </div> : <h3 className={styles.emptyOptionPrompt}>Add custom rule options</h3>
           }
-          </> : <h3 className={styles.emptyOptionPrompt}>Add custom rule options</h3>
-          }
+
           {addButtonClicked && 
-            <div className={styles.customizationGrid}>
-              <div className={styles.customizationInput}>
-                <label className={styles.customizationInputGrid}>
-                  <input className={styles.customRuleInput} name="customRuleName" value={customRuleName} placeholder="1-20 words" onChange={(e) => setCustomRuleName(e.target.value)}/>
+            <div className="flex h-[90px] border-b border-gray-200">
+              <div className="grid grid-cols-4 w-[800px]">
+                <label className="flex flex-col justify-center items-center p-2">
+                  <input className="flex justify-center border border-gray-300 rounded-sm h-[30px] w-full focus:outline-none p-2" name="customRuleName" value={customRuleName} placeholder="1-20 words" onChange={(e) => setCustomRuleName(e.target.value)}/>
                 </label>
-                <label className={styles.customizationInputGrid}>
+                <label className="flex flex-col justify-center items-center p-2">
                   <select className={styles.customRuleInput} value={customRuleType} onChange={(e) => handleChangeCustomRuleType(e)}>
                     <option value="">
                       {DEFAULT_OPTION_STRING}
@@ -207,9 +216,9 @@ const CustomizationDetailInput = ({
                     </option>
                   </select>
                 </label>
-                <label className={styles.customizationInputGrid}>
+                <label className="flex flex-col justify-center items-center p-2">
                   <input 
-                    className={styles.customRuleInput}
+                    className="flex justify-center border border-gray-300 rounded-sm h-[30px] w-full focus:outline-none p-2"
                     name="minSelection"
                     type="number"
                     min={0}
@@ -218,9 +227,9 @@ const CustomizationDetailInput = ({
                     onChange={(e) => setMinSelection(e.target.value)}
                   />
                 </label>
-                <label className={styles.customizationInputGrid}>
+                <label className="flex flex-col justify-center items-center p-2">
                   <input
-                    className={styles.customRuleInput}
+                    className="flex justify-center border border-gray-300 rounded-sm h-[30px] w-full focus:outline-none p-2"
                     name="maxSelection"
                     type="number"
                     min={0}
@@ -231,9 +240,9 @@ const CustomizationDetailInput = ({
                 </label>
               </div>
               
-              <div className={styles.customizationGridButton1}>
-                <button className={styles.customRuleButton} onClick={() => handleClickSaveButton()}>Save</button>
-                <button className={styles.customRuleButton} onClick={() => handleClickCancelButton()}>Cancel</button>
+              <div className="flex flex-grow justify-center items-center gap-5">
+                <button className="flex w-[80px] h-[40px] text-sm bg-white text-[#FE7800] rounded-full font-['Whatthefont'] justify-center self-center items-center cursor-pointer border border-[#FE7800] hover:bg-gray-100" onClick={() => handleClickSaveButton()}>Save</button>
+                <button className="flex w-[80px] h-[40px] text-sm bg-white text-[#FE7800] rounded-full font-['Whatthefont'] justify-center self-center items-center cursor-pointer border border-[#FE7800] hover:bg-gray-100" onClick={() => handleClickCancelButton()}>Cancel</button>
               </div>
             </div>
           }

@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import Modal from "../../Modal";
 import { SelectedOptionContext } from "../OptionModal/OptionModal";
 
 const QuantityDetailModal = ({selectedQuantityId, setSelectedQuantityId}) => {

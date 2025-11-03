@@ -8,6 +8,7 @@ import { ORDER_SESSION_ACTIONS } from '../../reducers/OrderSession/action';
 import OrderSessionSummary from '../../components/Order/OrderSessionSummary';
 import { OrderFormProvider } from '../../contexts/OrderFormContext';
 import { useNavigate, useParams } from 'react-router-dom';
+import { fetchOrderSession } from '../../api/order';
 const Order = () => {
   const {
     setUserDetails
@@ -34,12 +35,12 @@ const Order = () => {
 
   useEffect(() => {
     if (!sessionId || !storeId) return;
-    api.get(`/orderSession/${sessionId}/store/${storeId}`)
-      .then(response => {
+    fetchOrderSession(sessionId, storeId)
+      .then(data => {
         dispatchRoot({
           type: ORDER_SESSION_ACTIONS.LOAD_SESSION,
           payload: {
-            orderSessionResponse: response.data
+            orderSessionResponse: data
           }
         });
       })

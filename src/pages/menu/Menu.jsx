@@ -8,6 +8,7 @@ import api from "../../utils/api";
 import MenuSection from "../../components/Menu/MenuSection";
 import Cookie from "js-cookie";
 import { STORE_ID_EXPIRATION_TIME } from "../../utils/cookieExpirationTime";
+import { fetchStoreProductsByCategories } from "../../api/product";
 const Menu = () => {
   
   const {
@@ -48,8 +49,8 @@ const Menu = () => {
     if (!selectedStoreId) return;
     setIsLoading(true);
     
-    api.get(`/store/${selectedStoreId}/category/product`)
-      .then(({data}) => {
+    fetchStoreProductsByCategories(selectedStoreId)
+      .then(data => {
         if (Array.isArray(data)) {
           setCategories(data);
         }

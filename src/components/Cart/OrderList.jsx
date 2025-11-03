@@ -6,6 +6,8 @@ import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import { toast } from "react-toastify";
 import { OPTION_ACTIONS } from "../../reducers/Option/actions";
 import { CartContext } from "./contexts/CartContext";
+import Cookie from "js-cookie";
+import { deleteCartItem, fetchCartItem, modifyCartItemQuantity } from "../../api/cart";
 
 const OrderList = () => {
 
@@ -30,9 +32,9 @@ const OrderList = () => {
   const [closeButtonHovered, setCloseButtonHovered] = useState(false);
 
   const handleClickModifyButton = (cartIdx) => {
-    api.get(`/cart/${cartIdx}`)
-      .then(response => {
-        const data = response.data
+    const storeId = Cookie.get("storeId");
+    fetchCartItem(storeId, cartIdx)
+      .then(data => {
         dispatchRoot({
           type: CART_ACTIONS.LOAD_PRODUCT, // load everything to single cart
           payload: {
@@ -73,9 +75,10 @@ const OrderList = () => {
     const requestBody = {
       quantity: newQuantity
     }
-    api.patch(`/cart/${cartIdx}/product`, requestBody)
-      .then(res => {
-        const cartData = res.data;
+    const storeId = Cookie.get("storeId");
+    modifyCartItemQuantity(storeId, cartIdx, requestBody)
+      .then(data => {
+        const cartData = data;
         dispatchRoot({
           type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
           payload: {
@@ -92,9 +95,10 @@ const OrderList = () => {
     const requestBody = {
       quantity: newQuantity
     }
-    api.patch(`/cart/${cartIdx}/product`, requestBody)
-      .then(res => {
-        const cartData = res.data;
+    const storeId = Cookie.get("storeId");
+    modifyCartItemQuantity(storeId, cartIdx, requestBody)
+      .then(data => {
+        const cartData = data;
         dispatchRoot({
           type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
           payload: {
@@ -105,9 +109,10 @@ const OrderList = () => {
       .catch(err => console.error(err));
   }
   const handleClickCloseButton = (cartIdx) => {
-    api.delete(`/cart/${cartIdx}`)
-      .then(res => {
-        const cartData = res.data;
+    const storeId = Cookie.get("storeId");
+    deleteCartItem(storeId, cartIdx)
+      .then(data => {
+        const cartData = data;
         dispatchRoot({
           type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
           payload: {

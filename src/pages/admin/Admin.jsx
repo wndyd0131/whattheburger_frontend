@@ -5,8 +5,9 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import MenuCreate from '../../components/Admin/MenuCreate';
 import StoreProductCreate from '../../components/StoreProductCreate';
-import api from '../../utils/api';
 import { StoreProductCreateProvider } from '../../contexts/StoreProductCreateContext';
+import { fetchStores } from '../../api/store';
+import { fetchProducts } from '../../api/product';
 
 const Admin = () => {
   const [productOpen, setProductOpen] = useState(false);
@@ -29,20 +30,20 @@ const Admin = () => {
   }
 
   useEffect(() => {
-    api.get("/store")
-      .then(res => {
-        setStores(res.data);
+    fetchStores()
+      .then(data => {
+        setStores(data);
       })
       .catch(err => console.error(err));
-    api.get("/products")
-      .then(res => {
-        setProducts(res.data);
+    fetchProducts()
+      .then(data => {
+        setProducts(data);
       })
   }, []);
 
   return (
     <div className="flex font-[sans-serif] w-full max-md:m-0">
-      <div className='flex bg-white min-w-[300px] max-w-[350px] w-full p-5 h-full shadow-md'>
+      <div className='flex min-w-[300px] bg-white max-w-[350px] w-full p-5 h-full shadow-md'>
         <List
           sx={{ height: '100%', width: '100%', maxWidth: 360}}
           component='nav'

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { MenuCreateContext } from "/src/components/Admin/MenuCreate";
 import { ACTIONS } from "/src/reducers/MenuCreate/actions";
 
-const DecisionFooter = () => {
+const Footer = () => {
 
   const {
     selectedOptionState,
@@ -38,11 +38,11 @@ const DecisionFooter = () => {
   }
 
   return (
-    <div className="flex justify-end items-center h-[100px] bg-[#FE7800] py-[30px] gap-[20px]">
-      <button className="flex justify-center items-center h-[35px] w-[60px] border-1 border-[rgb(225,225,225)] rounded-[4px] bg-white cursor-pointer" onClick={() => handleClickSaveButton()}>Save</button>
-      <button className="flex justify-center items-center h-[35px] w-[60px] border-1 border-[rgb(225,225,225)] rounded-[4px] bg-white cursor-pointer" onClick={() => handleClickCancelButton()}>Cancel</button>
+    <div className="flex justify-center items-center h-[100px] bg-gradient-to-r from-amber-500 to-orange-500 pr-[30px] py-[30px] gap-[20px]">
+      <button className="flex w-[100px] h-[50px] text-lg bg-white text-[#FE7800] border border-gray-200 rounded-md font-['Whatthefont'] justify-center self-center items-center cursor-pointer hover:bg-gray-100" onClick={() => handleClickSaveButton()}>Save</button>
+      <button className="flex w-[100px] h-[50px] text-lg bg-white text-[#FE7800] border border-gray-200 rounded-md font-['Whatthefont'] justify-center self-center items-center cursor-pointer hover:bg-gray-100" onClick={() => handleClickCancelButton()}>Cancel</button>
     </div>
   );
 }
 
-export default DecisionFooter;
+export default Footer;

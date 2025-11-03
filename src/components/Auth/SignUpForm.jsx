@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
+import { signUp } from "../../api/user";
 const SignUpForm = () => {
 
   const {
@@ -184,10 +185,10 @@ const SignUpForm = () => {
 
   const handleClickSignUpButton = () => {
     if (isFormValid(signUpError)) {
-      const requestObject = fromFormToRequest(signUpForm);
+      const requestBody = fromFormToRequest(signUpForm);
       setLoading(true);
-      api.post('/signup', requestObject)
-      .then(response => {
+      signUp(requestBody)
+      .then(data => {
         toast.success("You've successfully created your account");
         setIsSignIn(true);
         setIsSignUp(false);

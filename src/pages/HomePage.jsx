@@ -89,8 +89,8 @@ const HomePage = () => {
         height={700}
       >
         <div className="flex w-[1500px] rounded-4xl bg-[#F4F8F9] font-[sans-serif] overflow-hidden">
-          <div className="flex basis-1/4 justify-center items-center w-[500px] h-full border-r-1 border-gray-300">
-            <img src="src\assets\images\alexander-startsev-ndNw_6QGR_c-unsplash.jpg"></img>
+          <div className="flex justify-center items-center max-w-[300px] h-full border-r-1 border-gray-300">
+            <img src="/images/banner6.jpg"></img>
           </div>
           <div className="flex basis-3/4 justify-center items-center flex-col w-[500px] px-[100px] gap-10">
             <div className="flex flex-col gap-3">

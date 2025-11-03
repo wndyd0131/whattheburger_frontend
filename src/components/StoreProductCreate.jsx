@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { StoreProductCreateContext } from '../contexts/StoreProductCreateContext';
 import api from '../utils/api';
 import { toast } from 'react-toastify';
+import { registerStoreProduct } from '../api/product';
 
 
 const StoreProductCreate = () => {
@@ -36,8 +37,8 @@ const StoreProductCreate = () => {
       storeIds: selectedStoreIds
     }
     if (selectedProductId !== null && selectedStoreIds.length > 0) {
-      api.post("/store/product", requestBody)
-        .then(res => {
+      registerStoreProduct(requestBody)
+        .then(data => {
           setSelectedProductId(null);
           setSelectedStoreIds([]);
           toast.success('Product successfully registered', {
@@ -105,7 +106,7 @@ const StoreProductCreate = () => {
             const productId = product.productId;
             const selected = selectedProductId === productId;
             return (
-              <div className="flex justify-center p-2">
+              <div key={idx} className="flex justify-center p-2">
                 <div
                   className={`flex flex-col w-full bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2
                     ${selected ? "border-[#FE7800]" : "border-gray-100 hover:border-orange-200 hover:bg-gray-50"}

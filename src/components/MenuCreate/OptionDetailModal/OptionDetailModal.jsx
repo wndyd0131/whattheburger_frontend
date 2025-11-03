@@ -1,3 +1,5 @@
+import Modal from "../../Modal";
+import SelectedOptionInput from "./SelectedOptionInput";
 
 const OptionDetailModal = () => {
 

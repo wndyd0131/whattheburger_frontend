@@ -18,6 +18,7 @@ import Admin from "./pages/admin/Admin";
 import ProtectedStoreMenuRoute from "./routes/ProtectedStoreMenuRoute";
 import RequireRoles from "./routes/RequireRoles";
 import api from "./utils/api";
+import { fetchUser } from "./api/user";
 
 function App() {
   const {
@@ -33,17 +34,17 @@ function App() {
     }
     if (accessToken) {
       setIsLoading(true);
-      api.get('/users')
-        .then (response => {
+      fetchUser()
+        .then (data => {
           setUserDetails((prev) => ({
             ...prev,
-            userId: response.data.userId,
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            phoneNum: response.data.phoneNum,
-            zipcode: response.data.zipcode,
+            userId: data.userId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phoneNum: data.phoneNum,
+            zipcode: data.zipcode,
             isAuthenticated: true,
-            role: response.data.role
+            role: data.role
           }));
       })
       .catch(err => {

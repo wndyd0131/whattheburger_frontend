@@ -1,4 +1,11 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useReducer } from "react";
+import Modal from "../../Modal";
+import SortSection from "./SortSection";
+import OptionItemSection from "./OptionItemSection";
+import SelectedOptionSection from "./SelectedOptionSection";
+import { MenuCreateContext } from "../../Admin/MenuCreate";
+import Header from "./Header";
+import Footer from "./Footer";
 
 export const SelectedOptionContext = createContext();
 
@@ -31,7 +38,7 @@ const OptionModal = () => {
   });
 
   const optionModalStyle = {
-    height: 850,
+    height: 2000,
     width: 1400,
     flexDirection: "column"
   }
@@ -56,11 +63,11 @@ const OptionModal = () => {
         flexDirection={optionModalStyle.flexDirection}
       >
       <div className="flex flex-col flex-grow">
-        <SearchBar/>
+        <Header/>
         <SortSection/>
         <OptionItemSection/>
         <SelectedOptionSection/>
-        <DecisionFooter/>
+        <Footer/>
       </div>
     </Modal>
   </SelectedOptionContext.Provider>

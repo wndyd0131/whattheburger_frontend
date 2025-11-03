@@ -12,6 +12,7 @@ import { CART_ACTIONS } from "./reducers/Cart/actions";
 import api from "./utils/api";
 import { Outlet, useLocation } from "react-router-dom";
 import Cookie from "js-cookie";
+import { fetchCart } from "./api/cart";
 
 const Layout = () => { {/* nested components */}
   const {
@@ -40,36 +41,19 @@ const Layout = () => { {/* nested components */}
   useEffect(() => {
     const storeId = Cookie.get("storeId");
     if (storeId) {
-      api.get("/cart")
-      .then(res => {
-        const cartData = res.data;
-        dispatchRoot({
-          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
-          payload: {
-            cartData: cartData
-          }
-        });
-        setSelectedStoreId(storeId);
-      })
-      .catch(err => console.error(err));
+      fetchCart(storeId)
+        .then(data => {
+          dispatchRoot({
+            type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+            payload: {
+              cartData: data
+            }
+          });
+          setSelectedStoreId(storeId);
+        })
+        .catch(err => console.error(err));
     }
-  }, [])
-
-  // useEffect(() => {
-  //   if (!selectedStoreId) return;
-  //   api.get("/cart")
-  //   .then(res => {
-  //     console.log("CART_RESPONSE", res.data);
-  //     const cartData = res.data;
-  //     dispatchRoot({
-  //       type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
-  //       payload: {
-  //         cartData: cartData
-  //       }
-  //     });
-  //   })
-  //   .catch(err => console.error(err));
-  // }, [selectedStoreId]);
+  }, []);
 
   return (
     <>

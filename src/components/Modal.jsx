@@ -13,7 +13,7 @@ const Modal = ({height, width, flexDirection, position, justifyContent, alignIte
           animate={{y: 0, opacity: 1, scale: 1}}
           exit={{y: 100, opacity: 0, scale: 0.9}}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="flex relative w-full h-full max-w-[90%] max-h-[90%] rounded-3xl bg-white overflow-hidden shadow-2xl border border-gray-100"
+          className="flex relative w-full h-full max-w-[90%] max-h-[90%] rounded-3xl overflow-hidden bg-white shadow-2xl"
           style={{height, width, flexDirection, position, justifyContent, alignItems}}
         >
           {children}

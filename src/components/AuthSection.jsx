@@ -21,10 +21,10 @@ const AuthSection = () => {
     <>
       {userDetails?.isAuthenticated === true ?
       <div ref={profileRef} className="flex relative justify-center items-center gap-[10px] mx-5 space-x-0">
-        <div className="flex justify-center items-center overflow-hidden border-1 border-gray-300 shadow-sm rounded-full min-w-[40px] cursor-pointer">
-          <img className="w-[40px] h-[40px]" src="/private/logo/whattheburger-logo.png"></img>
+        <div className="flex justify-center items-center overflow-hidden border-1 border-gray-300 shadow-sm rounded-full min-w-[40px]">
+          <img className="w-[40px] h-[40px]" src="/icons/utils/person.png"></img>
         </div>
-        <p onClick={() => setIsOpened(!isOpened)} className="underline font-[sans-serif] line-clamp-3 leading-relaxed cursor-pointer whitespace-nowrap">{`Welcome, ${truncate(userDetails.firstName)} ${userDetails.lastName[0]}.`}</p>
+        <p onClick={() => setIsOpened(!isOpened)} className="font-[sans-serif] line-clamp-3 leading-relaxed cursor-pointer whitespace-nowrap hover:text-[#FE7800]">{`Welcome, ${truncate(userDetails.firstName)} ${userDetails.lastName[0]}.`}</p>
         <ProfileDropdown props={{isOpened: isOpened, setIsOpened: setIsOpened, profileRef: profileRef}}/>
       </div>
       :

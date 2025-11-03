@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { FormContext } from "./contexts/FormContext";
-import Cookies from "js-cookie";
+import Cookie from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { ACCESS_TOKEN_EXPIRATION_TIME, REFRESH_TOKEN_EXPIRATION_TIME } from "../../utils/cookieExpirationTime";
@@ -12,6 +12,9 @@ import { motion } from "framer-motion";
 import { LoadingSpinner } from "../../svg/Utils";
 import { TextField } from "@mui/material";
 import { toast } from "react-toastify";
+import { login } from "../../api/auth";
+import { fetchUser } from "../../api/user";
+import { fetchCart } from "../../api/cart";
 
 const SignInForm = () => {
   const {
@@ -58,30 +61,29 @@ const SignInForm = () => {
     // Validation
     // API call
     if (isFormValid(signInForm)) {
-      const requestObject = fromFormToRequest(signInForm);
+      const requestBody = fromFormToRequest(signInForm);
       setLoading(true);
-      api.post('/login', requestObject)
-      .then(response => {
-        const accessToken = response.data.accessToken;
-        const refreshToken = response.data.refreshToken;
-        Cookies.set('accessToken', accessToken, { expires: ACCESS_TOKEN_EXPIRATION_TIME});
-        Cookies.set('refreshToken', refreshToken, { expires: REFRESH_TOKEN_EXPIRATION_TIME});
+      login(requestBody)
+      .then(data => {
+        const accessToken = data.accessToken;
+        const refreshToken = data.refreshToken;
+        Cookie.set('accessToken', accessToken, { expires: ACCESS_TOKEN_EXPIRATION_TIME});
+        Cookie.set('refreshToken', refreshToken, { expires: REFRESH_TOKEN_EXPIRATION_TIME});
         setSignInForm((prev) => (
           { ...prev,
             email: '',
             password: ''
           })
         );
-        api.get('/users')
-          .then(
-          response => {
+        fetchUser()
+          .then(data => {
             setUserDetails((prev) => ({
               ...prev,
-              userId: response.data.userId,
-              firstName: response.data.firstName,
-              lastName: response.data.lastName,
-              phoneNum: response.data.phoneNum,
-              zipcode: response.data.zipcode,
+              userId: data.userId,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              phoneNum: data.phoneNum,
+              zipcode: data.zipcode,
               isAuthenticated: true
             }));
             setLoginErrorText(null);
@@ -90,19 +92,21 @@ const SignInForm = () => {
           .catch(
             err => console.error(err)
           );
-        api.get('/cart')
-          .then(response => {
-            const cartData = response.data;
-            dispatchRoot({
-              type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
-              payload: {
-                cartData: cartData
-              }
-            });
-          })
-          .catch(
-            err => console.error(err)
-          );
+        const storeId = Cookie.get("storeId");
+        if (storeId) {
+          fetchCart(storeId)
+            .then(data => {
+              dispatchRoot({
+                type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+                payload: {
+                  cartData: data
+                }
+              });
+            })
+            .catch(
+              err => console.error(err)
+            );
+        }
         navigate('/');
       })
       .catch(err => {

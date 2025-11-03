@@ -12,7 +12,7 @@ const Logo = () => {
       max-md:self-start
     ">
       <Link className="flex items-center" to="/">
-        <img className="h-18 min-w-18" src="/logo/whattheburger-logo.png"/>
+        <img className="h-18 min-w-18" src="/logos/whattheburger-logo.png"/>
         <p className="flex font-['Whatthefont'] text-[#FE7800] text-2xl">Whattheburger</p>
       </Link>
     </div>

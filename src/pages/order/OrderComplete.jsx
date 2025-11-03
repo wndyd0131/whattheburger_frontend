@@ -8,6 +8,7 @@ import { normalizeProduct } from '../../utils/normalizer';
 import OrderSummary from '../../components/Order/OrderSummary';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
+import { fetchOrderByCheckoutSessionId } from '../../api/order';
 
 
 const OrderComplete = () => {
@@ -19,7 +20,7 @@ const OrderComplete = () => {
     }
   } = useContext(LayoutContext);
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const WS_BASE_URL = import.meta.env.VITE_WS_BASE_URL;
 
   const nav = useNavigate()
   const [loading, setLoading] = useState(false);
@@ -153,7 +154,7 @@ const OrderComplete = () => {
       }
     }
     if (wsRef.current == null) {
-      const ws = new WebSocket(`ws://${BACKEND_URL}/ws/track`);
+      const ws = new WebSocket(`${WS_BASE_URL}/ws/track`);
       wsRef.current = ws;
       ws.addEventListener("open", () => console.log("[ws] open"), {once: true}); // auto-remove
       ws.addEventListener("message", onMessage);
@@ -164,9 +165,8 @@ const OrderComplete = () => {
     // const orderNumber = params.get("orderNumber");
     const sessionId = params.get("session_id");
     
-    api.get(`/order/checkoutSession/${sessionId}`)
-      .then(response => {
-        const data = response.data;
+    fetchOrderByCheckoutSessionId(sessionId)
+      .then(data => {
         dispatchRoot({
           type: ORDER_ACTIONS.LOAD_ORDER,
           payload: {
@@ -219,7 +219,7 @@ const OrderComplete = () => {
                 <div className='flex w-full h-full max-w-300 p-5 border justify-center items-center border-gray-300 rounded-lg'>
                 {orderStage === 1 &&
                   <div className='flex flex-col justify-center items-center'>
-                    <img src="/public/icons/utils/gif/prep_loading.gif" width={200}></img>
+                    <img src="/icons/utils/gif/prep_loading.gif" width={200}></img>
                     <div className='text-center text-xl font-["sans-serif"]'>
                       <p>We are preparing your food right now,</p>
                       <p>it may costs around <span className='font-bold text-[#FE7800]'>5</span> minutes.</p>
@@ -229,7 +229,7 @@ const OrderComplete = () => {
                   <div className='flex flex-col justify-center items-center'>
                     <div className='flex border-1 border-gray-200 rounded-lg'>
                     </div>
-                    <img src="/public/icons/utils/gif/delivery_loading.gif" width={200}></img>
+                    <img src="/icons/utils/gif/delivery_loading.gif" width={200}></img>
                   </div>
                 }
                 </div>

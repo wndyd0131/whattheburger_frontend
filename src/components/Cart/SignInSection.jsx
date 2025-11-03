@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { LayoutContext } from '../../contexts/LayoutContext';
 import { ORDER_SESSION_ACTIONS } from '../../reducers/OrderSession/action';
 import Cookie from "js-cookie";
+import { createOrderSession } from '../../api/order';
+import { login } from '../../api/auth';
+import { fetchUser } from '../../api/user';
 
 const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
   const {
@@ -39,16 +42,20 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
   
   const handleClickGuestSignIn = () => {
     const storeId = Cookie.get("storeId");
+    const orderType = Cookie.get("orderType");
+    const requestBody = {
+      orderType: orderType
+    }
     if (storeId) {
-      api.post(`/orderSession/store/${storeId}`)
-      .then(response => {
+      createOrderSession(storeId, requestBody)
+      .then(data => {
         dispatchRoot({
           type: ORDER_SESSION_ACTIONS.LOAD_SESSION,
           payload: {
-            orderSessionResponse: response.data
+            orderSessionResponse: data
           }
         });
-        const orderSessionId = response.data.sessionId;
+        const orderSessionId = data.sessionId;
         nav(`/order-session/${orderSessionId}/store/${storeId}`);
         setCartOpened(false);
         setSignInModalOpened(false);
@@ -65,11 +72,11 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
   const handleClickSignInButton = () => {
     // Validation
     // API call
-    const requestObject = fromFormToRequest(signInForm);
-    api.post('/login', requestObject)
-    .then(response => {
-      const accessToken = response.data.accessToken;
-      const refreshToken = response.data.refreshToken;
+    const requestBody = fromFormToRequest(signInForm);
+    login(requestBody)
+    .then(data => {
+      const accessToken = data.accessToken;
+      const refreshToken = data.refreshToken;
       Cookies.set('accessToken', accessToken, { expires: ACCESS_TOKEN_EXPIRATION_TIME});
       Cookies.set('refreshToken', refreshToken, { expires: REFRESH_TOKEN_EXPIRATION_TIME});
       setSignInForm((prev) => (
@@ -78,24 +85,27 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
           password: ''
         })
       );
-      api.get('/users')
-        .then(
-        response => {
+      fetchUser()
+        .then(data => {
           setUserDetails((prev) => ({
             ...prev,
-            userId: response.data.userId,
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            phoneNum: response.data.phoneNum,
-            zipcode: response.data.zipcode,
+            userId: data.userId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phoneNum: data.phoneNum,
+            zipcode: data.zipcode,
             isAuthenticated: true
           }));
-          api.post('/order') // overwrite cart
-            .then(response => {
+          const storeId = Cookie.get("storeId");
+          const requestBody = {
+            orderType: orderType
+          }
+          createOrderSession(storeId, requestBody)
+            .then(data => {
               dispatchRoot({
                 type: ORDER_SESSION_ACTIONS.LOAD_SESSION,
                 payload: {
-                  orderSessionResponse: response.data
+                  orderSessionResponse: data
                 }
               });
             })

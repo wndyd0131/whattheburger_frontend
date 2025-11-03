@@ -6,6 +6,8 @@ import Cookie from "js-cookie";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import { LayoutContext } from "../../contexts/LayoutContext";
+import { fetchCart } from "../../api/cart";
+import { ListIcon, LogoutIcon, ProfileIcon } from "../../svg/Utils";
 
 const ProfileDropdown = ({props}) => {
 
@@ -33,19 +35,19 @@ const ProfileDropdown = ({props}) => {
     Cookie.remove("refreshToken");
     setUserDetails(undefined);
     if (selectedStoreId) {
-      api.get('/cart')
-      .then(response => {
-        const cartData = response.data;
-        dispatchRoot({
-          type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
-          payload: {
-            cartData: cartData
-          }
-        });
-      })
-      .catch(err => {
-        console.error(err);
-      })
+      fetchCart(selectedStoreId)
+        .then(data => {
+          const cartData = data;
+          dispatchRoot({
+            type: CART_ACTIONS.LOAD_ALL_PRODUCTS,
+            payload: {
+              cartData: cartData
+            }
+          });
+        })
+        .catch(err => {
+          console.error(err);
+        })
     }
     toast.success('Successfully signed out');
     navigate("/");

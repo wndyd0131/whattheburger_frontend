@@ -41,10 +41,12 @@ const OptionItemSection = () => {
           const exists = selectedOptionState.find(item => item.elementId === optionIdx);
           return (
             <div key={optionIdx}
-              className={`flex justify-self-center w-[300px] h-[100px] cursor-pointer hover:bg-[rgb(224,224,224)] hover:transition duration-200 ${exists ? "border-1 border-[#FE7800]" : "border-1 border-[rgb(225,225,225)]"}`}
+              className={`flex justify-self-center w-[300px] h-[100px] rounded-sm cursor-pointer hover:bg-[rgb(224,224,224)] hover:transition duration-200 ${exists ? "border-1 border-[#FE7800]" : "border-1 border-[rgb(225,225,225)]"}`}
               onClick={() => handleClickOptionGrid(optionIdx, exists)}
             >
-              <div className="w-[80px]">
+              <div className="flex justify-center items-center w-[80px]">
+                <img src={option.imageSource}>
+                </img>
               </div>
               <div className="flex flex-col items-center flex-grow">
                 <p>{option.optionName}</p>
