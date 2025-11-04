@@ -20,7 +20,7 @@ const OrderSummary = () => {
         <div className="grid items-center grid-cols-2 gap-x-10 gap-y-3 font-[sans-serif] text-gray-500">
           <p className="">Subtotal</p>
           <p>${orderState.totalPrice}</p>
-          <p className>Tax*</p>
+          <p>Tax*</p>
           <p>$0</p>
           <p className="text-2xl text-black font-semibold">Total</p>
           <p className="text-2xl text-black font-semibold">${orderState.totalPrice}</p>

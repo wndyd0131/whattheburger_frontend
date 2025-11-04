@@ -57,11 +57,11 @@ const MenuCard = ({product, calories}) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
       
-      <div className="flex flex-col p-6 space-y-4">
-        <div className="flex justify-between items-start">
+      <div className="flex flex-col p-6 space-y-4 w-full">
+        <div className="flex justify-between">
           <h2 className="text-xl font-bold h-[100px] text-gray-800 font-['Whatthefont']">{product.name}</h2>
-          <div className="flex flex-col items-end">
-            <span className="text-2xl font-bold text-[#FE7800] font-['Whatthefont']">${product.price}</span>
+          <div className="flex flex-col items-end w-[80px]">
+            <span className="text-2xl font-bold text-[#FE7800] font-['Whatthefont']">${product.price.toFixed(2)}</span>
             <span className="text-sm text-gray-500">{product.calories} cals</span>
           </div>
         </div>

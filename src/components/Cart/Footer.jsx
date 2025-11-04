@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { TrashCanIcon } from '../../svg/Utils'
+import { CloseButton, TrashCanIcon } from '../../svg/Utils'
 import { motion } from "framer-motion";
 import api from '../../utils/api';
 import { LayoutContext } from '../../contexts/LayoutContext';
@@ -23,7 +23,11 @@ const Footer = () => {
   const [trashCanIconHovered, setTrashCanIconHovered] = useState(false);
 
   const [signInModalOpened, setSignInModalOpened] = useState(false);
-
+  const [closeButtonHovered, setCloseButtonHovered] = useState(false);
+  
+  const handleClickCloseButton = () => {
+    setSignInModalOpened(false);
+  }
   const handleClickOrderButton = () => {
     setSignInModalOpened(true);
   }
@@ -88,8 +92,18 @@ const Footer = () => {
             animate={{y: 0, opacity: 1, scale: 1}}
             exit={{y: 100, opacity: 0, scale: 0.9}}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="flex flex-col px-30 py-10 relative rounded-3xl bg-white overflow-hidden shadow-2xl border border-gray-100"
+            className="flex flex-col px-30 pb-10 pt-5 relative rounded-3xl bg-white overflow-hidden shadow-2xl border border-gray-100"
           >
+            <div
+              className="absolute right-5 cursor-pointer"
+              onClick={() => handleClickCloseButton()}
+              onMouseEnter={() => setCloseButtonHovered(true)}
+              onMouseLeave={() => setCloseButtonHovered(false)}
+            >
+              <CloseButton
+                color={closeButtonHovered ? "#FE7800" : "#000000"}
+              />
+            </div>
             <SignInSection signInModalOpened={signInModalOpened} setSignInModalOpened={setSignInModalOpened}/>
           </motion.div>
         </motion.div>

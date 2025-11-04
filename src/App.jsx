@@ -19,6 +19,7 @@ import ProtectedStoreMenuRoute from "./routes/ProtectedStoreMenuRoute";
 import RequireRoles from "./routes/RequireRoles";
 import api from "./utils/api";
 import { fetchUser } from "./api/user";
+import OrderProcess from "./pages/order/OrderProcess";
 
 function App() {
   const {
@@ -35,7 +36,7 @@ function App() {
     if (accessToken) {
       setIsLoading(true);
       fetchUser()
-        .then (data => {
+        .then(data => {
           setUserDetails((prev) => ({
             ...prev,
             userId: data.userId,
@@ -92,6 +93,7 @@ function App() {
                 <Route path="/order/complete" element={<OrderComplete/>}></Route>
                 <Route path="/order/search" element={<OrderSearch/>}></Route>
               </Route>
+              <Route path="/order/process" element={<OrderProcess/>}></Route>
             </Routes>
         </LayoutProvider>
       </Router>

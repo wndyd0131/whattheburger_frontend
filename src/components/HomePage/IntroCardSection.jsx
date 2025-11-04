@@ -1,8 +1,8 @@
 
 const IntroCardSection = () => {
   return (
-    <div className="min-w-[500px] max-w-[1200px]">
-      <div className="flex max-h-[450px] font-[normal]">
+    <div className="min-w-[500px] max-w-[1200px] font-[sans-serif]">
+      <div className="flex max-h-[450px]">
         <div className="flex justify-start items-center basis-1/2 p-10">
           <div className="flex flex-col gap-3">
             <h1 className="text-[#FE7800]">Earn your point and take rewards</h1>
@@ -13,7 +13,7 @@ const IntroCardSection = () => {
           <img src="/images/banner3.png"></img>
         </div>
       </div>
-      <div className="flex max-h-[450px] font-[normal]">
+      <div className="flex max-h-[450px]">
         <div className="basis-1/2 rounded-l-2xl overflow-hidden">
           <img src="/images/banner1.png"></img>
         </div>
@@ -24,7 +24,7 @@ const IntroCardSection = () => {
           </div>
         </div>
       </div>
-      <div className="flex max-h-[450px] max-w-[1200px] font-[normal]">
+      <div className="flex max-h-[450px] max-w-[1200px]">
         <div className="flex justify-start items-center basis-1/2 p-10">
           <div className="flex flex-col gap-3">
             <h1 className="text-[#FE7800]">Purchase gift card</h1>

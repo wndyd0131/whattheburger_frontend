@@ -9,13 +9,17 @@ export const fetchOrderByEmailAndOrderNumber = (email, orderNumber) => {
 }
 
 export const createOrderSession = (storeId, body) =>
-  api.post(`/orderSession/store/${storeId}`, body)
+  api.post(`/order-session/store/${storeId}`, body)
     .then(res => res.data);
 
 export const fetchOrderSession = (sessionId, storeId) =>
-  api.get(`/orderSession/${sessionId}/store/${storeId}`)
+  api.get(`/order-session/${sessionId}/store/${storeId}`)
     .then(res => res.data);
 
-export const fetchOrderByCheckoutSessionId = (sessionId) =>
-  api.get(`/order/checkoutSession/${sessionId}`)
+export const fetchOrderByCheckoutSessionId = (checkoutSessionId) =>
+  api.get(`/order/checkout-session/${checkoutSessionId}`)
+    .then(res => res.data);
+
+export const fetchOrderSessionByCheckoutSessionId = (checkoutSessionId) =>
+  api.get(`/order-session/checkout-session/${checkoutSessionId}`)
     .then(res => res.data);

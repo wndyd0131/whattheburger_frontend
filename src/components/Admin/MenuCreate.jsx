@@ -98,7 +98,6 @@ const MenuCreate = () => {
     formData.append('productImage', imageSource);
   
     createProduct(formData)
-      .then(data => console.log("Response data:", data))
       .catch(err => console.error(err));
   }
 

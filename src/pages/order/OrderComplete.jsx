@@ -33,6 +33,7 @@ const OrderComplete = () => {
   const wsRef = useRef(null);
   const orderNumberRef = useRef(null);
 
+  const orderSessinoState = rootState.orderSessionState;
   const orderState = rootState.orderState;
   const fullAddress = orderState.addressInfo.streetAddr + ", " + orderState.addressInfo.cityState + ", " + orderState.addressInfo.zipCode;
   const recipientName = orderState.contactInfo.firstName + " " + orderState.contactInfo.lastName;
@@ -220,8 +221,8 @@ const OrderComplete = () => {
                 {orderStage === 1 &&
                   <div className='flex flex-col justify-center items-center'>
                     <img src="/icons/utils/gif/prep_loading.gif" width={200}></img>
-                    <div className='text-center text-xl font-["sans-serif"]'>
-                      <p>We are preparing your food right now,</p>
+                    <div className='text-center text-xl font-[whatthefont]'>
+                      <p>We are preparing your food right now...</p>
                       <p>it may costs around <span className='font-bold text-[#FE7800]'>5</span> minutes.</p>
                     </div>
                   </div>
@@ -230,6 +231,10 @@ const OrderComplete = () => {
                     <div className='flex border-1 border-gray-200 rounded-lg'>
                     </div>
                     <img src="/icons/utils/gif/delivery_loading.gif" width={200}></img>
+                    <div className='text-center text-xl text-[#FE7800] font-[whatthefont]'>
+                      <p>We are now delivering your order...</p>
+
+                    </div>
                   </div>
                 }
                 </div>

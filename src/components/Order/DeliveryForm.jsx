@@ -208,7 +208,7 @@ const DeliveryForm = () => {
         setMessage("phoneNum", "");
       }
 
-      setFormData(prev => ({...prev, phoneNum: phoneNum}))
+      setFormData(prev => ({...prev, phoneNum: input}))
   }
 
   return (
@@ -255,7 +255,6 @@ const DeliveryForm = () => {
           id="streetAddrDetail-input"
           color="warning"
           label="Apt, Suite, Building (Optional)"
-          helperText={`${formData.lastName.length}/40`}
           value={formData.streetAddrDetail}
           variant='filled'
           onChange={(e) => handleChangeStreetAddrDetailInput(e.target.value)}

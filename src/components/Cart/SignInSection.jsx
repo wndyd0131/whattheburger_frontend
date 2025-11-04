@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import api from '../../utils/api';
 import { UserContext } from '../../contexts/UserContext';
 
@@ -10,6 +10,9 @@ import Cookie from "js-cookie";
 import { createOrderSession } from '../../api/order';
 import { login } from '../../api/auth';
 import { fetchUser } from '../../api/user';
+import { CloseButton, LoadingSpinner } from '../../svg/Utils';
+import { TextField } from '@mui/material';
+import { motion } from "framer-motion";
 
 const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
   const {
@@ -30,6 +33,9 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
     email: '',
     password: ''
   });
+  const passwordRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [loginErrorText, setLoginErrorText] = useState(null);
 
   const fromFormToRequest = (form) => {
     const requestObject = {
@@ -67,6 +73,8 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
 
   const handleClickSignUp = () => {
     nav("/auth");
+    setSignInModalOpened(false);
+    setCartOpened(false);
   }
 
   const handleClickSignInButton = () => {
@@ -120,45 +128,61 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
       setCartOpened(false);
       nav('/order');
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error(err);
+      if (err.status === 401) {
+        setLoginErrorText("Invalid ID or Password");
+      }
+      setSignInForm(prev => ({...prev, password: ""}));
+      passwordRef.current.focus();
+    })
+    .finally(() => {
+      setLoading(false);
+    })
+    ;
   }
 
   return (
     <>
       <div className="flex justify-center">
-        <h3 className="font-[sans-serif]">Check out with your account</h3>
+        <h3 className="text-lg font-[whatthefont]">Check out with your account</h3>
       </div>
       <div className="flex flex-col space-y-5">
-        <div>
-          <label htmlFor="email">email</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={signInForm.email}
-            onChange={(e) => setSignInForm((prev) => ({...prev, email: e.target.value}))}
-            required
-            className="w-full px-3 py-2 border rounded"
-          />
-          <label htmlFor="password">password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={signInForm.password}
-            onChange={(e) => setSignInForm((prev) => ({...prev, password: e.target.value}))}
-            required
-            className="w-full px-3 py-2 border rounded"
-          />
+        <div className="flex flex-col gap-5 w-full py-2">
+        <TextField
+          required
+          id="email"
+          label="email"
+          color="warning"
+          value={signInForm.email}
+          onChange={(e) => setSignInForm((prev) => ({...prev, email: e.target.value}))}
+        />
+        <TextField
+          required
+          id="password"
+          type="password"
+          label="password"
+          color="warning"
+          inputRef={passwordRef}
+          value={signInForm.password}
+          onChange={(e) => setSignInForm((prev) => ({...prev, password: e.target.value}))}
+        />
+        {
+          loginErrorText
+          ? <div className="text-red-500 text-center">{loginErrorText}</div>
+          : null
+        }
         </div>
         <div className="flex flex-col items-center">
-          <button className="w-full bg-[#FE7800] text-white py-3 rounded hover:bg-[#e9750f] cursor-pointer" onClick={() => handleClickSignInButton()}>
-            Sign In
-          </button>
-          <p className="m-2">Don't have an account? <a className="underline cursor-pointer text-[#FE7800]" onClick={() => handleClickSignUp()}>Sign up</a></p>
+          <motion.button
+            className="flex justify-center items-center px-8 py-4 text-xl text-white rounded-full shadow-lg hover:shadow-xl font-['Whatthefont'] bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-300 hover:from-orange-500 hover:to-red-500 transform"
+            onClick={() => handleClickSignInButton()}>
+            {loading ? <LoadingSpinner spinnerColor='#FFFFFF' circleColor='#FFFFFF'/> : <p>Sign In</p>}
+          </motion.button>
+          <p className="m-2">Don't have an account? <a className="underline cursor-pointer text-orange-500 hover:text-orange-400" onClick={() => handleClickSignUp()}>Sign up</a></p>
         </div>
-        <button className="w-full bg-[#FE7800] text-white py-3 rounded hover:bg-[#e9750f] cursor-pointer" onClick={() => handleClickGuestSignIn()}>
-          Continue as Guest
+        <button className="flex justify-center items-center py-2 text-xl text-white rounded-full shadow-lg hover:shadow-xl font-['Whatthefont'] bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-300 hover:from-orange-500 hover:to-red-500 transform" onClick={() => handleClickGuestSignIn()}>
+          Continue As Guest
         </button>
       </div>
     </>

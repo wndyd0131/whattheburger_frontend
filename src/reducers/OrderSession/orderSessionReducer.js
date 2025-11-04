@@ -9,6 +9,8 @@ export const initialOrderSessionState = {
   discountType: null,
   taxPrice: null,
   name: null,
+  sessionId: null,
+  storeId: null,
   email: null,
   phoneNum: null,
   productList: [],
@@ -79,9 +81,20 @@ export const orderSessionReducer = (state=initialOrderSessionState, action) => {
       });
       updatedState.orderType = orderSessionResponse.orderType;
       updatedState.productList = productList;
+      updatedState.paymentStatus = orderSessionResponse.paymentStatus;
+      updatedState.sessionId = orderSessionResponse.sessionId;
       updatedState.storeId = orderSessionResponse.storeId;
       updatedState.totalPrice = orderSessionResponse.totalPrice;
       return updatedState;
+    }
+    case ACTIONS.UPDATE_PAYMENT_STATUS: {
+      const {
+        orderSessionResponse
+      } = action.payload;
+      return {
+        ...state,
+        paymentStatus: orderSessionResponse.paymentStatus
+      }
     }
     default:
       return state;
