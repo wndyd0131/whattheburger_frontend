@@ -2,10 +2,12 @@
 
 **Note:** This is a self-initiated project created to explore real-world web application structure and is not affiliated with Whataburger.
 
-## Demo Links
-**Video** 🎥: https://www.loom.com/share/13a3021b66954868aee45c00dcd2d08b
+## Links
+**Demo Video** 🎥: https://www.loom.com/share/13a3021b66954868aee45c00dcd2d08b
 
-**Project** 💻: https://whattheburger-frontend.vercel.app
+**Demo Web Page** 💻: https://whattheburger-frontend.vercel.app
+
+**Backend Github** 🖥: https://github.com/wndyd0131/whattheburger_backend
 
 ## Screenshots
 ### User
