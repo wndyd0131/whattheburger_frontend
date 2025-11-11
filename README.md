@@ -104,21 +104,20 @@ This project focuses on building real fast-food restaurant ordering flows inspir
 (Updating Soon)
 
 ## Roadmap
-- **Admin logic**
+- **Admin**
   - [x] Create Catalog Product
   - [x] Register Product to Stores
   - [ ] Update Product for each Store
-- **Product logic**
+- **Product**
   - [ ] Meal logic
-- [x] Store logic
-- [x] User logic
-- [ ] Order logic
+- [x] **Store logic**
+- [x] **User logic**
+- **Order**
   - [x] Delivery Order
   - [ ] Pickup Order
-  - [ ] Delivery Simulation
-- [x] Cart logic
-- [x] Payment logic
-- [ ] Real-time delivery tracking
-- [ ] Order history
-- [ ] Chatbot
-- [x] Deployment
+- [x] **Cart**
+- [x] **Payment**
+- [ ] **Real-time delivery tracking**
+- [ ] **Order history**
+- [ ] **Recommendation System**
+- [x] **Deployment**
