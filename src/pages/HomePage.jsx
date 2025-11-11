@@ -29,8 +29,10 @@ const HomePage = () => {
         <ImageSlider/>
       </div>
       <motion.h1
-        //   font-['Whatthefont'] mb-4
-        className="flex justify-center text-7xl w-full text-transparent bg-clip-text bg-gradient-to-r from-[#FE7800] to-orange-500 p-[100px] font-['Whatthefont']">
+        className="flex justify-center text-5xl w-full text-transparent bg-clip-text bg-gradient-to-r from-[#FE7800] to-orange-500 p-[70px] font-['Whatthefont']
+        sm:text-6xl
+        md:text-7xl
+        ">
         Welcome to Whattheburger
       </motion.h1>
       <HomePageSection
@@ -77,18 +79,18 @@ const HomePage = () => {
         <FeaturedCategory/>
       </HomePageSection>
       <HomePageSection
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        tailwind="bg-amber-100"
       >
         <IntroCardSection/>
       </HomePageSection>
-      <HomePageSection
+      {/* <HomePageSection
         justifyContent="center"
         alignItems="center"
-        height={700}
       >
-        <div className="flex w-[1500px] rounded-4xl bg-[#F4F8F9] font-[sans-serif] overflow-hidden">
+        <div className="flex rounded-4xl bg-[#F4F8F9] font-[sans-serif] overflow-hidden">
           <div className="flex justify-center items-center max-w-[300px] h-full border-r-1 border-gray-300">
             <img src="/images/banner6.jpg"></img>
           </div>
@@ -104,7 +106,7 @@ const HomePage = () => {
             <button className="flex justify-center self-center h-auto shadow-lg items-center border-1 border-[#FE7800] rounded-[50px] bg-white text-[#FE7800] p-[15px] text-[15px] min-w-[90px] cursor-pointer">About our food</button>
           </div>
         </div>
-      </HomePageSection>
+      </HomePageSection> */}
     </>
   );
 }

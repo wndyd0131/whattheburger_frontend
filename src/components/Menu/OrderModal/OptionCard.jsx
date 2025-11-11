@@ -38,7 +38,7 @@ const OptionCard = ({customRule, customRuleIdx, option, optionIdx}) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3, delay: optionIdx * 0.05 }}
         whileHover={{ y: -4, scale: 1.02 }}
-        className="flex font-[sans-serif] justify-center p-2 min-w-[250px] w-full max-w-[300px]"
+        className="flex font-[sans-serif] justify-center p-2 w-full max-w-[300px]"
       >
         <motion.div
           className={`relative flex flex-col p-2 w-full bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border-2 ${

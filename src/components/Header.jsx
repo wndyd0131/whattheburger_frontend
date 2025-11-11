@@ -8,13 +8,17 @@ import Logo from "./Layout/Logo";
 import Hamburger from "./Header/Hamburger";
 import CartButton from "./Header/CartButton";
 import { useMediaQuery } from "@mui/material";
+import { LayoutContext } from "../contexts/LayoutContext";
 const Header = () => {
   const {
     userDetails
   } = useContext(UserContext);
-  const isMobile = useMediaQuery('(max-width: 48rem)');
 
-  const [headerOpened, setHeaderOpened] = useState(false);
+  const {
+    hamburgerOpened,
+    setHamburgerOpened,
+    isMobile
+  } = useContext(LayoutContext);
 
   return (
     <>
@@ -49,7 +53,7 @@ const Header = () => {
         </div>
       </motion.header>
       }
-      {isMobile && headerOpened &&
+      {isMobile && hamburgerOpened &&
       <motion.header
         initial={{y: '-5vh'}}
         animate={{y: 0}}
@@ -71,25 +75,26 @@ const Header = () => {
           <div className="
             flex absolute right-[15px] top-[20px] cursor-pointer
           "
-            onClick={() => setHeaderOpened(false)}
+            onClick={() => setHamburgerOpened(false)}
           >
             <LeftArrowIcon width="20px" height="20px" color="#FE7800"/>
           </div>
           <Navigation></Navigation>
           <div className="
-            flex
-            justify-center
+            absolute
+            bottom-5
+            right-0
           ">
             <AuthSection></AuthSection>
-            <CartButton/>
           </div>
+            <CartButton/>
 
 
       </motion.header>
       }
     </AnimatePresence>
-    {isMobile && !headerOpened &&
-      <Hamburger headerOpened={headerOpened} setHeaderOpened={setHeaderOpened}/>
+    {isMobile && !hamburgerOpened &&
+      <Hamburger/>
     }
     </>
   );

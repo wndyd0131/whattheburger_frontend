@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { CopyIcon } from '../../svg/Utils';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import api from '../../utils/api';
 import { LayoutContext } from '../../contexts/LayoutContext';
 import { ORDER_ACTIONS } from '../../reducers/Order/actions';
@@ -8,7 +8,12 @@ import { normalizeProduct } from '../../utils/normalizer';
 import OrderSummary from '../../components/Order/OrderSummary';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import { fetchOrderByCheckoutSessionId } from '../../api/order';
+import { fetchOrderByCheckoutSessionId, fetchOrderSessionByCheckoutSessionId } from '../../api/order';
+import Lottie from 'lottie-react';
+import pending from "/src/assets/animations/pending.json";
+import preparing from "/src/assets/animations/preparing.json";
+import delivering from "/src/assets/animations/delivering.json";
+import completed from "/src/assets/animations/completed.json";
 
 
 const OrderComplete = () => {
@@ -23,22 +28,25 @@ const OrderComplete = () => {
   const WS_BASE_URL = import.meta.env.VITE_WS_BASE_URL;
 
   const nav = useNavigate()
+  const [searchParams] = useSearchParams();
+  const checkoutSessionId = searchParams.get("session_id");
   const [loading, setLoading] = useState(false);
   
   const [orderNumber, setOrderNumber] = useState("");
   const [orderSummary, setOrderSummary] = useState({});
   const [productList, setProductList] = useState([]);
-  const [orderStage, setOrderStage] = useState(1);
+  const [orderStep, setOrderStep] = useState(null);
   const [orderComplete, setOrderComplete] = useState(false);
   const wsRef = useRef(null);
   const orderNumberRef = useRef(null);
 
-  const orderSessinoState = rootState.orderSessionState;
+  const orderSessionState = rootState.orderSessionState;
   const orderState = rootState.orderState;
   const fullAddress = orderState.addressInfo.streetAddr + ", " + orderState.addressInfo.cityState + ", " + orderState.addressInfo.zipCode;
   const recipientName = orderState.contactInfo.firstName + " " + orderState.contactInfo.lastName;
 
 
+  console.log(orderSessionState);
   const handleCopy = () => {
     if (orderNumberRef.current) {
       const text = orderNumberRef.current.textContent;
@@ -148,49 +156,63 @@ const OrderComplete = () => {
   ]
 
   useEffect(() => {
+    if (!checkoutSessionId) {
+      nav("/400");
+      return;
+    }
     const onMessage = (event) => {
       const data = JSON.parse(event.data);
-      if (data.payload.status === 'PREP_COMPLETE' && orderStage === 1) {
-        setOrderStage(2);
-      }
-    }
-    if (wsRef.current == null) {
-      const ws = new WebSocket(`${WS_BASE_URL}/ws/track`);
-      wsRef.current = ws;
-      ws.addEventListener("open", () => console.log("[ws] open"), {once: true}); // auto-remove
-      ws.addEventListener("message", onMessage);
+      console.log("From socket: ", data);
+      setOrderStep(data.payload.orderStatus);
     }
 
-    setLoading(true);
-    const params = new URLSearchParams(window.location.search);
-    // const orderNumber = params.get("orderNumber");
-    const sessionId = params.get("session_id");
-    
-    fetchOrderByCheckoutSessionId(sessionId)
+    fetchOrderSessionByCheckoutSessionId(checkoutSessionId)
       .then(data => {
-        dispatchRoot({
-          type: ORDER_ACTIONS.LOAD_ORDER,
-          payload: {
-            orderResponse: data
+        const orderSessionId = data.sessionId;
+      if (wsRef.current == null) {
+        const ws = new WebSocket(`${WS_BASE_URL}/ws/track?order_session_id=${orderSessionId}`);
+        wsRef.current = ws;
+        ws.addEventListener("open", () => console.log("[ws] open"), {once: true}); // auto-remove
+        ws.addEventListener("message", onMessage);
+      }
+
+      setLoading(true);
+      const params = new URLSearchParams(window.location.search);
+      // const orderNumber = params.get("orderNumber");
+      const sessionId = params.get("session_id");
+      
+      fetchOrderByCheckoutSessionId(sessionId)
+        .then(data => {
+          dispatchRoot({
+            type: ORDER_ACTIONS.LOAD_ORDER,
+            payload: {
+              orderResponse: data
+            }
+          });
+          const productResponses = data.productResponses;
+          const productList = productResponses.map(productResponse => normalizeProduct(productResponse));
+          setProductList(productList);
+          setOrderNumber(data.orderNumber);
+        })
+        .catch(err => console.error(err))
+        .finally(() => setLoading(false));
+
+
+
+        return () => { // #@
+          const ws = wsRef.current;
+          if (ws) {
+            ws.removeEventListener("message", onMessage);
+            wsRef.current = null;
           }
-        });
-        const productResponses = data.productResponses;
-        const productList = productResponses.map(productResponse => normalizeProduct(productResponse));
-        setProductList(productList);
-        setOrderNumber(data.orderNumber);
+        };
       })
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-
-
-
-      return () => { // #@
-        const ws = wsRef.current;
-        if (ws) {
-          ws.removeEventListener("message", onMessage);
-          wsRef.current = null;
-        }
-      };
+      .catch(err => {
+        console.error(err);
+        nav("/404");
+        return;
+      })
+    
   }, []);
 
 
@@ -217,23 +239,48 @@ const OrderComplete = () => {
         <div className="flex min-h-[500px] max-h-[550px] h-screen gap-x-10">
           <div className="flex flex-col items-center basis-4/7">
             <h2 className='mb-5'>Order Progress</h2>
-                <div className='flex w-full h-full max-w-300 p-5 border justify-center items-center border-gray-300 rounded-lg'>
-                {orderStage === 1 &&
+              <div className='flex w-full h-full max-w-300 p-5 border justify-center items-center border-gray-300 rounded-lg'>
+                {orderStep === 'PENDING' &&
                   <div className='flex flex-col justify-center items-center'>
-                    <img src="/icons/utils/gif/prep_loading.gif" width={200}></img>
-                    <div className='text-center text-xl font-[whatthefont]'>
-                      <p>We are preparing your food right now...</p>
-                      <p>it may costs around <span className='font-bold text-[#FE7800]'>5</span> minutes.</p>
+                    <div className="w-[200px]">
+                      <Lottie animationData={pending} loop={true}/>
+                    </div>
+                    <div className='text-center text-2xl text-[#FE7800] font-[whatthefont]'>
+                      <p>Confirming your order. Please Wait...</p>
                     </div>
                   </div>
-                } {orderStage === 2 &&
+                } {orderStep === 'PREPARING' &&
                   <div className='flex flex-col justify-center items-center'>
                     <div className='flex border-1 border-gray-200 rounded-lg'>
                     </div>
-                    <img src="/icons/utils/gif/delivery_loading.gif" width={200}></img>
-                    <div className='text-center text-xl text-[#FE7800] font-[whatthefont]'>
-                      <p>We are now delivering your order...</p>
-
+                    <div className="w-[200px]">
+                      <Lottie animationData={preparing} loop={true}/>
+                    </div>
+                    <div className='text-center text-2xl text-[#FE7800] font-[whatthefont]'>
+                      <p>Good things take time — cooking in progress...</p>
+                    </div>
+                  </div>
+                } {orderStep === 'DELIVERING' &&
+                  <div className='flex flex-col justify-center items-center'>
+                    <div className='flex border-1 border-gray-200 rounded-lg'>
+                    </div>
+                    <div className="w-[200px]">
+                      <Lottie animationData={delivering} loop={true}/>
+                    </div>
+                    <div className='text-center text-2xl text-[#FE7800] font-[whatthefont]'>
+                      <p>Your order is on the way!</p>
+                    </div>
+                  </div>
+                } {orderStep === 'COMPLETED' &&
+                  <div className='flex flex-col justify-center items-center'>
+                    <div className='flex border-1 border-gray-200 rounded-lg'>
+                    </div>
+                    <div className="w-[200px]">
+                      <Lottie animationData={completed} loop={false}/>
+                    </div>
+                    <div className='text-center text-2xl text-[#FE7800] font-[whatthefont]'>
+                      <p>Order delivered — thank you!</p>
+                      <p>Enjoy your meal!</p>
                     </div>
                   </div>
                 }

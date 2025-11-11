@@ -25,7 +25,7 @@ const MenuContainer = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex min-w-[1000px] max-w-[1200px] items-center flex-col w-full px-20"
+        className="flex max-w-[1200px] items-center flex-col w-full px-20"
       >
         <div className="grid gap-8 mt-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {isLoading

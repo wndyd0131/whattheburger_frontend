@@ -29,6 +29,7 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
 
   const nav = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [signInForm, setSignInForm] = useState({
     email: '',
     password: ''
@@ -53,6 +54,7 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
       orderType: orderType
     }
     if (storeId) {
+      setIsLoading(true);
       createOrderSession(storeId, requestBody)
       .then(data => {
         dispatchRoot({
@@ -66,7 +68,10 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
         setCartOpened(false);
         setSignInModalOpened(false);
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      })
     }
 
   }
@@ -85,14 +90,15 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
     .then(data => {
       const accessToken = data.accessToken;
       const refreshToken = data.refreshToken;
-      Cookies.set('accessToken', accessToken, { expires: ACCESS_TOKEN_EXPIRATION_TIME});
-      Cookies.set('refreshToken', refreshToken, { expires: REFRESH_TOKEN_EXPIRATION_TIME});
+      Cookie.set('accessToken', accessToken, { expires: ACCESS_TOKEN_EXPIRATION_TIME});
+      Cookie.set('refreshToken', refreshToken, { expires: REFRESH_TOKEN_EXPIRATION_TIME});
       setSignInForm((prev) => (
         { ...prev,
           email: '',
           password: ''
         })
       );
+      setIsLoading(true);
       fetchUser()
         .then(data => {
           setUserDetails((prev) => ({
@@ -102,9 +108,11 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
             lastName: data.lastName,
             phoneNum: data.phoneNum,
             zipcode: data.zipcode,
-            isAuthenticated: true
+            isAuthenticated: true,
+            role: data.role
           }));
           const storeId = Cookie.get("storeId");
+          const orderType = Cookie.get("orderType");
           const requestBody = {
             orderType: orderType
           }
@@ -116,6 +124,8 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
                   orderSessionResponse: data
                 }
               });
+              const orderSessionId = data.sessionId;
+              nav(`/order-session/${orderSessionId}/store/${storeId}`);
             })
             .catch(
               err => console.error(err)
@@ -123,10 +133,12 @@ const SignInSection = ({signInModalOpened, setSignInModalOpened}) => {
         })
         .catch(
           err => console.error(err)
-        );
+        )
+        .finally(() => {
+          setIsLoading(false);
+        })
       setSignInModalOpened(false);
       setCartOpened(false);
-      nav('/order');
     })
     .catch(err => {
       console.error(err);

@@ -57,7 +57,7 @@ const OrderCustomize = () => {
                 <h1 className="text-2xl font-bold text-gray-800 font-['Whatthefont']">{customRule.customRuleName}</h1>
                 <div className="flex-1 h-px bg-gradient-to-r from-[#FE7800] to-transparent"></div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 bg-gray-50 min-w-[300px] rounded-2xl border border-gray-100">
                 {customRule.optionList.map((option, optionIdx) => 
                   <OptionCard key={optionIdx} customRule={customRule} customRuleIdx={customRuleIdx} option={option} optionIdx={optionIdx}/>
                 )}

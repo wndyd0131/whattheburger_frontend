@@ -7,7 +7,7 @@ import { useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { UserContext } from "./contexts/UserContext";
 import Layout from "./Layout";
-import { LayoutProvider } from "./contexts/LayoutContext";
+import { LayoutContext, LayoutProvider } from "./contexts/LayoutContext";
 import Order from "./pages/order/Order";
 import OrderComplete from "./pages/order/OrderComplete";
 import OrderSearch from "./pages/order/OrderSearch";
@@ -20,13 +20,16 @@ import RequireRoles from "./routes/RequireRoles";
 import api from "./utils/api";
 import { fetchUser } from "./api/user";
 import OrderProcess from "./pages/order/OrderProcess";
+import { USER_ACTIONS } from "./reducers/User/action";
 
 function App() {
+
+  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
   const {
     setUserDetails,
     setIsLoading
   } = useContext(UserContext);
-  const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
@@ -47,6 +50,12 @@ function App() {
             isAuthenticated: true,
             role: data.role
           }));
+          // dispatchRoot({
+          //   type: USER_ACTIONS.LOAD_USER,
+          //   payload: {
+          //     userData: data
+          //   }
+          // });
       })
       .catch(err => {
         console.error(err);

@@ -56,7 +56,7 @@ const Layout = () => { {/* nested components */}
   }, []);
 
   return (
-    <>
+    <div>
       <Header></Header>
       <main className="flex flex-col flex-grow min-h-screen">
         <Outlet/>
@@ -78,7 +78,7 @@ const Layout = () => { {/* nested components */}
       >
         <ChatbotIcon/>
       </motion.div>
-    </>
+    </div>
   );
 }
 

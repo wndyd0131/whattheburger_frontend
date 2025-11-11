@@ -18,7 +18,7 @@ const AuthSection = () => {
   }
 
   return (
-    <>
+    <div>
       {userDetails?.isAuthenticated === true ?
       <div ref={profileRef} className="flex relative justify-center items-center gap-[10px] mx-5 space-x-0">
         <div className="flex justify-center items-center overflow-hidden border-1 border-gray-300 shadow-sm rounded-full min-w-[40px]">
@@ -41,7 +41,7 @@ const AuthSection = () => {
         </Link>
       </div>
       } 
-    </>
+    </div>
   );
 }
 

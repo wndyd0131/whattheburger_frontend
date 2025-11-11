@@ -25,10 +25,12 @@ const FeaturedCategory = () => {
 
   return (
     <div className="
-      grid grid-cols-5 text-[#FE7800] justify-around px-[80px] py-[50px] gap-5 h-full w-full
-      max-xl:grid-cols-3
-      max-lg:grid-cols-2
-      max-sm:grid-cols-1
+      grid grid-cols-2 text-[#FE7800] justify-around px-[80px] py-[50px] h-full w-full
+      xl:grid-cols-5
+      md:grid-cols-3
+      gap-y-5
+      min-w-[400px]
+      gap-x-5
     ">
       {featuredCategory.map((category, categoryIdx) => {
         const categoryId = category.categoryId;
@@ -40,13 +42,17 @@ const FeaturedCategory = () => {
               whileHover={{scale: 1.05}}
               whileTap={{scale: 0.9}}
               className="
-                flex flex-col font-['Whatthefont'] h-[300px] w-[250px] max-w-xs bg-white border-1 border-gray-100 shadow-md rounded-2xl overflow-hidden cursor-pointer hover:bg-gradient-to-b hover:text-white from-amber-500 to-orange-500
+                flex flex-col justify-center items-center font-['Whatthefont'] aspect-[4/5] bg-white border border-gray-100 shadow-md rounded-2xl overflow-hidden cursor-pointer hover:bg-gradient-to-b hover:text-white from-amber-500 to-orange-500
+                flex-1
               ">
-              <div className="flex justify-center items-center overflow-hidden h-full">
-                <img className="" src={category.imgSrc} alt="Food" />
+              <div className="flex justify-center items-center overflow-hidden aspect-[4/5]">
+                <img src={category.imgSrc} alt="Food" />
               </div>
               <div className="p-2">
-                <p className="text-xl justify-self-center font-semibold mb-2">{category.name}</p>
+                <p className="text-lg line-clamp-1 text-center font-semibold mb-2
+                  sm:text-xl
+                  lg:text-2xl
+                ">{category.name}</p>
               </div>
             </motion.div>
         );

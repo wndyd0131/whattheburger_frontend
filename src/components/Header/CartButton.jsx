@@ -6,6 +6,7 @@ const CartButton = () => {
   const {
     cartOpened,
     setCartOpened,
+    setHamburgerOpened,
     reducer: {
       rootState
     }
@@ -15,6 +16,11 @@ const CartButton = () => {
 
   const cartState = rootState.cartState;
   let cartList = cartState.cartList;
+
+  const handleClickCartButton = () => {
+    setHamburgerOpened(false);
+    setCartOpened(!cartOpened);
+  }
 
   return (
     <div className="
@@ -27,7 +33,7 @@ const CartButton = () => {
       max-md:left-2
       max-md:bottom-6
       "
-      onClick={() => setCartOpened(!cartOpened)}
+      onClick={() => handleClickCartButton()}
     >
       {cartList.length > 0 &&
         <div className="

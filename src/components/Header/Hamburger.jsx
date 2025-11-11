@@ -1,7 +1,14 @@
+import { useContext } from "react";
 import { HamburgerIcon } from "../../svg/Utils";
+import { LayoutContext } from "../../contexts/LayoutContext";
 
-const Hamburger = ({ headerOpened, setHeaderOpened }) => {
-  if (headerOpened) {
+const Hamburger = () => {
+  const {
+    hamburgerOpened,
+    setHamburgerOpened
+  } = useContext(LayoutContext);
+
+  if (hamburgerOpened) {
     return null;
   }
   return (
@@ -24,7 +31,7 @@ const Hamburger = ({ headerOpened, setHeaderOpened }) => {
           w-[50px]
           z-30
         "
-        onClick={() => setHeaderOpened(!headerOpened)}
+        onClick={() => setHamburgerOpened(!hamburgerOpened)}
         >
         <HamburgerIcon width="40px" height="40px" color="#FE7800"/>
     </div>

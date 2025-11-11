@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { CloseButton, TrashCanIcon } from '../../svg/Utils'
+import { CloseButton, LoadingSpinner, TrashCanIcon } from '../../svg/Utils'
 import { motion } from "framer-motion";
 import api from '../../utils/api';
 import { LayoutContext } from '../../contexts/LayoutContext';
@@ -8,6 +8,10 @@ import SignInSection from './SignInSection';
 import { toast } from 'react-toastify';
 import { deleteCart, deleteCartItem } from '../../api/cart';
 import Cookie from "js-cookie";
+import { UserContext } from '../../contexts/UserContext';
+import { createOrderSession } from '../../api/order';
+import { ORDER_SESSION_ACTIONS } from '../../reducers/OrderSession/action';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
 
@@ -15,11 +19,19 @@ const Footer = () => {
     reducer: {
       rootState,
       dispatchRoot
-    }
+    },
+    setCartOpened
   } = useContext(LayoutContext);
+
+  const {
+    userDetails
+  } = useContext(UserContext);
+
+  const nav = useNavigate();
 
   const cartState = rootState.cartState;
 
+  const [isLoading, setIsLoading] = useState(false);
   const [trashCanIconHovered, setTrashCanIconHovered] = useState(false);
 
   const [signInModalOpened, setSignInModalOpened] = useState(false);
@@ -29,6 +41,34 @@ const Footer = () => {
     setSignInModalOpened(false);
   }
   const handleClickOrderButton = () => {
+    if (userDetails?.isAuthenticated) {
+      const storeId = Cookie.get("storeId");
+      const orderType = Cookie.get("orderType");
+      const requestBody = {
+        orderType: orderType
+      }
+      if (storeId) {
+        setIsLoading(true);
+        createOrderSession(storeId, requestBody)
+        .then(data => {
+          dispatchRoot({
+            type: ORDER_SESSION_ACTIONS.LOAD_SESSION,
+            payload: {
+              orderSessionResponse: data
+            }
+          });
+          const orderSessionId = data.sessionId;
+          nav(`/order-session/${orderSessionId}/store/${storeId}`);
+          setCartOpened(false);
+          setSignInModalOpened(false);
+        })
+        .catch(err => console.error(err))
+        .finally(() => {
+          setIsLoading(false);
+        })
+      }
+      return;
+    }
     setSignInModalOpened(true);
   }
 
@@ -54,7 +94,7 @@ const Footer = () => {
 
   return (
     <>
-      <div className="flex relative justify-center items-center basis-1/12 w-full border-t-1 border-gray-200 gap-10">
+      <div className="flex relative justify-center items-center basis-1/12 w-full border-t-1 p-5 border-gray-200 gap-10">
           <motion.button
             onClick={() => handleClickOrderButton()}
             disabled={cartState.cartList.length === 0}
@@ -62,7 +102,7 @@ const Footer = () => {
               ${cartState.cartList.length === 0 ? "bg-gray-300" : "bg-gradient-to-r from-[#FE7800] to-orange-500 hover:from-orange-500 hover:to-red-500 transform"}  
             `}
           >
-            Order
+            {isLoading ? <LoadingSpinner/> : "Order"}
           </motion.button>
 
         <button

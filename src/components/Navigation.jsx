@@ -1,9 +1,20 @@
 import { motion } from "framer-motion";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { LayoutContext } from "../contexts/LayoutContext";
 
 const Navigation = () => {
 
+  const {
+    setHamburgerOpened
+  } = useContext(LayoutContext);
+
   const MotionLink = motion(Link);
+
+  const handleClickNavigation = () => {
+    setHamburgerOpened(false);
+  }
+
   return (
     <nav
       className="
@@ -24,10 +35,7 @@ const Navigation = () => {
         max-md:gap-[30px]
         max-md:px-2
       ">
-
-      
-
-      <MotionLink whileHover={{scale: 1.1}} className="nav-menu" to="/menu" replace={true}>MENU</MotionLink>
+      <MotionLink whileHover={{scale: 1.1}} onClick={handleClickNavigation} className="nav-menu" to="/menu" replace={true}>MENU</MotionLink>
       <MotionLink whileHover={{scale: 1.1}} href="#">REWARDS</MotionLink>
       <MotionLink whileHover={{scale: 1.1}} href="#">CAREERS</MotionLink>
       <MotionLink whileHover={{scale: 1.1}} href="#">WHATTHESTORE</MotionLink>
