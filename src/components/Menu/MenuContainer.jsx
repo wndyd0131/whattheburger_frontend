@@ -25,29 +25,34 @@ const MenuContainer = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="flex max-w-[1200px] items-center flex-col w-full px-20"
+        className="grid grid-cols-1 gap-8 mt-12 max-w-[1200px] w-full px-5
+          min-w-[300px]
+          justify-center
+          md:grid-cols-2 md:px-10
+          lg:grid-cols-2 lg:px-15
+          xl:grid-cols-3 xl:px-20
+        "
       >
-        <div className="grid gap-8 mt-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-          {isLoading
-          ? Array.from({ length: 6}).map((_, idx) => <MenuCardSkeleton key={idx}/>)
-          : selectedCategory?.products.map((product, productIdx) => {
-              return (
-              <motion.div
-                key={productIdx}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: productIdx * 0.1 }}
-              >
-                <MenuCard
-                  product={product}
-                  productIdx={productIdx}
-                  calories={product.calories}
-                />
-              </motion.div>
-              )
-            })
-          }
-        </div>
+        {isLoading
+        ? Array.from({ length: 6}).map((_, idx) => <MenuCardSkeleton key={idx}/>)
+        : selectedCategory?.products.map((product, productIdx) => {
+            return (
+            <motion.div
+              className="flex justify-center items-start"
+              key={productIdx}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: productIdx * 0.1 }}
+            >
+              <MenuCard
+                product={product}
+                productIdx={productIdx}
+                calories={product.calories}
+              />
+            </motion.div>
+            )
+          })
+        }
       </motion.div>
   );
 }

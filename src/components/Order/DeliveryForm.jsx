@@ -49,7 +49,7 @@ const DeliveryForm = () => {
     if (isFormValid()) {
       setLoading(true);
       const payload = shapePayload(formData);
-      checkout(sessionId, payload)
+      checkout(payload)
         .then(data => {
           window.location.href = data.successUrl;
         })

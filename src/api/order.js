@@ -23,3 +23,7 @@ export const fetchOrderByCheckoutSessionId = (checkoutSessionId) =>
 export const fetchOrderSessionByCheckoutSessionId = (checkoutSessionId) =>
   api.get(`/order-session/checkout-session/${checkoutSessionId}`)
     .then(res => res.data);
+
+export const fetchOrderByAuth = (sortType, pageNumber, pageSize) => 
+  api.get(`/order/list?sort=${sortType}&pageNumber=${pageNumber}&pageSize=${pageSize}`)
+    .then(res => res.data);

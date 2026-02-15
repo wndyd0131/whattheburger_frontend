@@ -85,8 +85,14 @@ const StoreSelection = () => {
   return (
     <>
     <div className="flex font-[sans-serif] flex-col h-screen m-auto max-w-[1500px] w-full max-md:m-0">
-      <div className="flex h-4/5">
-        <div className="flex flex-col border min-w-[350px] max-w-[600px] w-full border-gray-200 shadow-md">
+      <div className="flex flex-col h-full
+        md:flex-row
+        md:h-4/5
+      ">
+        <div className="flex flex-col border min-w-[350px] w-full border-gray-200 shadow-md order-2
+          overflow-y-auto
+          md:order-1 md:max-w-[600px]
+        ">
           <div className='p-5'>
             <h3 className='font-[sans-serif] py-5'>Select Location</h3>
             <div className='flex flex-col gap-5 font-[sans-serif]'>
@@ -176,10 +182,16 @@ const StoreSelection = () => {
                   onClick={() => handleClickStoreCard(store.storeId)}
                 >
                   <header>
-                    <h3 className="font-[sans-serif] font-semibold">Store <span className="font-['Whatthefont'] text-[#FE7800]">#{store.storeId}</span></h3>
+                    <h3 className="text-sm font-[sans-serif] font-semibold
+                      sm:text-lg
+                    ">Store <span className="font-['Whatthefont'] text-[#FE7800]">#{store.storeId}</span></h3>
                   </header>
-                  <address className='font-semibold'>{store.branch}</address>
-                  <dl className="grid grid-rows-2 grid-cols-4 gap-y-2 py-2 text-sm">
+                  <address className='font-semibold
+                    max-sm:text-xs
+                  '>{store.branch}</address>
+                  <dl className="grid grid-rows-2 grid-cols-4 gap-y-2 py-2 text-sm
+                    max-sm:text-xs
+                  ">
                     <dt className="text-gray-500">
                       Address
                     </dt>
@@ -205,7 +217,9 @@ const StoreSelection = () => {
                       <span>Benjamin Franklin</span>
                     </dd>
                   </dl>
-                  <div className="flex justify-end text-gray-500">
+                  <div className="flex justify-end text-gray-500
+                    max-md:text-sm
+                  ">
                     {distanceMiles} mi
                   </div>
                 </div>
@@ -213,8 +227,9 @@ const StoreSelection = () => {
           })}
           </div>
         </div>
-        <div id="map" className="flex min-w-[400px] h-full w-full bg-gray-200" ref={mapContainerRef}>
-
+        <div id="map" className="flex min-w-[400px] h-full w-full bg-gray-200 order-1
+          md:order-2
+        " ref={mapContainerRef}>
         </div>
       </div>
       <div className="flex py-5 justify-center items-center">

@@ -1,5 +1,5 @@
 import api from "../utils/api";
 
-export const checkout = (sessionId, body) =>
-  api.post(`/checkout/${sessionId}`, body)
+export const checkout = (body) =>
+  api.post(`/checkout`, body)
     .then(res => res.data);

@@ -3,71 +3,80 @@ import HomePageSection from "../components/HomePage/HomePageSection.jsx";
 import ImageSlider from "../components/ImageSlider";
 import FeaturedCategory from "../components/HomePage/FeaturedCategory.jsx";
 import GoOrderButton from "../components/HomePage/GoOrderButton.jsx";
-import {motion} from "motion/react";
+import { motion } from "motion/react";
 import IntroCardSection from "../components/HomePage/IntroCardSection.jsx";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { ORDER_TYPE_EXPIRATION_TIME } from "../utils/cookieExpirationTime.js";
-const HomePage = () => {
 
-  const nav = useNavigate()
+const HomePage = () => {
+  const nav = useNavigate();
   const [goOrderButtonClicked, setGoOrderButtonClicked] = useState(false);
+
+  const handleOrderType = (type) => {
+    Cookies.set("orderType", type, { expires: ORDER_TYPE_EXPIRATION_TIME });
+    Cookies.remove("storeId");
+    nav("/menu");
+  };
+
   const handleClickPickupButton = () => {
-    Cookies.set("orderType", "PICKUP", { expires: ORDER_TYPE_EXPIRATION_TIME });
-    Cookies.remove("storeId");
-    nav("/menu");
-  }
+    handleOrderType("PICKUP");
+  };
+
   const handleClickDeliveryButton = () => {
-    Cookies.set("orderType", "DELIVERY", { expires: ORDER_TYPE_EXPIRATION_TIME });
-    Cookies.remove("storeId");
-    nav("/menu");
-  }
+    handleOrderType("DELIVERY");
+  };
 
   return (
     <>
       <div className="flex flex-col bg-gradient-to-r from-amber-500 to-orange-500">
         <ImageSlider/>
       </div>
-      <motion.h1
-        className="flex justify-center text-5xl w-full text-transparent bg-clip-text bg-gradient-to-r from-[#FE7800] to-orange-500 p-[70px] font-['Whatthefont']
-        sm:text-6xl
-        md:text-7xl
-        ">
+      <h1 className="flex justify-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl w-full text-transparent bg-clip-text bg-gradient-to-r from-[#FE7800] to-orange-500 py-10 px-4 sm:py-16 sm:px-10 md:p-[70px] font-['Whatthefont'] text-center">
         Welcome to Whattheburger
-      </motion.h1>
+      </h1>
       <HomePageSection
         flexDirection="column"
       >
         <motion.div
-          className={`relative flex justify-center items-center h-50 gap-10 overflow-hidden transition-colors duration-500 ease-in-out ${goOrderButtonClicked ? "bg-gradient-to-br from-amber-500 via-orange-500 to-red-500" : ""}`}
-          onHoverEnd={() => setGoOrderButtonClicked(false)}
+          className={`relative flex justify-center items-center min-h-[200px] gap-4 sm:gap-10 overflow-hidden transition-colors duration-500 ease-in-out ${goOrderButtonClicked ? "bg-gradient-to-br from-amber-500 via-orange-500 to-red-500" : ""}`}
+          onMouseLeave={() => setGoOrderButtonClicked(false)}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget)) {
+              setGoOrderButtonClicked(false);
+            }
+          }}
         >
           <GoOrderButton
             goOrderButtonClicked={goOrderButtonClicked}
             setGoOrderButtonClicked={setGoOrderButtonClicked}
           />
-          <motion.div
-            initial={{x: "100vw"}}
-            animate={{x: goOrderButtonClicked ? 0 : "100vw"}}
-            whileHover={{scale: 1.1}}
-            whileTap={{scale: 0.9}}
-            transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8}}
-            className={`flex justify-center self-center h-auto w-40 shadow-lg items-center border-1 border-[#FE7800] rounded-[50px] bg-white font-['Whatthefont'] text-[#FE7800] p-[20px] text-[25px] min-w-[90px] cursor-pointer ${goOrderButtonClicked ? "" : "absolute"}`}
-            onClick={() => handleClickPickupButton()}
+          <motion.button
+            type="button"
+            aria-label="Order for pickup"
+            initial={{ x: "100vw" }}
+            animate={{ x: goOrderButtonClicked ? 0 : "100vw" }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8 }}
+            className={`flex justify-center self-center h-auto w-28 sm:w-40 shadow-lg items-center border border-[#FE7800] rounded-full bg-white font-['Whatthefont'] text-[#FE7800] p-3 sm:p-5 text-lg sm:text-[25px] min-w-[90px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FE7800] focus:ring-offset-2 ${goOrderButtonClicked ? "" : "absolute"}`}
+            onClick={handleClickPickupButton}
           >
             Pick Up
-          </motion.div>
-          <motion.div
-            initial={{x: "100vw"}}
-            animate={{x: goOrderButtonClicked ? 0 : "100vw"}}
-            whileHover={{scale: 1.1}}
-            whileTap={{scale: 0.9}}
-            transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8}}
-            className={`flex justify-center self-center h-auto w-40 shadow-lg items-center border-1 border-[#FE7800] rounded-[50px] bg-white font-['Whatthefont'] text-[#FE7800] p-[20px] text-[25px] min-w-[90px] cursor-pointer ${goOrderButtonClicked ? "" : "absolute"}`}
-            onClick={() => handleClickDeliveryButton()}
+          </motion.button>
+          <motion.button
+            type="button"
+            aria-label="Order for delivery"
+            initial={{ x: "100vw" }}
+            animate={{ x: goOrderButtonClicked ? 0 : "100vw" }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", ease: [0.25, 0.1, 0.25, 1], duration: 0.8 }}
+            className={`flex justify-center self-center h-auto w-28 sm:w-40 shadow-lg items-center border border-[#FE7800] rounded-full bg-white font-['Whatthefont'] text-[#FE7800] p-3 sm:p-5 text-lg sm:text-[25px] min-w-[90px] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FE7800] focus:ring-offset-2 ${goOrderButtonClicked ? "" : "absolute"}`}
+            onClick={handleClickDeliveryButton}
           >
             Delivery
-          </motion.div>
+          </motion.button>
         </motion.div>
       </HomePageSection>
       <HomePageSection
@@ -82,7 +91,7 @@ const HomePage = () => {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        tailwind="bg-amber-100"
+        padding="40px 16px"
       >
         <IntroCardSection/>
       </HomePageSection>

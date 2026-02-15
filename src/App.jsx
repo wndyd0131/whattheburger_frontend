@@ -21,6 +21,7 @@ import api from "./utils/api";
 import { fetchUser } from "./api/user";
 import OrderProcess from "./pages/order/OrderProcess";
 import { USER_ACTIONS } from "./reducers/User/action";
+import OrderHistory from "./pages/order/OrderHistory";
 
 function App() {
 
@@ -100,6 +101,7 @@ function App() {
                 <Route path="/auth" element={<Auth/>}></Route>
                 <Route path="/order-session/:sessionId/store/:storeId" element={<Order/>}></Route>
                 <Route path="/order/complete" element={<OrderComplete/>}></Route>
+                <Route path="/order/history" element={<OrderHistory/>}></Route>
                 <Route path="/order/search" element={<OrderSearch/>}></Route>
               </Route>
               <Route path="/order/process" element={<OrderProcess/>}></Route>

@@ -4,7 +4,7 @@ import { CART_ACTIONS } from "../../reducers/Cart/actions";
 import api from "../../utils/api";
 import Cookie from "js-cookie";
 import { UserContext } from "../../contexts/UserContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LayoutContext } from "../../contexts/LayoutContext";
 import { fetchCart } from "../../api/cart";
 import { ListIcon, LogoutIcon, ProfileIcon } from "../../svg/Utils";
@@ -87,7 +87,7 @@ const ProfileDropdown = ({props}) => {
           </li>
           <li className="flex items-center cursor-pointer gap-2 p-3 hover:bg-gray-100">
               <ListIcon width="18px" height="18px"/>
-              <p>My Order</p>
+              <Link to={{ pathname: '/order/history'}}>My Order</Link>
           </li>
           <li className="flex items-center cursor-pointer gap-2 p-3 hover:bg-gray-100" onClick={() => handleClickSignOut()}>
             <LogoutIcon width="18px" height="18px"/>

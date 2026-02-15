@@ -240,7 +240,7 @@ const OrderComplete = () => {
           <div className="flex flex-col items-center basis-4/7">
             <h2 className='mb-5'>Order Progress</h2>
               <div className='flex w-full h-full max-w-300 p-5 border justify-center items-center border-gray-300 rounded-lg'>
-                {orderStep === 'PENDING' &&
+                {orderStep === 'CONFIRMING' &&
                   <div className='flex flex-col justify-center items-center'>
                     <div className="w-[200px]">
                       <Lottie animationData={pending} loop={true}/>

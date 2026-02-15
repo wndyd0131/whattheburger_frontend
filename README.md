@@ -109,15 +109,32 @@ This project focuses on building real fast-food restaurant ordering flows inspir
   - [x] Register Product to Stores
   - [ ] Update Product for each Store
 - **Product**
-  - [ ] Meal logic
+  - [x] Single product
+  - [ ] Meal product
 - [x] **Store logic**
 - [x] **User logic**
 - **Order**
   - [x] Delivery Order
   - [ ] Pickup Order
-- [x] **Cart**
-- [x] **Payment**
-- [ ] **Real-time delivery tracking**
-- [ ] **Order history**
+- **Cart**
+  - [x] Add to cart
+  - [x] Modify cart
+  - [x] Load cart
+- **Payment**
+  - [x] Stripe integration
+  - [x] Order complete post-processing
+  - [ ] Exception handling
+- **Order Tracking**
+  - [x] Order status random scheduling
+  - [x] Order status real-time update
+- **Order History**
+  - [ ] Search
+  - [ ] Filter
+    - [ ] Date
+    - [ ] Order Type
+    - [ ] Order Status
+    - [ ] Price
+  - [x] Pagination
+  - [x] Sorting
 - [ ] **Recommendation System**
 - [x] **Deployment**
