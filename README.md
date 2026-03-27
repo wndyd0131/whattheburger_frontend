@@ -11,13 +11,13 @@
 
 ## Screenshots
 ### User
-![](src/assets/resources/screenshot_1.png)
-![](src/assets/resources/screenshot_2.png)
-![](src/assets/resources/screenshot_3.png)
-![](src/assets/resources/screenshot_4.png)
+![](docs/images/screenshot_1.png)
+![](docs/images/screenshot_2.png)
+![](docs/images/screenshot_3.png)
+![](docs/images/screenshot_4.png)
 ### Admin
-![](src/assets/resources/screenshot_5.png)
-![](src/assets/resources/screenshot_6.png)
+![](docs/images/screenshot_5.png)
+![](docs/images/screenshot_6.png)
 
 
 ## Overview
@@ -96,12 +96,23 @@ This project focuses on building real fast-food restaurant ordering flows inspir
 * JUnit (Testing)
 * Swagger (API Docs)
 
-## Architectures
+## System Design
 ### Entity Relationship Diagram
-  ![ERD](src/assets/resources/whattheburger_erd.png)
+  ![ERD](docs/diagrams/entity_relationship_diagram.png)
 
-## UML Diagrams
-(Updating Soon)
+### C2 Diagram
+![C2](docs/diagrams/c2_diagram.png)
+### System Architecture
+![System_Architecture](docs/diagrams/system_architecture.drawio.png)
+### Sequence Diagrams
+#### Store Selection
+![checkout](docs/diagrams/sequence_diagram-store_selection.drawio.png)
+#### Add To Cart
+![checkout](docs/diagrams/sequence_diagram-add_menu_to_cart.drawio.png)
+#### Checkout
+![checkout](docs/diagrams/sequence_diagram-checkout.drawio.png)
+#### Order Tracking
+![checkout](docs/diagrams/sequence_diagram-order_tracking.drawio.png)
 
 ## Roadmap
 - **Admin**
